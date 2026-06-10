@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Panthers Playbook</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:   #1a4b8c;
+    --black:  #1a1a1a;
+    --gray:   #6b7280;
+    --silver: #c0c8d4;
+    --gold:   #e8a020;
+    --green:  #3b6d11;
+    --purple: #7c3aed;
+    --bg:     #f5f6f8;
+    --card:   #ffffff;
+    --border: #dde1e8;
+    --text:   #1a1a1a;
+    --muted:  #6b7280;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── LOCK SCREEN ── */
+  #lock {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--blue);
+  }
+  .lock-logo {
+    width: 72px; height: 72px;
+    background: rgba(255,255,255,.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 36px;
+  }
+  .lock-title {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .lock-sub {
+    color: rgba(255,255,255,.6);
+    font-size: 13px;
+    margin-bottom: 32px;
+    text-align: center;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .lock-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 28px 24px;
+    width: 100%;
+    max-width: 340px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+  }
+  .lock-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 8px;
+  }
+  .lock-box input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 18px;
+    letter-spacing: .2em;
+    text-align: center;
+    outline: none;
+    transition: border-color .15s;
+    font-family: monospace;
+  }
+  .lock-box input:focus { border-color: var(--blue); }
+  .lock-btn {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .lock-btn:hover { opacity: .88; }
+  .lock-error {
+    color: #c0392b;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 16px;
+    font-weight: 500;
+  }
+  .lock-hint {
+    color: rgba(255,255,255,.45);
+    font-size: 11px;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* ── APP ── */
+  #app { display: none; }
+
+  .app-header {
+    background: var(--blue);
+    color: #fff;
+    padding: 14px 16px 12px;
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-header-title { font-size: 17px; font-weight: 700; }
+  .app-header-sub { font-size: 10px; opacity: .65; letter-spacing: .06em; text-transform: uppercase; margin-top: 1px; }
+  .lock-out-btn {
+    background: rgba(255,255,255,.15);
+    border: none; border-radius: 6px;
+    color: #fff; font-size: 11px; font-weight: 500;
+    padding: 5px 10px; cursor: pointer; white-space: nowrap;
+  }
+  .lock-out-btn:hover { background: rgba(255,255,255,.25); }
+
+  /* tabs */
+  .tabs {
+    display: flex;
+    background: var(--black);
+    padding: 0 4px;
+  }
+  .tab {
+    flex: 1; padding: 10px 4px;
+    background: none; border: none;
+    color: rgba(255,255,255,.5);
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .06em;
+    cursor: pointer; border-bottom: 3px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .tab.active { color: #fff; border-bottom-color: var(--gold); }
+
+  /* panels */
+  .panel { display: none; padding: 12px; }
+  .panel.active { display: block; }
+
+  /* card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .card-head {
+    background: var(--blue);
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card-head.blk { background: var(--black); }
+  .card-body { padding: 10px 12px; }
+
+  /* sign rows */
+  .sign-row {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 6px 0;
+    border-bottom: .5px solid var(--border);
+  }
+  .sign-row:last-child { border-bottom: none; }
+  .badge {
+    background: var(--blue); color: #fff;
+    font-size: 9px; font-weight: 700;
+    padding: 3px 7px; border-radius: 4px;
+    white-space: nowrap; flex-shrink: 0;
+    text-transform: uppercase; letter-spacing: .04em;
+    margin-top: 1px;
+  }
+  .badge.blk    { background: var(--black); }
+  .badge.gray   { background: var(--gray); }
+  .badge.green  { background: var(--green); }
+  .badge.gold   { background: var(--gold); }
+  .badge.purple { background: var(--purple); }
+
+  .sign-text { font-size: 13px; line-height: 1.45; color: var(--text); }
+  .sign-text em { color: var(--muted); font-style: normal; font-size: 12px; }
+
+  /* note */
+  .note {
+    background: #f0f4fb;
+    border-left: 3px solid var(--blue);
+    padding: 7px 10px;
+    font-size: 12px; line-height: 1.5;
+    color: var(--muted);
+    border-radius: 0 6px 6px 0;
+    margin: 8px 0 2px;
+  }
+  .note.blk    { background: #f2f2f2; border-color: var(--black); }
+  .note.purple { background: #f5f0ff; border-color: var(--purple); }
+
+  /* ft grid */
+  .ft-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .ft-cell {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 9px;
+    font-size: 12px; line-height: 1.4;
+  }
+  .ft-cell.wide { grid-column: 1 / -1; }
+  .ft-num { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 2px; }
+
+  /* bunt grid */
+  .bunt-grid {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: 8px;
+  }
+  .bunt-cell {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bunt-cell-head {
+    padding: 6px 10px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .07em;
+  }
+  .bunt-cell-head.black-play { background: #e8eaf0; color: var(--black); }
+  .bunt-cell-head.white-play { background: #f5f5f5; color: var(--black); border-bottom: 1px solid var(--border); }
+  .bunt-cell-head.purple-play { background: #ede9fb; color: #5b21b6; }
+  .bunt-cell-body { padding: 7px 10px; background: var(--card); }
+  .bunt-cell-sub { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 5px; }
+  .bunt-row { font-size: 12px; line-height: 1.5; }
+  .bunt-pos { font-weight: 700; color: var(--black); }
+
+  /* diamonds decoration */
+  .diamonds { display: flex; gap: 3px; }
+  .diam { width: 8px; height: 8px; background: var(--silver); transform: rotate(45deg); border-radius: 1px; }
+
+  /* section label */
+  .sec-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .1em; color: var(--blue);
+    border-bottom: 2px solid var(--blue);
+    display: inline-block; padding-bottom: 2px;
+    margin-bottom: 8px;
+  }
+  .sec-label.blk { color: var(--black); border-color: var(--black); }
+
+  @media (min-width: 540px) {
+    .panel { padding: 16px; max-width: 600px; margin: 0 auto; }
+    .bunt-grid { display: grid; grid-template-columns: repeat(3,1fr); }
+    .ft-grid { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOCK SCREEN ══════════════ -->
+<div id="lock">
+  <div class="lock-logo">🐾</div>
+  <div class="lock-title">Panthers Playbook</div>
+  <div class="lock-sub">South Medford Baseball · Coaches Only</div>
+  <div class="lock-box">
+    <label for="pin">Enter Passcode</label>
+    <input type="password" id="pin" maxlength="20" placeholder="••••••" autocomplete="off"/>
+    <button class="lock-btn" onclick="tryUnlock()">Unlock</button>
+    <div class="lock-error" id="lock-error"></div>
+  </div>
+  <div class="lock-hint">Contact your coach for the passcode.</div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="app">
+
+  <div class="app-header">
+    <div>
+      <div class="app-header-title">Panthers Playbook</div>
+      <div class="app-header-sub">South Medford Baseball · Confidential</div>
+    </div>
+    <button class="lock-out-btn" onclick="lockApp()">🔒 Lock</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('offense')">⚔️ Offense</button>
+    <button class="tab" onclick="showTab('defense')">🛡 Defense</button>
+    <button class="tab" onclick="showTab('bunt')">📋 Bunt D</button>
+  </div>
+
+  <!-- ── OFFENSE TAB ── -->
+  <div class="panel active" id="tab-offense">
+
+    <div class="card">
+      <div class="card-head">
+        3B Coach Signs
+        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="sign-row">
+          <span class="badge gold">Indicator</span>
+          <span class="sign-text">Touch the <strong>bill of the hat</strong> first — activates all signs below except steal and wipe-off.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge blk">Steal</span>
+          <span class="sign-text">Touch any <strong>bare skin</strong> — no indicator needed. <em>Skin = steal.</em></span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">Bunt</span>
+          <span class="sign-text">Indicator → touch the <strong>belt</strong>.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">Delayed Steal</span>
+          <span class="sign-text">Indicator → <strong>fold arms across chest</strong> (football ref delay-of-game signal).</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">Safety Squeeze</span>
+          <span class="sign-text">Indicator → <strong>cup hands together</strong> several times.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">Fake Bunt / Slash</span>
+          <span class="sign-text">Indicator → touch <strong>cheek</strong> as if being slapped.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">Hit &amp; Run</span>
+          <span class="sign-text">Indicator → both hands sweep <strong>from chest outward</strong> to shoulders.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge green">Take</span>
+          <span class="sign-text">Indicator → <strong>fist, straight arm down</strong> at side. Do not swing.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge gray">Wipe-Off</span>
+          <span class="sign-text"><strong>Both hands wipe down shirt</strong>, chest to stomach — cancels previous sign. No indicator needed.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        1B Coach Signs
+        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="sign-row">
+          <span class="badge purple">Steal 2nd</span>
+          <span class="sign-text">While talking to the runner at 1st, coach <strong>says the runner's jersey number out loud</strong>. Runner steals 2nd on next pitch.</span>
+        </div>
+        <div class="note purple">Verbal sign only — sounds like normal coach chatter to everyone else.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── DEFENSE TAB ── -->
+  <div class="panel" id="tab-defense">
+
+    <div class="card">
+      <div class="card-head blk">
+        First &amp; Third Defense
+        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="note blk" style="margin-top:0; margin-bottom:10px;">Coach calls <strong>three numbers</strong> (e.g. 3, 6, 2). <strong>Only the first number matters</strong> — the rest are decoys.</div>
+        <div class="ft-grid">
+          <div class="ft-cell">
+            <div class="ft-num">COLOR</div>
+            Pitcher picks off <strong>3rd</strong>. 3B throws to 2nd if R1 breaks.
+          </div>
+          <div class="ft-cell">
+            <div class="ft-num">"3" first</div>
+            Catcher throws directly to <strong>3rd base</strong>.
+          </div>
+          <div class="ft-cell">
+            <div class="ft-num">"2" first</div>
+            C throws to 2nd. <strong>2B cuts</strong> → fires home.
+          </div>
+          <div class="ft-cell wide">
+            <span class="ft-num">"6" first — </span>C throws to 2nd. <strong>Shortstop cuts</strong> → fires home.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head blk">
+        Pickoff at 2nd — "Horns" Series
+        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="sign-row">
+          <span class="badge blk">Setup</span>
+          <span class="sign-text">Coach calls <strong>"Horns"</strong> → pitcher knows pickoff to 2nd is coming. Timing play.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">SS Crashes</span>
+          <span class="sign-text">Coach <strong>pats head</strong> → SS breaks hard to 2nd base.</span>
+        </div>
+        <div class="sign-row">
+          <span class="badge">2B Crashes</span>
+          <span class="sign-text">Coach <strong>pats chest</strong> → 2B breaks hard to 2nd base.</span>
+        </div>
+        <div class="note">Once infielder crashes → <strong>catcher drops glove</strong> → pitcher picks off to 2nd.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── BUNT DEFENSE TAB ── -->
+  <div class="panel" id="tab-bunt">
+
+    <div class="card">
+      <div class="card-head blk">
+        Bunt Defense Calls
+        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
+      </div>
+      <div class="card-body">
+        <div class="note blk" style="margin-top:0; margin-bottom:10px;">Call the color <strong>before the pitch</strong> — all players react to their assignment.</div>
+        <div class="bunt-grid">
+
+          <div class="bunt-cell">
+            <div class="bunt-cell-head black-play">⬛ Black — No runners / R on 1B</div>
+            <div class="bunt-cell-body">
+              <div class="bunt-row"><span class="bunt-pos">1B</span> — Stay home</div>
+              <div class="bunt-row"><span class="bunt-pos">2B</span> — Play position; rotate &amp; back up 1B on past ball</div>
+              <div class="bunt-row"><span class="bunt-pos">SS</span> — Cover 2B; read situation, maybe cover 3B</div>
+              <div class="bunt-row"><span class="bunt-pos">3B</span> — Charge; <em>do not</em> field, cover 3B</div>
+              <div class="bunt-row"><span class="bunt-pos">C</span> — Charge; 3B fields, cover 3B</div>
+              <div class="bunt-row"><span class="bunt-pos">P</span> — Charge bunt</div>
+            </div>
+          </div>
+
+          <div class="bunt-cell">
+            <div class="bunt-cell-head white-play">⬜ White — Lead runner on 2B</div>
+            <div class="bunt-cell-body">
+              <div class="bunt-row"><span class="bunt-pos">1B</span> — Charge bunt</div>
+              <div class="bunt-row"><span class="bunt-pos">2B</span> — Cover 1B; cheat over pre-pitch</div>
+              <div class="bunt-row"><span class="bunt-pos">SS</span> — Cover 2B</div>
+              <div class="bunt-row"><span class="bunt-pos">3B</span> — Cover 3B; ready for tag play</div>
+              <div class="bunt-row"><span class="bunt-pos">C</span> — Charge bunt</div>
+              <div class="bunt-row"><span class="bunt-pos">P</span> — Charge bunt</div>
+            </div>
+          </div>
+
+          <div class="bunt-cell">
+            <div class="bunt-cell-head purple-play">🟣 Purple — Wheel play, R on 2B</div>
+            <div class="bunt-cell-body">
+              <div class="bunt-row"><span class="bunt-pos">1B</span> — Charge bunt</div>
+              <div class="bunt-row"><span class="bunt-pos">2B</span> — Cover 1B; cheat over pre-pitch</div>
+              <div class="bunt-row"><span class="bunt-pos">SS</span> — Cover 3B; ready for tag play</div>
+              <div class="bunt-row"><span class="bunt-pos">3B</span> — Charge bunt</div>
+              <div class="bunt-row"><span class="bunt-pos">C</span> — Charge bunt</div>
+              <div class="bunt-row"><span class="bunt-pos">P</span> — Charge; deliver once SS breaks to 3B</div>
+            </div>
+          </div>
+
+        </div>
+        <div class="note purple" style="margin-top:10px;">
+          <strong>"Let's Go Purple" (Pick Play):</strong> SS breaks to 3B as usual. <strong>2B breaks to 2nd for a pickoff</strong> instead of covering 1B. Pitcher does an inside move to 2B.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- end #app -->
+
+<script>
+  // ── Change this to your real passcode ──
+  const PASSCODE = 'Panthers1';
+
+  const SESSION_KEY = 'smbb_unlocked';
+
+  function tryUnlock() {
+    const val = document.getElementById('pin').value.trim();
+    if (val === PASSCODE) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      showApp();
+    } else {
+      document.getElementById('lock-error').textContent = 'Incorrect passcode. Try again.';
+      document.getElementById('pin').value = '';
+      document.getElementById('pin').focus();
+    }
+  }
+
+  function showApp() {
+    document.getElementById('lock').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+  }
+
+  function lockApp() {
+    sessionStorage.removeItem(SESSION_KEY);
+    document.getElementById('lock').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('pin').value = '';
+    document.getElementById('lock-error').textContent = '';
+  }
+
+  function showTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Allow Enter key on passcode field
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('pin').addEventListener('keydown', e => {
+      if (e.key === 'Enter') tryUnlock();
+    });
+    // Stay unlocked within the same browser session
+    if (sessionStorage.getItem(SESSION_KEY)) showApp();
+  });
+</script>
+</body>
+</html>
