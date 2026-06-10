@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panthers Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -20,6 +21,21 @@
     --border: #dde1e8;
     --text:   #1a1a1a;
     --muted:  #6b7280;
+    /* pitch counter palette */
+    --pc-blue:     #1a3a6b;
+    --pc-blue-mid: #224a8a;
+    --pc-blue-lt:  #2e5fad;
+    --pc-silver:   #a8b4c4;
+    --pc-silver-lt:#d0d8e4;
+    --pc-silver-dk:#6a7a8e;
+    --pc-chalk:    #eef1f6;
+    --pc-bg:       #0d1824;
+    --pc-card:     #111d2b;
+    --pc-border:   #1e3352;
+    --pc-ball:     #5b9cf6;
+    --pc-strike:   #d0d8e4;
+    --pc-out:      #7aaef5;
+    --pc-foul:     #a8b4c4;
   }
 
   body {
@@ -32,251 +48,225 @@
   /* ── LOCK SCREEN ── */
   #lock {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     padding: 24px;
     background: var(--blue);
   }
-  .lock-logo {
-    width: 72px; height: 72px;
-    background: rgba(255,255,255,.12);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 20px;
-    font-size: 36px;
-  }
-  .lock-title {
-    color: #fff;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: .01em;
-    margin-bottom: 4px;
-    text-align: center;
-  }
-  .lock-sub {
-    color: rgba(255,255,255,.6);
-    font-size: 13px;
-    margin-bottom: 32px;
-    text-align: center;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-  }
-  .lock-box {
-    background: #fff;
-    border-radius: 14px;
-    padding: 28px 24px;
-    width: 100%;
-    max-width: 340px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.25);
-  }
-  .lock-box label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--gray);
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    margin-bottom: 8px;
-  }
-  .lock-box input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-size: 18px;
-    letter-spacing: .2em;
-    text-align: center;
-    outline: none;
-    transition: border-color .15s;
-    font-family: monospace;
-  }
+  .lock-logo { width: 72px; height: 72px; background: rgba(255,255,255,.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 36px; }
+  .lock-title { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: .01em; margin-bottom: 4px; text-align: center; }
+  .lock-sub { color: rgba(255,255,255,.6); font-size: 13px; margin-bottom: 32px; text-align: center; letter-spacing: .04em; text-transform: uppercase; }
+  .lock-box { background: #fff; border-radius: 14px; padding: 28px 24px; width: 100%; max-width: 340px; box-shadow: 0 8px 32px rgba(0,0,0,.25); }
+  .lock-box label { display: block; font-size: 12px; font-weight: 600; color: var(--gray); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+  .lock-box input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 18px; letter-spacing: .2em; text-align: center; outline: none; transition: border-color .15s; font-family: monospace; }
   .lock-box input:focus { border-color: var(--blue); }
-  .lock-btn {
-    width: 100%;
-    margin-top: 14px;
-    padding: 13px;
-    background: var(--blue);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity .15s;
-  }
+  .lock-btn { width: 100%; margin-top: 14px; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: opacity .15s; }
   .lock-btn:hover { opacity: .88; }
-  .lock-error {
-    color: #c0392b;
-    font-size: 12px;
-    text-align: center;
-    margin-top: 10px;
-    min-height: 16px;
-    font-weight: 500;
-  }
-  .lock-hint {
-    color: rgba(255,255,255,.45);
-    font-size: 11px;
-    text-align: center;
-    margin-top: 20px;
-  }
+  .lock-error { color: #c0392b; font-size: 12px; text-align: center; margin-top: 10px; min-height: 16px; font-weight: 500; }
+  .lock-hint { color: rgba(255,255,255,.45); font-size: 11px; text-align: center; margin-top: 20px; }
 
-  /* ── APP ── */
+  /* ── APP SHELL ── */
   #app { display: none; }
 
-  .app-header {
-    background: var(--blue);
-    color: #fff;
-    padding: 14px 16px 12px;
-    position: sticky; top: 0; z-index: 10;
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .app-header { background: var(--blue); color: #fff; padding: 14px 16px 12px; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
   .app-header-title { font-size: 17px; font-weight: 700; }
   .app-header-sub { font-size: 10px; opacity: .65; letter-spacing: .06em; text-transform: uppercase; margin-top: 1px; }
-  .lock-out-btn {
-    background: rgba(255,255,255,.15);
-    border: none; border-radius: 6px;
-    color: #fff; font-size: 11px; font-weight: 500;
-    padding: 5px 10px; cursor: pointer; white-space: nowrap;
-  }
+  .lock-out-btn { background: rgba(255,255,255,.15); border: none; border-radius: 6px; color: #fff; font-size: 11px; font-weight: 500; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
   .lock-out-btn:hover { background: rgba(255,255,255,.25); }
 
-  /* tabs */
-  .tabs {
-    display: flex;
-    background: var(--black);
-    padding: 0 4px;
-  }
-  .tab {
-    flex: 1; padding: 10px 4px;
-    background: none; border: none;
-    color: rgba(255,255,255,.5);
-    font-size: 12px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: .06em;
-    cursor: pointer; border-bottom: 3px solid transparent;
-    transition: color .15s, border-color .15s;
-  }
+  .tabs { display: flex; background: var(--black); padding: 0 4px; overflow-x: auto; }
+  .tab { flex: 1; min-width: 60px; padding: 10px 4px; background: none; border: none; color: rgba(255,255,255,.5); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; cursor: pointer; border-bottom: 3px solid transparent; transition: color .15s, border-color .15s; white-space: nowrap; }
   .tab.active { color: #fff; border-bottom-color: var(--gold); }
 
-  /* panels */
   .panel { display: none; padding: 12px; }
   .panel.active { display: block; }
 
-  /* card */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .card-head {
-    background: var(--blue);
-    color: #fff;
-    padding: 8px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .card-head.blk { background: var(--black); }
-  .card-body { padding: 10px 12px; }
+  /* ── PLAYBOOK COMPONENTS ── */
+  .pb-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .pb-card-head { background: var(--blue); color: #fff; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; display: flex; align-items: center; justify-content: space-between; }
+  .pb-card-head.blk { background: var(--black); }
+  .pb-card-body { padding: 10px 12px; }
 
-  /* sign rows */
-  .sign-row {
-    display: flex; align-items: flex-start; gap: 8px;
-    padding: 6px 0;
-    border-bottom: .5px solid var(--border);
-  }
+  .sign-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: .5px solid var(--border); }
   .sign-row:last-child { border-bottom: none; }
-  .badge {
-    background: var(--blue); color: #fff;
-    font-size: 9px; font-weight: 700;
-    padding: 3px 7px; border-radius: 4px;
-    white-space: nowrap; flex-shrink: 0;
-    text-transform: uppercase; letter-spacing: .04em;
-    margin-top: 1px;
-  }
+  .badge { background: var(--blue); color: #fff; font-size: 9px; font-weight: 700; padding: 3px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: .04em; margin-top: 1px; }
   .badge.blk    { background: var(--black); }
   .badge.gray   { background: var(--gray); }
   .badge.green  { background: var(--green); }
   .badge.gold   { background: var(--gold); }
   .badge.purple { background: var(--purple); }
-
   .sign-text { font-size: 13px; line-height: 1.45; color: var(--text); }
   .sign-text em { color: var(--muted); font-style: normal; font-size: 12px; }
 
-  /* note */
-  .note {
-    background: #f0f4fb;
-    border-left: 3px solid var(--blue);
-    padding: 7px 10px;
-    font-size: 12px; line-height: 1.5;
-    color: var(--muted);
-    border-radius: 0 6px 6px 0;
-    margin: 8px 0 2px;
-  }
+  .note { background: #f0f4fb; border-left: 3px solid var(--blue); padding: 7px 10px; font-size: 12px; line-height: 1.5; color: var(--muted); border-radius: 0 6px 6px 0; margin: 8px 0 2px; }
   .note.blk    { background: #f2f2f2; border-color: var(--black); }
   .note.purple { background: #f5f0ff; border-color: var(--purple); }
 
-  /* ft grid */
-  .ft-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .ft-cell {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 8px 9px;
-    font-size: 12px; line-height: 1.4;
-  }
-  .ft-cell.wide { grid-column: 1 / -1; }
+  .ft-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-top: 8px; }
+  .ft-cell { background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 8px 9px; font-size: 12px; line-height: 1.4; }
+  .ft-cell.wide { grid-column: 1/-1; }
   .ft-num { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 2px; }
 
-  /* bunt grid */
-  .bunt-grid {
-    display: flex; flex-direction: column; gap: 8px;
-    margin-top: 8px;
-  }
-  .bunt-cell {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .bunt-cell-head {
-    padding: 6px 10px;
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .07em;
-  }
-  .bunt-cell-head.black-play { background: #e8eaf0; color: var(--black); }
-  .bunt-cell-head.white-play { background: #f5f5f5; color: var(--black); border-bottom: 1px solid var(--border); }
+  .bunt-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .bunt-cell { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .bunt-cell-head { padding: 6px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+  .bunt-cell-head.black-play  { background: #e8eaf0; color: var(--black); }
+  .bunt-cell-head.white-play  { background: #f5f5f5; color: var(--black); border-bottom: 1px solid var(--border); }
   .bunt-cell-head.purple-play { background: #ede9fb; color: #5b21b6; }
   .bunt-cell-body { padding: 7px 10px; background: var(--card); }
-  .bunt-cell-sub { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 5px; }
   .bunt-row { font-size: 12px; line-height: 1.5; }
   .bunt-pos { font-weight: 700; color: var(--black); }
 
-  /* diamonds decoration */
   .diamonds { display: flex; gap: 3px; }
   .diam { width: 8px; height: 8px; background: var(--silver); transform: rotate(45deg); border-radius: 1px; }
 
-  /* section label */
-  .sec-label {
-    font-size: 9px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .1em; color: var(--blue);
-    border-bottom: 2px solid var(--blue);
-    display: inline-block; padding-bottom: 2px;
-    margin-bottom: 8px;
+  /* ── PITCH COUNTER TAB ── */
+  #tab-pitch {
+    background: var(--pc-bg);
+    min-height: calc(100vh - 90px);
+    padding: 16px 12px 24px;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(26,58,107,0.5) 0%, transparent 65%),
+      repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(255,255,255,0.018) 48px, rgba(255,255,255,0.018) 49px),
+      repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(255,255,255,0.018) 48px, rgba(255,255,255,0.018) 49px);
   }
-  .sec-label.blk { color: var(--black); border-color: var(--black); }
+  #tab-pitch.active { display: block; }
+
+  .pc-wrap { max-width: 490px; margin: 0 auto; }
+  .pc-header { text-align: center; margin-bottom: 16px; }
+  .pc-mascot { font-size: 2rem; line-height: 1; margin-bottom: 4px; filter: drop-shadow(0 2px 10px rgba(46,95,173,0.7)); }
+  .pc-title { font-family: 'Bebas Neue', sans-serif; color: var(--pc-chalk); font-size: clamp(1.6rem, 5vw, 2.4rem); letter-spacing: 0.15em; text-shadow: 0 0 24px rgba(46,95,173,0.55), 2px 2px 0 rgba(0,0,0,0.6); }
+  .pc-sub { color: var(--pc-silver-dk); font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 2px; }
+
+  .scoreboard { background: var(--pc-card); border: 2px solid var(--pc-border); border-top: 4px solid var(--pc-blue-lt); border-radius: 10px; padding: 20px 22px; box-shadow: 0 14px 50px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.03); }
+
+  .ip-banner { display: flex; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--pc-border); gap: 10px; }
+  .ip-left { flex: 1; }
+  .ip-label { font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 3px; }
+  .ip-display { display: flex; align-items: baseline; gap: 5px; }
+  .ip-whole { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; line-height: 1; color: var(--pc-chalk); text-shadow: 0 0 16px rgba(46,95,173,0.4); }
+  .ip-frac  { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--pc-blue-lt); line-height: 1; min-width: 14px; }
+  .ip-unit  { font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pc-silver-dk); align-self: flex-end; padding-bottom: 4px; }
+  .ip-pips  { display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+  .ip-pip-row { display: flex; gap: 4px; }
+  .ip-pip { width: 11px; height: 11px; border-radius: 50%; background: #1b2e44; border: 1px solid #263d58; transition: background 0.15s, box-shadow 0.15s; }
+  .ip-pip.active   { background: var(--pc-blue-lt); border-color: var(--pc-blue-lt); box-shadow: 0 0 6px rgba(46,95,173,0.65); }
+  .ip-pip.complete { background: var(--pc-silver-dk); border-color: var(--pc-silver); }
+  .ip-outs-label { font-size: 0.46rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--pc-silver-dk); text-align: right; margin-top: 1px; }
+
+  .count-section { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .count-box { background: rgba(0,0,0,0.28); border: 1px solid var(--pc-border); border-radius: 8px; padding: 12px 8px 10px; text-align: center; }
+  .count-label { font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 5px; }
+  .count-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.2rem; line-height: 1; color: var(--pc-chalk); transition: color 0.15s; }
+  .count-num.ball   { color: var(--pc-ball);   text-shadow: 0 0 12px rgba(91,156,246,0.2); }
+  .count-num.strike { color: var(--pc-strike); text-shadow: 0 0 12px rgba(208,216,228,0.2); }
+  .count-num.out    { color: var(--pc-out);    text-shadow: 0 0 12px rgba(122,174,245,0.2); }
+  .count-num.bump { animation: pcbump 0.18s ease; }
+  @keyframes pcbump { 0%{transform:scale(1);} 45%{transform:scale(1.3);} 100%{transform:scale(1);} }
+  .dots { display: flex; justify-content: center; gap: 5px; margin-top: 7px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #1b2e44; border: 1px solid #263d58; transition: background 0.14s, box-shadow 0.14s; }
+  .dot.ball.active   { background: var(--pc-ball);   border-color: var(--pc-ball);   box-shadow: 0 0 5px var(--pc-ball); }
+  .dot.strike.active { background: var(--pc-strike); border-color: var(--pc-strike); box-shadow: 0 0 5px var(--pc-strike); }
+  .dot.out.active    { background: var(--pc-out);    border-color: var(--pc-out);    box-shadow: 0 0 5px var(--pc-out); }
+
+  .age-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 9px 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--pc-border); border-radius: 7px; }
+  .age-label { font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); }
+  .age-select { background: var(--pc-blue); color: var(--pc-chalk); border: 1px solid var(--pc-blue-lt); border-radius: 5px; padding: 5px 24px 5px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 600; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a8b4c4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
+
+  .total-section { border-top: 1px solid var(--pc-border); padding-top: 14px; display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px; }
+  .total-label { font-size: 0.57rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); }
+  .pitch-limit-text { font-size: 0.53rem; color: var(--pc-silver-dk); letter-spacing: 0.1em; margin-top: 3px; }
+  .total-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--pc-chalk); }
+  .pitch-limit-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
+  .pitch-limit-fill { height: 100%; background: linear-gradient(90deg, var(--pc-blue-lt), var(--pc-silver), var(--pc-silver-lt)); border-radius: 2px; transition: width 0.3s ease; width: 0%; }
+
+  .rest-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 7px; margin-bottom: 18px; border: 1px solid var(--pc-border); background: rgba(0,0,0,0.2); transition: border-color 0.3s, background 0.3s; }
+  .rest-row.rest-0 { border-color: rgba(91,156,246,0.35);  background: rgba(91,156,246,0.07); }
+  .rest-row.rest-1 { border-color: rgba(91,156,246,0.35);  background: rgba(91,156,246,0.07); }
+  .rest-row.rest-2 { border-color: rgba(208,216,228,0.35); background: rgba(208,216,228,0.07); }
+  .rest-row.rest-3 { border-color: rgba(46,95,173,0.5);   background: rgba(46,95,173,0.1); }
+  .rest-row.rest-4 { border-color: rgba(122,174,245,0.35); background: rgba(122,174,245,0.07); }
+  .rest-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .rest-info { flex: 1; }
+  .rest-label { font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 2px; }
+  .rest-value { font-size: 0.72rem; font-weight: 600; color: var(--pc-chalk); letter-spacing: 0.04em; }
+  .rest-row.over-limit .rest-value { color: var(--pc-out); }
+  .rest-badge { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; line-height: 1; min-width: 28px; text-align: center; color: var(--pc-chalk); flex-shrink: 0; }
+  .rest-row.rest-0 .rest-badge { color: var(--pc-ball); }
+  .rest-row.rest-1 .rest-badge { color: var(--pc-silver-lt); }
+  .rest-row.rest-2 .rest-badge { color: var(--pc-strike); }
+  .rest-row.rest-3 .rest-badge { color: var(--pc-blue-lt); }
+  .rest-row.rest-4 .rest-badge { color: var(--pc-out); }
+
+  .pc-btn { border: none; border-radius: 7px; padding: 15px 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.1em; cursor: pointer; transition: transform 0.08s; position: relative; overflow: hidden; }
+  .pc-btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background 0.1s; }
+  .pc-btn:active { transform: scale(0.94); }
+  .pc-btn:hover::after { background: rgba(255,255,255,0.07); }
+  .pc-btn-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  .btn-ball   { background: rgba(91,156,246,0.13); color: var(--pc-ball);   border: 2px solid rgba(91,156,246,0.3);  box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
+  .btn-strike { background: rgba(208,216,228,0.13); color: var(--pc-strike); border: 2px solid rgba(208,216,228,0.3); box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
+  .btn-out    { background: rgba(122,174,245,0.13); color: var(--pc-out);   border: 2px solid rgba(122,174,245,0.3);  box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
+  .btn-foul-row { margin-bottom: 8px; }
+  .btn-foul { width: 100%; background: rgba(168,180,196,0.07); color: var(--pc-foul); border: 2px dashed rgba(168,180,196,0.2); box-shadow: none; font-size: 1rem; opacity: 0.38; cursor: not-allowed; transition: opacity 0.2s, border-style 0.2s, box-shadow 0.2s, transform 0.08s; }
+  .btn-foul.active { opacity: 1; cursor: pointer; border-style: solid; border-color: rgba(168,180,196,0.5); background: rgba(168,180,196,0.14); box-shadow: 0 4px 0 rgba(0,0,0,0.35); }
+  .pc-btn-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn-util { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 11px 8px; border-radius: 6px; cursor: pointer; border: none; transition: transform 0.08s; position: relative; overflow: hidden; }
+  .btn-util::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background 0.1s; }
+  .btn-util:active { transform: scale(0.94); }
+  .btn-util:hover::after { background: rgba(255,255,255,0.07); }
+  .btn-undo        { background: rgba(255,255,255,0.05); color: var(--pc-silver);    border: 1px solid var(--pc-border); box-shadow: 0 3px 0 rgba(0,0,0,0.3); }
+  .btn-reset-count { background: rgba(26,58,107,0.2);   color: var(--pc-silver-lt); border: 1px solid var(--pc-blue);   box-shadow: 0 3px 0 rgba(0,0,0,0.3); }
+  .btn-new-pitcher { grid-column: 1/-1; margin-top: 6px; background: linear-gradient(135deg, var(--pc-blue) 0%, var(--pc-blue-mid) 100%); color: var(--pc-chalk); border: 1px solid var(--pc-blue-lt); box-shadow: 0 4px 0 rgba(0,0,0,0.45); font-size: 0.62rem; letter-spacing: 0.12em; padding: 13px 8px; }
+
+  .stats-section { margin-top: 0; margin-bottom: 18px; border: 1px solid var(--pc-border); border-radius: 8px; overflow: hidden; }
+  .stats-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px 6px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--pc-border); }
+  .stats-title { font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pc-silver-dk); }
+  .stats-body { padding: 10px 12px 12px; }
+
+  .split-bar-wrap { margin-bottom: 8px; }
+  .split-labels { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .split-label-ball   { font-size: 0.6rem; font-weight: 600; color: var(--pc-ball); letter-spacing: 0.06em; }
+  .split-label-strike { font-size: 0.6rem; font-weight: 600; color: var(--pc-silver-lt); letter-spacing: 0.06em; text-align: right; }
+  .split-bar { height: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; overflow: hidden; display: flex; }
+  .split-ball-fill   { height: 100%; background: var(--pc-blue-lt); transition: width 0.4s ease; border-radius: 5px 0 0 5px; }
+  .split-strike-fill { height: 100%; background: var(--pc-silver);  transition: width 0.4s ease; border-radius: 0 5px 5px 0; }
+  .split-pct { display: flex; justify-content: space-between; margin-top: 3px; }
+  .split-pct span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--pc-chalk); }
+
+  .trend-wrap { border-top: 1px solid var(--pc-border); padding-top: 10px; margin-top: 10px; }
+  .trend-label { font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 6px; }
+  .trend-pips { display: flex; gap: 4px; margin-bottom: 6px; align-items: flex-end; }
+  .trend-pip { flex: 1; border-radius: 3px 3px 0 0; min-height: 6px; transition: height 0.3s ease, background 0.3s ease; }
+  .trend-pip.ball   { background: var(--pc-blue-lt); }
+  .trend-pip.strike { background: var(--pc-silver); }
+  .trend-pip.empty  { background: rgba(255,255,255,0.06); height: 6px !important; }
+  .trend-axis { display: flex; justify-content: space-between; }
+  .trend-axis span { font-size: 0.44rem; color: var(--pc-silver-dk); letter-spacing: 0.08em; }
+
+  .command-alert { display: none; margin-top: 8px; padding: 7px 10px; border-radius: 5px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.04em; border: 1px solid rgba(91,156,246,0.3); background: rgba(91,156,246,0.1); color: var(--pc-silver-lt); }
+  .command-alert.warn { border-color: rgba(208,216,228,0.4); background: rgba(208,216,228,0.08); color: var(--pc-chalk); }
+  .command-alert.show { display: block; }
+
+  .log-section { margin-top: 16px; border-top: 1px solid var(--pc-border); padding-top: 12px; }
+  .log-title { font-size: 0.51rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 7px; }
+  .log-scroll { max-height: 68px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #1e3352 transparent; }
+  .log-scroll::-webkit-scrollbar { width: 3px; }
+  .log-scroll::-webkit-scrollbar-thumb { background: #1e3352; border-radius: 2px; }
+  .log-entries { display: flex; flex-wrap: wrap; gap: 4px; }
+  .log-tag { font-size: 0.55rem; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.06em; font-weight: 600; }
+  .log-tag.B { background: rgba(91,156,246,0.13);  color: var(--pc-ball); }
+  .log-tag.S { background: rgba(208,216,228,0.13);  color: var(--pc-strike); }
+  .log-tag.O { background: rgba(122,174,245,0.13);  color: var(--pc-out); }
+  .log-tag.F { background: rgba(168,180,196,0.13);  color: var(--pc-foul); }
+  .log-tag.last { outline: 1px solid var(--pc-silver-dk); }
+
+  .pc-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 999; }
+  .pc-flash.show { animation: pcFlash 0.4s ease forwards; }
+  @keyframes pcFlash { 0%{opacity:0.28;} 100%{opacity:0;} }
 
   @media (min-width: 540px) {
-    .panel { padding: 16px; max-width: 600px; margin: 0 auto; }
+    .panel:not(#tab-pitch) { padding: 16px; max-width: 600px; margin: 0 auto; }
+    #tab-pitch { padding: 20px 16px 32px; }
     .bunt-grid { display: grid; grid-template-columns: repeat(3,1fr); }
     .ft-grid { grid-template-columns: repeat(3,1fr); }
   }
@@ -284,7 +274,7 @@
 </head>
 <body>
 
-<!-- ══════════════ LOCK SCREEN ══════════════ -->
+<!-- LOCK -->
 <div id="lock">
   <div class="lock-logo">🐾</div>
   <div class="lock-title">Panthers Playbook</div>
@@ -298,7 +288,7 @@
   <div class="lock-hint">Contact your coach for the passcode.</div>
 </div>
 
-<!-- ══════════════ APP ══════════════ -->
+<!-- APP -->
 <div id="app">
 
   <div class="app-header">
@@ -310,141 +300,69 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="showTab('offense')">⚔️ Offense</button>
-    <button class="tab" onclick="showTab('defense')">🛡 Defense</button>
-    <button class="tab" onclick="showTab('bunt')">📋 Bunt D</button>
+    <button class="tab active" onclick="showTab('offense',this)">⚔️ Offense</button>
+    <button class="tab" onclick="showTab('defense',this)">🛡 Defense</button>
+    <button class="tab" onclick="showTab('bunt',this)">📋 Bunt D</button>
+    <button class="tab" onclick="showTab('pitch',this)">⚾ Pitches</button>
   </div>
 
-  <!-- ── OFFENSE TAB ── -->
+  <!-- OFFENSE -->
   <div class="panel active" id="tab-offense">
-
-    <div class="card">
-      <div class="card-head">
-        3B Coach Signs
-        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
-      </div>
-      <div class="card-body">
-        <div class="sign-row">
-          <span class="badge gold">Indicator</span>
-          <span class="sign-text">Touch the <strong>bill of the hat</strong> first — activates all signs below except steal and wipe-off.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge blk">Steal</span>
-          <span class="sign-text">Touch any <strong>bare skin</strong> — no indicator needed. <em>Skin = steal.</em></span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">Bunt</span>
-          <span class="sign-text">Indicator → touch the <strong>belt</strong>.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">Delayed Steal</span>
-          <span class="sign-text">Indicator → <strong>fold arms across chest</strong> (football ref delay-of-game signal).</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">Safety Squeeze</span>
-          <span class="sign-text">Indicator → <strong>cup hands together</strong> several times.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">Fake Bunt / Slash</span>
-          <span class="sign-text">Indicator → touch <strong>cheek</strong> as if being slapped.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">Hit &amp; Run</span>
-          <span class="sign-text">Indicator → both hands sweep <strong>from chest outward</strong> to shoulders.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge green">Take</span>
-          <span class="sign-text">Indicator → <strong>fist, straight arm down</strong> at side. Do not swing.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge gray">Wipe-Off</span>
-          <span class="sign-text"><strong>Both hands wipe down shirt</strong>, chest to stomach — cancels previous sign. No indicator needed.</span>
-        </div>
+    <div class="pb-card">
+      <div class="pb-card-head">3B Coach Signs <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
+      <div class="pb-card-body">
+        <div class="sign-row"><span class="badge gold">Indicator</span><span class="sign-text">Touch the <strong>bill of the hat</strong> first — activates all signs below except steal and wipe-off.</span></div>
+        <div class="sign-row"><span class="badge blk">Steal</span><span class="sign-text">Touch any <strong>bare skin</strong> — no indicator needed. <em>Skin = steal.</em></span></div>
+        <div class="sign-row"><span class="badge">Bunt</span><span class="sign-text">Indicator → touch the <strong>belt</strong>.</span></div>
+        <div class="sign-row"><span class="badge">Delayed Steal</span><span class="sign-text">Indicator → <strong>fold arms across chest</strong> (football ref delay-of-game signal).</span></div>
+        <div class="sign-row"><span class="badge">Safety Squeeze</span><span class="sign-text">Indicator → <strong>cup hands together</strong> several times.</span></div>
+        <div class="sign-row"><span class="badge">Fake Bunt / Slash</span><span class="sign-text">Indicator → touch <strong>cheek</strong> as if being slapped.</span></div>
+        <div class="sign-row"><span class="badge">Hit &amp; Run</span><span class="sign-text">Indicator → both hands sweep <strong>from chest outward</strong> to shoulders.</span></div>
+        <div class="sign-row"><span class="badge green">Take</span><span class="sign-text">Indicator → <strong>fist, straight arm down</strong> at side. Do not swing.</span></div>
+        <div class="sign-row"><span class="badge gray">Wipe-Off</span><span class="sign-text"><strong>Both hands wipe down shirt</strong>, chest to stomach — cancels previous sign. No indicator needed.</span></div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-head">
-        1B Coach Signs
-        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
-      </div>
-      <div class="card-body">
-        <div class="sign-row">
-          <span class="badge purple">Steal 2nd</span>
-          <span class="sign-text">While talking to the runner at 1st, coach <strong>says the runner's jersey number out loud</strong>. Runner steals 2nd on next pitch.</span>
-        </div>
+    <div class="pb-card">
+      <div class="pb-card-head">1B Coach Signs <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
+      <div class="pb-card-body">
+        <div class="sign-row"><span class="badge purple">Steal 2nd</span><span class="sign-text">While talking to the runner at 1st, coach <strong>says the runner's jersey number out loud</strong>. Runner steals 2nd on next pitch.</span></div>
         <div class="note purple">Verbal sign only — sounds like normal coach chatter to everyone else.</div>
       </div>
     </div>
-
   </div>
 
-  <!-- ── DEFENSE TAB ── -->
+  <!-- DEFENSE -->
   <div class="panel" id="tab-defense">
-
-    <div class="card">
-      <div class="card-head blk">
-        First &amp; Third Defense
-        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
-      </div>
-      <div class="card-body">
-        <div class="note blk" style="margin-top:0; margin-bottom:10px;">Coach calls <strong>three numbers</strong> (e.g. 3, 6, 2). <strong>Only the first number matters</strong> — the rest are decoys.</div>
+    <div class="pb-card">
+      <div class="pb-card-head blk">First &amp; Third Defense <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
+      <div class="pb-card-body">
+        <div class="note blk" style="margin-top:0;margin-bottom:10px;">Coach calls <strong>three numbers</strong> (e.g. 3, 6, 2). <strong>Only the first number matters</strong> — the rest are decoys.</div>
         <div class="ft-grid">
-          <div class="ft-cell">
-            <div class="ft-num">COLOR</div>
-            Pitcher picks off <strong>3rd</strong>. 3B throws to 2nd if R1 breaks.
-          </div>
-          <div class="ft-cell">
-            <div class="ft-num">"3" first</div>
-            Catcher throws directly to <strong>3rd base</strong>.
-          </div>
-          <div class="ft-cell">
-            <div class="ft-num">"2" first</div>
-            C throws to 2nd. <strong>2B cuts</strong> → fires home.
-          </div>
-          <div class="ft-cell wide">
-            <span class="ft-num">"6" first — </span>C throws to 2nd. <strong>Shortstop cuts</strong> → fires home.
-          </div>
+          <div class="ft-cell"><div class="ft-num">COLOR</div>Pitcher picks off <strong>3rd</strong>. 3B throws to 2nd if R1 breaks.</div>
+          <div class="ft-cell"><div class="ft-num">"3" first</div>Catcher throws directly to <strong>3rd base</strong>.</div>
+          <div class="ft-cell"><div class="ft-num">"2" first</div>C throws to 2nd. <strong>2B cuts</strong> → fires home.</div>
+          <div class="ft-cell wide"><span class="ft-num">"6" first — </span>C throws to 2nd. <strong>Shortstop cuts</strong> → fires home.</div>
         </div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-head blk">
-        Pickoff at 2nd — "Horns" Series
-        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
-      </div>
-      <div class="card-body">
-        <div class="sign-row">
-          <span class="badge blk">Setup</span>
-          <span class="sign-text">Coach calls <strong>"Horns"</strong> → pitcher knows pickoff to 2nd is coming. Timing play.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">SS Crashes</span>
-          <span class="sign-text">Coach <strong>pats head</strong> → SS breaks hard to 2nd base.</span>
-        </div>
-        <div class="sign-row">
-          <span class="badge">2B Crashes</span>
-          <span class="sign-text">Coach <strong>pats chest</strong> → 2B breaks hard to 2nd base.</span>
-        </div>
+    <div class="pb-card">
+      <div class="pb-card-head blk">Pickoff at 2nd — "Horns" Series <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
+      <div class="pb-card-body">
+        <div class="sign-row"><span class="badge blk">Setup</span><span class="sign-text">Coach calls <strong>"Horns"</strong> → pitcher knows pickoff to 2nd is coming. Timing play.</span></div>
+        <div class="sign-row"><span class="badge">SS Crashes</span><span class="sign-text">Coach <strong>pats head</strong> → SS breaks hard to 2nd base.</span></div>
+        <div class="sign-row"><span class="badge">2B Crashes</span><span class="sign-text">Coach <strong>pats chest</strong> → 2B breaks hard to 2nd base.</span></div>
         <div class="note">Once infielder crashes → <strong>catcher drops glove</strong> → pitcher picks off to 2nd.</div>
       </div>
     </div>
-
   </div>
 
-  <!-- ── BUNT DEFENSE TAB ── -->
+  <!-- BUNT D -->
   <div class="panel" id="tab-bunt">
-
-    <div class="card">
-      <div class="card-head blk">
-        Bunt Defense Calls
-        <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div>
-      </div>
-      <div class="card-body">
-        <div class="note blk" style="margin-top:0; margin-bottom:10px;">Call the color <strong>before the pitch</strong> — all players react to their assignment.</div>
+    <div class="pb-card">
+      <div class="pb-card-head blk">Bunt Defense Calls <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
+      <div class="pb-card-body">
+        <div class="note blk" style="margin-top:0;margin-bottom:10px;">Call the color <strong>before the pitch</strong> — all players react to their assignment.</div>
         <div class="bunt-grid">
-
           <div class="bunt-cell">
             <div class="bunt-cell-head black-play">⬛ Black — No runners / R on 1B</div>
             <div class="bunt-cell-body">
@@ -456,7 +374,6 @@
               <div class="bunt-row"><span class="bunt-pos">P</span> — Charge bunt</div>
             </div>
           </div>
-
           <div class="bunt-cell">
             <div class="bunt-cell-head white-play">⬜ White — Lead runner on 2B</div>
             <div class="bunt-cell-body">
@@ -468,7 +385,6 @@
               <div class="bunt-row"><span class="bunt-pos">P</span> — Charge bunt</div>
             </div>
           </div>
-
           <div class="bunt-cell">
             <div class="bunt-cell-head purple-play">🟣 Purple — Wheel play, R on 2B</div>
             <div class="bunt-cell-body">
@@ -480,26 +396,156 @@
               <div class="bunt-row"><span class="bunt-pos">P</span> — Charge; deliver once SS breaks to 3B</div>
             </div>
           </div>
-
         </div>
-        <div class="note purple" style="margin-top:10px;">
-          <strong>"Let's Go Purple" (Pick Play):</strong> SS breaks to 3B as usual. <strong>2B breaks to 2nd for a pickoff</strong> instead of covering 1B. Pitcher does an inside move to 2B.
+        <div class="note purple" style="margin-top:10px;"><strong>"Let's Go Purple" (Pick Play):</strong> SS breaks to 3B as usual. <strong>2B breaks to 2nd for a pickoff</strong> instead of covering 1B. Pitcher does an inside move to 2B.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PITCH COUNTER -->
+  <div class="panel" id="tab-pitch">
+    <div class="pc-wrap">
+      <div class="pc-header">
+        <div class="pc-mascot">🐾</div>
+        <div class="pc-title">Pitch Counter</div>
+        <div class="pc-sub">South Medford Panthers</div>
+      </div>
+
+      <div class="scoreboard">
+        <div class="ip-banner">
+          <div class="ip-left">
+            <div class="ip-label">Innings Pitched</div>
+            <div class="ip-display">
+              <span class="ip-whole" id="ipWhole">0</span>
+              <span class="ip-frac"  id="ipFrac"></span>
+              <span class="ip-unit">IP</span>
+            </div>
+          </div>
+          <div>
+            <div class="ip-pips" id="ipPips"></div>
+            <div class="ip-outs-label" id="ipOutsLabel">0 outs</div>
+          </div>
+        </div>
+
+        <div class="count-section">
+          <div class="count-box">
+            <div class="count-label">Balls</div>
+            <div class="count-num ball" id="ballNum">0</div>
+            <div class="dots" id="ballDots">
+              <div class="dot ball"></div><div class="dot ball"></div>
+              <div class="dot ball"></div><div class="dot ball"></div>
+            </div>
+          </div>
+          <div class="count-box">
+            <div class="count-label">Strikes</div>
+            <div class="count-num strike" id="strikeNum">0</div>
+            <div class="dots" id="strikeDots">
+              <div class="dot strike"></div><div class="dot strike"></div><div class="dot strike"></div>
+            </div>
+          </div>
+          <div class="count-box">
+            <div class="count-label">Outs</div>
+            <div class="count-num out" id="outNum">0</div>
+            <div class="dots" id="outDots">
+              <div class="dot out"></div><div class="dot out"></div><div class="dot out"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="age-row">
+          <label class="age-label" for="ageSelect">Pitcher Age Group</label>
+          <select class="age-select" id="ageSelect" onchange="pcRender()">
+            <option value="7">7-8</option>
+            <option value="9">9-10</option>
+            <option value="11">11-12</option>
+            <option value="13" selected>13-14</option>
+            <option value="15">15-16</option>
+            <option value="17">17-18</option>
+          </select>
+        </div>
+
+        <div class="total-section">
+          <div>
+            <div class="total-label">Total Pitches</div>
+            <div class="pitch-limit-text" id="limitText">0 / 95 pitch max</div>
+          </div>
+          <div class="total-num" id="totalNum">0</div>
+        </div>
+        <div class="pitch-limit-bar"><div class="pitch-limit-fill" id="limitFill"></div></div>
+
+        <div class="rest-row" id="restRow">
+          <div class="rest-icon">🛌</div>
+          <div class="rest-info">
+            <div class="rest-label">Days Rest Required</div>
+            <div class="rest-value" id="restValue">No pitches thrown yet</div>
+          </div>
+          <div class="rest-badge" id="restBadge">0</div>
+        </div>
+
+        <div class="stats-section">
+          <div class="stats-header">
+            <span class="stats-title">Command Breakdown</span>
+            <span class="stats-title" id="statsTotal" style="color:var(--pc-chalk)">0 pitches</span>
+          </div>
+          <div class="stats-body">
+            <div class="split-bar-wrap">
+              <div class="split-labels">
+                <span class="split-label-ball" id="ballPctLabel">Balls — 0%</span>
+                <span class="split-label-strike" id="strikePctLabel">0% — Strikes+Fouls</span>
+              </div>
+              <div class="split-bar">
+                <div class="split-ball-fill"   id="splitBallFill"   style="width:50%"></div>
+                <div class="split-strike-fill" id="splitStrikeFill" style="width:50%"></div>
+              </div>
+              <div class="split-pct">
+                <span id="ballPctNum">—</span>
+                <span id="strikePctNum">—</span>
+              </div>
+            </div>
+            <div class="trend-wrap">
+              <div class="trend-label">Trend — last 10 pitches <span style="opacity:0.5">(blue=ball, silver=strike)</span></div>
+              <div class="trend-pips" id="trendPips"></div>
+              <div class="trend-axis"><span>older</span><span>most recent</span></div>
+              <div class="command-alert" id="commandAlert"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-btn-row">
+          <button class="pc-btn btn-ball"   onclick="addPitch('B')">Ball</button>
+          <button class="pc-btn btn-strike" onclick="addPitch('S')">Strike</button>
+          <button class="pc-btn btn-out"    onclick="addPitch('O')">Out</button>
+        </div>
+        <div class="btn-foul-row">
+          <button class="pc-btn btn-foul" id="foulBtn" onclick="addFoul()" disabled>
+            ⚾ Foul Ball <span style="font-size:0.72em;opacity:0.65">(2 strikes only)</span>
+          </button>
+        </div>
+        <div class="pc-btn-row-2">
+          <button class="btn-util btn-undo"        onclick="undo()">← Undo</button>
+          <button class="btn-util btn-reset-count" onclick="resetCount()">Reset Count</button>
+          <button class="btn-util btn-new-pitcher" onclick="newPitcher()">⚾ New Pitcher — Reset All</button>
+        </div>
+
+        <div class="log-section">
+          <div class="log-title">Pitch Log</div>
+          <div class="log-scroll"><div class="log-entries" id="logEntries"></div></div>
         </div>
       </div>
     </div>
-
   </div>
 
 </div><!-- end #app -->
 
+<div class="pc-flash" id="pcFlash"></div>
+
 <script>
   // ── Change this to your real passcode ──
-  const PASSCODE = 'Panthers1';
-
-  const SESSION_KEY = 'smbb_unlocked';
+  var PASSCODE = 'Panthers1';
+  var SESSION_KEY = 'smbb_unlocked';
 
   function tryUnlock() {
-    const val = document.getElementById('pin').value.trim();
+    var val = document.getElementById('pin').value.trim();
     if (val === PASSCODE) {
       sessionStorage.setItem(SESSION_KEY, '1');
       showApp();
@@ -523,21 +569,198 @@
     document.getElementById('lock-error').textContent = '';
   }
 
-  function showTab(name) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  function showTab(name, btn) {
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
     document.getElementById('tab-' + name).classList.add('active');
-    event.target.classList.add('active');
+    btn.classList.add('active');
   }
 
-  // Allow Enter key on passcode field
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('pin').addEventListener('keydown', e => {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('pin').addEventListener('keydown', function(e) {
       if (e.key === 'Enter') tryUnlock();
     });
-    // Stay unlocked within the same browser session
     if (sessionStorage.getItem(SESSION_KEY)) showApp();
+    pcRender();
   });
+
+  // ── PITCH COUNTER LOGIC ──
+  var AGE_RULES = {
+    7:  { max: 50,  thresholds: [{min:1,max:20,days:0},{min:21,max:50,days:1}]},
+    9:  { max: 75,  thresholds: [{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
+    11: { max: 85,  thresholds: [{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
+    13: { max: 95,  thresholds: [{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
+    15: { max: 95,  thresholds: [{min:1,max:30,days:0},{min:31,max:45,days:1},{min:46,max:60,days:2},{min:61,max:75,days:3},{min:76,max:999,days:4}]},
+    17: { max: 105, thresholds: [{min:1,max:30,days:0},{min:31,max:45,days:1},{min:46,max:60,days:2},{min:61,max:75,days:3},{min:76,max:999,days:4}]}
+  };
+  var REST_LABELS = [
+    'Eligible to pitch - no rest needed',
+    '1 calendar day of rest required',
+    '2 calendar days of rest required',
+    '3 calendar days of rest required',
+    '4 calendar days of rest required'
+  ];
+
+  function getAgeKey() { return parseInt(document.getElementById('ageSelect').value); }
+  function getPitchMax() { return AGE_RULES[getAgeKey()].max; }
+  function getRestDays(pitches) {
+    if (pitches === 0) return 0;
+    var rules = AGE_RULES[getAgeKey()];
+    for (var i = 0; i < rules.thresholds.length; i++) {
+      var t = rules.thresholds[i];
+      if (pitches >= t.min && pitches <= t.max) return t.days;
+    }
+    return 4;
+  }
+
+  var pcState = { balls: 0, strikes: 0, outs: 0, total: 0, pitcherOuts: 0, log: [] };
+
+  function pcSnap() {
+    return { balls: pcState.balls, strikes: pcState.strikes, outs: pcState.outs, total: pcState.total, pitcherOuts: pcState.pitcherOuts };
+  }
+
+  function addPitch(type) {
+    var snap = pcSnap(); snap.type = type; pcState.log.push(snap);
+    if (type === 'B') {
+      pcState.total++; pcState.balls++;
+      if (pcState.balls >= 4) { pcState.balls = 0; pcState.strikes = 0; }
+    } else if (type === 'S') {
+      pcState.total++; pcState.strikes++;
+      if (pcState.strikes >= 3) { pcState.balls = 0; pcState.strikes = 0; }
+    } else if (type === 'O') {
+      pcState.pitcherOuts++; pcState.outs++;
+      pcState.balls = 0; pcState.strikes = 0;
+      if (pcState.outs >= 3) pcState.outs = 0;
+    }
+    pcBump(type); pcRender();
+  }
+
+  function addFoul() {
+    if (pcState.strikes < 2) return;
+    var snap = pcSnap(); snap.type = 'F'; pcState.log.push(snap);
+    pcState.total++; pcBump('F'); pcRender();
+  }
+
+  function undo() {
+    if (!pcState.log.length) return;
+    var last = pcState.log.pop();
+    pcState.balls = last.balls; pcState.strikes = last.strikes;
+    pcState.outs = last.outs; pcState.total = last.total;
+    pcState.pitcherOuts = last.pitcherOuts; pcRender();
+  }
+
+  function resetCount() { pcState.balls = 0; pcState.strikes = 0; pcRender(); }
+
+  function newPitcher() {
+    pcState = { balls: 0, strikes: 0, outs: pcState.outs, total: 0, pitcherOuts: 0, log: [] };
+    pcRender();
+  }
+
+  function pcBump(type) {
+    var idMap = { B:'ballNum', S:'strikeNum', O:'outNum', F:'strikeNum' };
+    var el = document.getElementById(idMap[type]);
+    if (el) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+    var flash = document.getElementById('pcFlash');
+    var colors = { B:'rgba(91,156,246,0.18)', S:'rgba(208,216,228,0.15)', O:'rgba(122,174,245,0.18)', F:'rgba(168,180,196,0.18)' };
+    flash.style.background = colors[type] || 'transparent';
+    flash.classList.remove('show'); void flash.offsetWidth; flash.classList.add('show');
+  }
+
+  function updateDots(id, n) {
+    document.querySelectorAll('#' + id + ' .dot').forEach(function(d, i){ d.classList.toggle('active', i < n); });
+  }
+
+  function renderIP() {
+    var wo = Math.floor(pcState.pitcherOuts / 3);
+    var rem = pcState.pitcherOuts % 3;
+    var fracMap = ['', '\u2153', '\u2154'];
+    document.getElementById('ipWhole').textContent = wo;
+    document.getElementById('ipFrac').textContent  = fracMap[rem];
+    document.getElementById('ipOutsLabel').textContent = pcState.pitcherOuts + ' out' + (pcState.pitcherOuts !== 1 ? 's' : '');
+    var pipsEl = document.getElementById('ipPips');
+    pipsEl.innerHTML = '';
+    var show = Math.min(wo, 2);
+    for (var r = 0; r < show; r++) {
+      var row = document.createElement('div'); row.className = 'ip-pip-row';
+      for (var p = 0; p < 3; p++) { var pip = document.createElement('div'); pip.className = 'ip-pip complete'; row.appendChild(pip); }
+      pipsEl.appendChild(row);
+    }
+    var cur = document.createElement('div'); cur.className = 'ip-pip-row';
+    for (var p2 = 0; p2 < 3; p2++) { var pip2 = document.createElement('div'); pip2.className = 'ip-pip' + (p2 < rem ? ' active' : ''); cur.appendChild(pip2); }
+    pipsEl.appendChild(cur);
+  }
+
+  function renderRest() {
+    var pitches = pcState.total, maxP = getPitchMax(), days = getRestDays(pitches), over = pitches > maxP;
+    var rr = document.getElementById('restRow');
+    rr.className = 'rest-row rest-' + days + (over ? ' over-limit' : '');
+    document.getElementById('restBadge').textContent = days;
+    document.getElementById('restValue').textContent =
+      pitches === 0 ? 'No pitches thrown yet' :
+      over ? 'Over ' + maxP + '-pitch limit! ' + REST_LABELS[days] : REST_LABELS[days];
+  }
+
+  function renderCommand() {
+    var pitches = pcState.log.filter(function(p){ return p.type==='B'||p.type==='S'||p.type==='F'; });
+    var total = pitches.length, balls = pitches.filter(function(p){ return p.type==='B'; }).length, strikes = total - balls;
+    document.getElementById('statsTotal').textContent = total + ' pitch' + (total !== 1 ? 'es' : '');
+    if (total === 0) {
+      document.getElementById('ballPctNum').textContent = '—'; document.getElementById('strikePctNum').textContent = '—';
+      document.getElementById('ballPctLabel').textContent = 'Balls — 0%'; document.getElementById('strikePctLabel').textContent = '0% — Strikes+Fouls';
+      document.getElementById('splitBallFill').style.width = '50%'; document.getElementById('splitStrikeFill').style.width = '50%';
+    } else {
+      var bp = Math.round(balls/total*100), sp = Math.round(strikes/total*100);
+      document.getElementById('ballPctNum').textContent = bp+'%'; document.getElementById('strikePctNum').textContent = sp+'%';
+      document.getElementById('ballPctLabel').textContent = 'Balls — '+bp+'%'; document.getElementById('strikePctLabel').textContent = sp+'% — Strikes+Fouls';
+      document.getElementById('splitBallFill').style.width = bp+'%'; document.getElementById('splitStrikeFill').style.width = sp+'%';
+    }
+    var last10 = pitches.slice(-10), pipsEl = document.getElementById('trendPips');
+    pipsEl.innerHTML = '';
+    for (var i = 0; i < 10; i++) {
+      var pip = document.createElement('div');
+      if (i < last10.length) { var lp = last10[i]; pip.className = 'trend-pip '+(lp.type==='B'?'ball':'strike'); pip.style.height = lp.type==='B'?'22px':'14px'; }
+      else { pip.className = 'trend-pip empty'; }
+      pipsEl.appendChild(pip);
+    }
+    var alertEl = document.getElementById('commandAlert');
+    alertEl.className = 'command-alert';
+    if (last10.length >= 6) {
+      var half = Math.floor(last10.length/2);
+      var early = last10.slice(0, half), recent = last10.slice(-half);
+      var eBP = early.filter(function(p){ return p.type==='B'; }).length / early.length;
+      var rBP = recent.filter(function(p){ return p.type==='B'; }).length / recent.length;
+      var drift = rBP - eBP;
+      if (drift >= 0.34) { alertEl.className = 'command-alert warn show'; alertEl.textContent = '⚠️ Control dropping — ball rate up '+Math.round(drift*100)+'% over last '+last10.length+' pitches. Consider a visit.'; }
+      else if (drift <= -0.34) { alertEl.className = 'command-alert show'; alertEl.textContent = '✓ Command improving — strike rate up '+Math.round(Math.abs(drift)*100)+'% over last '+last10.length+' pitches.'; }
+    }
+  }
+
+  function pcRender() {
+    document.getElementById('ballNum').textContent   = pcState.balls;
+    document.getElementById('strikeNum').textContent = pcState.strikes;
+    document.getElementById('outNum').textContent    = pcState.outs;
+    document.getElementById('totalNum').textContent  = pcState.total;
+    updateDots('ballDots', pcState.balls);
+    updateDots('strikeDots', pcState.strikes);
+    updateDots('outDots', pcState.outs);
+    var maxP = getPitchMax(), pct = Math.min(100, pcState.total/maxP*100);
+    document.getElementById('limitFill').style.width = pct+'%';
+    document.getElementById('limitText').textContent = pcState.total+' / '+maxP+' pitch max';
+    var fb = document.getElementById('foulBtn');
+    if (pcState.strikes === 2) { fb.classList.add('active'); fb.disabled = false; }
+    else { fb.classList.remove('active'); fb.disabled = true; }
+    var entries = document.getElementById('logEntries');
+    entries.innerHTML = '';
+    var labels = { B:'Ball', S:'Strike', O:'Out', F:'Foul' };
+    pcState.log.forEach(function(p, i) {
+      var tag = document.createElement('span');
+      tag.className = 'log-tag ' + p.type + (i === pcState.log.length-1 ? ' last' : '');
+      tag.textContent = labels[p.type] || p.type;
+      entries.appendChild(tag);
+    });
+    entries.parentElement.scrollTop = entries.parentElement.scrollHeight;
+    renderIP(); renderRest(); renderCommand();
+  }
 </script>
 </body>
 </html>
