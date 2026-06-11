@@ -812,7 +812,7 @@
 
   // ── FIREBASE SETUP ──
   var firebaseConfig = {
-    apiKey: "AIzaSyALrp0-DJdvvwOplN-gc4W96g2rPqEzk6o",
+    apiKey: "AIzaSyDDMCp6Y6MGIZSzgArszTE4G6AEAkXjyEM",
     authDomain: "panthers-playbook.firebaseapp.com",
     databaseURL: "https://panthers-playbook-default-rtdb.firebaseio.com",
     projectId: "panthers-playbook",
@@ -858,7 +858,9 @@
       _fbListening = true;
       fbRef.on('value', function(snapshot) {
         var data = snapshot.val();
-        if (data && data.teams) {
+        // Only update from Firebase if it actually has data
+        // This prevents an empty database from wiping local changes
+        if (data && data.teams && Object.keys(data.teams).length > 0) {
           TEAMS = data.teams;
           playerData = data.playerData || {};
           // Keep localStorage in sync
@@ -873,6 +875,10 @@
             renderRoster();
           }
           updateSyncStatus('synced');
+        } else if (!data || !data.teams) {
+          // Firebase is empty — push our local data up to seed it
+          updateSyncStatus('synced');
+          saveToStorage();
         }
       }, function(err) {
         console.warn('Firebase read failed:', err);
