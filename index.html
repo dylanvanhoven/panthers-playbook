@@ -904,17 +904,21 @@
 
   function rebuildTeamSelect() {
     var sel = document.getElementById('teamSelect');
-    var current = sel ? sel.value : null;
+    if (!sel) return;
+    var current = sel.value;
     sel.innerHTML = '';
     Object.keys(TEAMS).forEach(function(key) {
       var opt = document.createElement('option');
       opt.value = key;
       opt.textContent = TEAMS[key].name;
-      if (key === current) opt.selected = true;
       sel.appendChild(opt);
     });
-    // If current team was deleted, select first
-    if (!TEAMS[sel.value]) sel.value = Object.keys(TEAMS)[0];
+    // Restore previously selected team if it still exists, otherwise use first
+    if (current && TEAMS[current]) {
+      sel.value = current;
+    } else {
+      sel.value = Object.keys(TEAMS)[0] || '';
+    }
   }
 
   function onTeamChange() { renderRoster(); }
@@ -1087,8 +1091,21 @@
     return playerData[id];
   }
 
-  function currentTeam() { return document.getElementById('teamSelect').value; }
-  function currentPlayers() { return TEAMS[currentTeam()].players; }
+  function currentTeam() {
+    var sel = document.getElementById('teamSelect');
+    var val = sel ? sel.value : '';
+    // Fall back to first team if current value isn't valid
+    if (!val || !TEAMS[val]) {
+      val = Object.keys(TEAMS)[0] || '';
+      if (sel) sel.value = val;
+    }
+    return val;
+  }
+
+  function currentPlayers() {
+    var t = currentTeam();
+    return (TEAMS[t] && TEAMS[t].players) ? TEAMS[t].players : [];
+  }
 
   function renderRoster() {
     updateLineupSizeButtons();
