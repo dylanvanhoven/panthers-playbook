@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panthers Playbook</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -810,32 +813,88 @@
     return parts.length ? ' [Stats: ' + parts.join(', ') + ']' : '';
   }
 
-  // ── STORAGE (localStorage only) ──
+  // ── FIREBASE SETUP ──
+  var firebaseConfig = {
+    apiKey: "AIzaSyDDMCp6Y6MGIZSzgArszTE4G6AEAkXjyEM",
+    authDomain: "panthers-playbook.firebaseapp.com",
+    databaseURL: "https://panthers-playbook-default-rtdb.firebaseio.com",
+    projectId: "panthers-playbook",
+    storageBucket: "panthers-playbook.firebasestorage.app",
+    messagingSenderId: "799764728365",
+    appId: "1:799764728365:web:f8b16ffb6ab6b8d56586a4"
+  };
+  var _fbReady = false;
+  var _fbListening = false;
+  var _saveTimeout = null;
+  var db, fbRef;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    fbRef = db.ref('playbook');
+    _fbReady = true;
+  } catch(e) { console.warn('Firebase init failed:', e); }
+
+  // ── STORAGE (localStorage instant, Firebase syncs in background) ──
   var LS_TEAMS = 'smbb_teams';
   var LS_PDATA = 'smbb_playerdata';
-  var _saveTimeout = null;
 
   function saveToStorage() {
+    // Always save locally immediately
     try {
       localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
       localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
     } catch(e) {}
+    // Debounce Firebase writes
+    if (!_fbReady) return;
+    if (_saveTimeout) clearTimeout(_saveTimeout);
+    _saveTimeout = setTimeout(function() {
+      try {
+        fbRef.set({ teams: TEAMS, playerData: playerData });
+      } catch(e) { console.warn('Firebase save failed:', e); }
+    }, 800);
   }
 
   function loadFromStorage() {
+    // Load localStorage immediately
     try {
       var t = localStorage.getItem(LS_TEAMS);
       var p = localStorage.getItem(LS_PDATA);
       if (t) TEAMS = JSON.parse(t);
       if (p) playerData = JSON.parse(p);
     } catch(e) {}
+    // Start Firebase listener in background
+    if (_fbReady && !_fbListening) {
+      _fbListening = true;
+      fbRef.on('value', function(snapshot) {
+        var data = snapshot.val();
+        if (data && data.teams && Object.keys(data.teams).length > 0) {
+          TEAMS = data.teams;
+          playerData = data.playerData || {};
+          try {
+            localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
+            localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
+          } catch(e) {}
+          rebuildTeamSelect();
+          var rosterPanel = document.getElementById('tab-roster');
+          if (rosterPanel && rosterPanel.classList.contains('active')) renderRoster();
+          updateSyncStatus('synced');
+        } else {
+          // Firebase empty — seed it with local data
+          saveToStorage();
+          updateSyncStatus('synced');
+        }
+      }, function(err) {
+        console.warn('Firebase error:', err);
+        updateSyncStatus('offline');
+      });
+    }
   }
 
   function updateSyncStatus(state) {
     var el = document.getElementById('syncStatus');
     if (!el) return;
-    el.textContent = '💾 Local';
-    el.style.color = 'rgba(255,255,255,.5)';
+    if (state === 'synced') { el.textContent = '🟢 Synced'; el.style.color = 'rgba(255,255,255,.8)'; }
+    else { el.textContent = '🔴 Offline'; el.style.color = 'rgba(255,100,100,.8)'; }
   }
 
   // ── TEAM MANAGEMENT ──
