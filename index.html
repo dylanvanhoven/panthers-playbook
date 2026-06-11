@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panthers Playbook</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -689,23 +686,13 @@
   }
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('pin').addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
-    // Load local data immediately so app works right away
-    try {
-      var t = localStorage.getItem(LS_TEAMS);
-      var p = localStorage.getItem(LS_PDATA);
-      if (t) TEAMS = JSON.parse(t);
-      if (p) playerData = JSON.parse(p);
-    } catch(e) {}
+    loadFromStorage();
     rebuildTeamSelect();
     if (sessionStorage.getItem(SESSION_KEY)) {
       showApp();
       renderRoster();
     }
     pcRender();
-    // Firebase syncs in background after app is already showing
-    setTimeout(function() {
-      try { loadFromStorage(); } catch(e) { updateSyncStatus('offline'); }
-    }, 100);
   });
 
   // PITCH COUNTER
@@ -823,87 +810,32 @@
     return parts.length ? ' [Stats: ' + parts.join(', ') + ']' : '';
   }
 
-  // ── FIREBASE SETUP ──
-  var firebaseConfig = {
-    apiKey: "AIzaSyDDMCp6Y6MGIZSzgArszTE4G6AEAkXjyEM",
-    authDomain: "panthers-playbook.firebaseapp.com",
-    databaseURL: "https://panthers-playbook-default-rtdb.firebaseio.com",
-    projectId: "panthers-playbook",
-    storageBucket: "panthers-playbook.firebasestorage.app",
-    messagingSenderId: "799764728365",
-    appId: "1:799764728365:web:f8b16ffb6ab6b8d56586a4"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var db = firebase.database();
-  var fbRef = db.ref('playbook');
-  var _fbListening = false;
-
-  // ── STORAGE HELPERS (Firebase primary, localStorage fallback) ──
+  // ── STORAGE (localStorage only) ──
   var LS_TEAMS = 'smbb_teams';
   var LS_PDATA = 'smbb_playerdata';
   var _saveTimeout = null;
 
   function saveToStorage() {
-    // Always save locally as fallback
     try {
       localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
       localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
     } catch(e) {}
-    // Debounce Firebase writes (avoid hammering on rapid clicks)
-    if (_saveTimeout) clearTimeout(_saveTimeout);
-    _saveTimeout = setTimeout(function() {
-      try {
-        fbRef.set({ teams: TEAMS, playerData: playerData });
-      } catch(e) { console.warn('Firebase save failed:', e); }
-    }, 600);
   }
 
   function loadFromStorage() {
-    // Set up Firebase real-time listener
-    if (!_fbListening) {
-      _fbListening = true;
-      try {
-        fbRef.on('value', function(snapshot) {
-          var data = snapshot.val();
-          if (data && data.teams && Object.keys(data.teams).length > 0) {
-            TEAMS = data.teams;
-            playerData = data.playerData || {};
-            try {
-              localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
-              localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
-            } catch(e) {}
-            rebuildTeamSelect();
-            var rosterPanel = document.getElementById('tab-roster');
-            if (rosterPanel && rosterPanel.classList.contains('active')) {
-              renderRoster();
-            }
-            updateSyncStatus('synced');
-          } else if (!data || !data.teams) {
-            // Firebase empty — push local data up to seed it
-            updateSyncStatus('synced');
-            saveToStorage();
-          }
-        }, function(err) {
-          console.warn('Firebase read failed:', err);
-          updateSyncStatus('offline');
-        });
-      } catch(e) {
-        console.warn('Firebase init failed:', e);
-        updateSyncStatus('offline');
-      }
-    }
+    try {
+      var t = localStorage.getItem(LS_TEAMS);
+      var p = localStorage.getItem(LS_PDATA);
+      if (t) TEAMS = JSON.parse(t);
+      if (p) playerData = JSON.parse(p);
+    } catch(e) {}
   }
 
   function updateSyncStatus(state) {
     var el = document.getElementById('syncStatus');
     if (!el) return;
-    if (state === 'synced') {
-      el.textContent = '🟢 Synced';
-      el.style.color = 'var(--green)';
-    } else {
-      el.textContent = '🔴 Offline';
-      el.style.color = '#c0392b';
-    }
+    el.textContent = '💾 Local';
+    el.style.color = 'rgba(255,255,255,.5)';
   }
 
   // ── TEAM MANAGEMENT ──
