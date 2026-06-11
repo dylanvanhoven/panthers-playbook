@@ -687,6 +687,50 @@
   var PASSCODE = 'Panthers1';
   var SESSION_KEY = 'smbb_unlocked';
 
+  // ── ROSTER DATA — defined first so all functions can access it ──
+  var ALL_POSITIONS = ['P','C','1B','2B','3B','SS','LF','CF','RF','DH','UT'];
+  var SPEED_LABELS = ['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
+  var SPEED_NAMES  = ['—','Slow','Below Avg','Average','Fast','Burner'];
+  var playerData = {};
+  var TEAMS = {
+    broncos: {
+      name: 'South Medford Broncos D2',
+      players: [
+        {id:'b1', num:'1',  name:'Austin Tate'},
+        {id:'b2', num:'2',  name:'Parker Guches'},
+        {id:'b3', num:'3',  name:'Calvin Baglietto'},
+        {id:'b4', num:'4',  name:'Colten Whitehead'},
+        {id:'b5', num:'5',  name:'Connor Furnish'},
+        {id:'b6', num:'6',  name:'Josh Allman'},
+        {id:'b8', num:'8',  name:'Roman Christie'},
+        {id:'b9', num:'9',  name:'Zane Cabrera'},
+        {id:'b10',num:'10', name:'Max King'},
+        {id:'b11',num:'11', name:'Kyler Clevenger'},
+        {id:'b12',num:'12', name:'Sloan Robeson'},
+        {id:'b14',num:'14', name:'Evan Vanhoven'},
+        {id:'b15',num:'15', name:'Memphis Preisinger'},
+        {id:'b17',num:'17', name:'Owen Rhoden'}
+      ]
+    },
+    panthers: {
+      name: 'South Medford Panthers 13u',
+      players: [
+        {id:'p1', num:'1',  name:'Peyton Thorpe'},
+        {id:'p2', num:'2',  name:'Evan VanHoven'},
+        {id:'p4', num:'4',  name:'Colten Whitehead'},
+        {id:'p7', num:'7',  name:'Connor Furnish'},
+        {id:'p9', num:'9',  name:'Mack Folsom'},
+        {id:'p13',num:'13', name:'Brian Anderson'},
+        {id:'p16',num:'16', name:'Josh Allman'},
+        {id:'p17',num:'17', name:'Maxx Peltier', injured:true},
+        {id:'p28',num:'28', name:'Michael Davis'},
+        {id:'p29',num:'29', name:'Dillon Bakker'},
+        {id:'p38',num:'38', name:'Sloan Robeson'},
+        {id:'p88',num:'88', name:'Kyler Clevenger'}
+      ]
+    }
+  };
+
   function tryUnlock() {
     var val = document.getElementById('pin').value.trim();
     if (val === PASSCODE) { sessionStorage.setItem(SESSION_KEY,'1'); showApp(); }
@@ -830,51 +874,6 @@
     if (s.GP  && s.GP  !== '-') parts.push('GP:'+s.GP);
     return parts.length ? ' [Stats: ' + parts.join(', ') + ']' : '';
   }
-
-  // ── ROSTER DATA (defaults, overridden by localStorage/Firebase) ──
-  var TEAMS = {
-    broncos: {
-      name: 'South Medford Broncos D2',
-      players: [
-        {id:'b1', num:'1',  name:'Austin Tate'},
-        {id:'b2', num:'2',  name:'Parker Guches'},
-        {id:'b3', num:'3',  name:'Calvin Baglietto'},
-        {id:'b4', num:'4',  name:'Colten Whitehead'},
-        {id:'b5', num:'5',  name:'Connor Furnish'},
-        {id:'b6', num:'6',  name:'Josh Allman'},
-        {id:'b8', num:'8',  name:'Roman Christie'},
-        {id:'b9', num:'9',  name:'Zane Cabrera'},
-        {id:'b10',num:'10', name:'Max King'},
-        {id:'b11',num:'11', name:'Kyler Clevenger'},
-        {id:'b12',num:'12', name:'Sloan Robeson'},
-        {id:'b14',num:'14', name:'Evan Vanhoven'},
-        {id:'b15',num:'15', name:'Memphis Preisinger'},
-        {id:'b17',num:'17', name:'Owen Rhoden'}
-      ]
-    },
-    panthers: {
-      name: 'South Medford Panthers 13u',
-      players: [
-        {id:'p1', num:'1',  name:'Peyton Thorpe'},
-        {id:'p2', num:'2',  name:'Evan VanHoven'},
-        {id:'p4', num:'4',  name:'Colten Whitehead'},
-        {id:'p7', num:'7',  name:'Connor Furnish'},
-        {id:'p9', num:'9',  name:'Mack Folsom'},
-        {id:'p13',num:'13', name:'Brian Anderson'},
-        {id:'p16',num:'16', name:'Josh Allman'},
-        {id:'p17',num:'17', name:'Maxx Peltier', injured:true},
-        {id:'p28',num:'28', name:'Michael Davis'},
-        {id:'p29',num:'29', name:'Dillon Bakker'},
-        {id:'p38',num:'38', name:'Sloan Robeson'},
-        {id:'p88',num:'88', name:'Kyler Clevenger'}
-      ]
-    }
-  };
-
-  var ALL_POSITIONS = ['P','C','1B','2B','3B','SS','LF','CF','RF','DH','UT'];
-  var SPEED_LABELS = ['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
-  var SPEED_NAMES  = ['—','Slow','Below Avg','Average','Fast','Burner'];
-  var playerData = {};
 
   // ── FIREBASE SETUP ──
   var firebaseConfig = {
