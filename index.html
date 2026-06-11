@@ -1108,6 +1108,7 @@
   }
 
   function renderRoster() {
+    if (!document.getElementById('rosterList')) return; // DOM not ready
     updateLineupSizeButtons();
     var players = currentPlayers();
     var active = players.filter(function(p){ return !getPlayerData(p.id, p).injured; });
