@@ -237,6 +237,32 @@
   .csv-msg.ok { color:var(--green); }
   .csv-msg.err { color:#c0392b; }
 
+  /* TEAM MANAGEMENT */
+  .team-mgmt-bar { display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+  .icon-btn { width:34px; height:34px; border:1.5px solid var(--border); border-radius:7px; background:var(--card); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .12s; }
+  .icon-btn:hover { background:var(--bg); }
+  .icon-btn.danger { border-color:#f5c6c6; color:#c0392b; }
+  .icon-btn.danger:hover { background:#fef2f2; }
+  .add-player-btn { padding:6px 12px; background:var(--blue); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
+  .add-player-btn:hover { opacity:.88; }
+  .player-edit-btn { width:28px; height:28px; border:1px solid var(--border); border-radius:5px; background:var(--bg); font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .player-edit-btn:hover { background:var(--silver); }
+
+  /* MODALS */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; align-items:center; justify-content:center; padding:24px; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:var(--card); border-radius:14px; padding:24px; width:100%; max-width:320px; box-shadow:0 12px 40px rgba(0,0,0,.25); }
+  .modal-title { font-size:16px; font-weight:700; margin-bottom:14px; color:var(--text); }
+  .modal-input { width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:14px; outline:none; background:var(--bg); color:var(--text); }
+  .modal-input:focus { border-color:var(--blue); }
+  .modal-actions { display:flex; gap:8px; margin-top:16px; justify-content:flex-end; }
+  .modal-btn { padding:9px 18px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; border:none; }
+  .modal-btn.primary { background:var(--blue); color:#fff; }
+  .modal-btn.primary:hover { opacity:.88; }
+  .modal-btn.secondary { background:var(--bg); color:var(--text); border:1px solid var(--border); }
+  .modal-btn.danger-outline { background:transparent; color:#c0392b; border:1.5px solid #c0392b; margin-right:auto; }
+  .modal-btn.danger-outline:hover { background:#fef2f2; }
+
   /* ROSTER TAB */
   .roster-toolbar { display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
   .team-select { flex:1; min-width:0; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; font-weight:600; background:var(--card); color:var(--text); outline:none; cursor:pointer; }
@@ -269,6 +295,14 @@
   .inj-toggle input[type=checkbox] { width:16px; height:16px; accent-color:#c0392b; cursor:pointer; }
   .inj-toggle label { font-size:12px; color:var(--text); cursor:pointer; }
 
+  .defense-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:10px 0 8px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+  .defense-bar-left { display:flex; align-items:center; gap:8px; }
+  .fielder-count-btns { display:flex; gap:4px; }
+  .fielder-btn { padding:4px 10px; border-radius:5px; border:1.5px solid var(--border); background:var(--card); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; transition:all .12s; }
+  .fielder-btn.active { background:var(--black); border-color:var(--black); color:#fff; }
+  .fill-defense-btn { padding:7px 12px; background:var(--black); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; transition:opacity .15s; }
+  .fill-defense-btn:hover { opacity:.82; }
+
   /* LINEUP BUILDER */
   .lineup-section { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-top:4px; overflow:hidden; }
   .lineup-head { background:var(--black); color:#fff; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; }
@@ -283,7 +317,8 @@
   .slot-num { width:20px; font-size:12px; font-weight:700; color:var(--muted); text-align:center; flex-shrink:0; }
   .slot-select { flex:1; padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:12px; background:var(--card); color:var(--text); outline:none; cursor:pointer; }
   .slot-select:focus { border-color:var(--blue); }
-  .slot-pos { width:36px; font-size:10px; color:var(--muted); text-align:center; flex-shrink:0; }
+  .slot-pos-select { width:52px; padding:6px 2px; border:1px solid var(--border); border-radius:6px; font-size:11px; background:var(--card); color:var(--blue); font-weight:600; outline:none; cursor:pointer; flex-shrink:0; text-align:center; }
+  .slot-pos-select:focus { border-color:var(--blue); }
   .slot-lock { width:24px; height:24px; border:none; border-radius:4px; background:transparent; font-size:14px; cursor:pointer; flex-shrink:0; opacity:.5; transition:opacity .12s; }
   .slot-lock.locked { opacity:1; }
   .generate-btn { width:100%; padding:13px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:8px; }
@@ -332,15 +367,15 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="showTab('offense',this)">⚔️ Offense</button>
+    <button class="tab active" onclick="showTab('roster',this)">👥 Roster</button>
+    <button class="tab" onclick="showTab('pitch',this)">⚾ Pitches</button>
+    <button class="tab" onclick="showTab('offense',this)">⚔️ Offense</button>
     <button class="tab" onclick="showTab('defense',this)">🛡 Defense</button>
     <button class="tab" onclick="showTab('bunt',this)">📋 Bunt D</button>
-    <button class="tab" onclick="showTab('pitch',this)">⚾ Pitches</button>
-    <button class="tab" onclick="showTab('roster',this)">👥 Roster</button>
   </div>
 
   <!-- OFFENSE -->
-  <div class="panel active" id="tab-offense">
+  <div class="panel" id="tab-offense">
     <div class="pb-card">
       <div class="pb-card-head">3B Coach Signs <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
       <div class="pb-card-body">
@@ -529,14 +564,18 @@
   </div>
 
   <!-- ROSTER & LINEUP -->
-  <div class="panel" id="tab-roster">
+  <div class="panel active" id="tab-roster">
 
-    <div class="roster-toolbar">
-      <select class="team-select" id="teamSelect" onchange="renderRoster()">
-        <option value="broncos">South Medford Broncos D2</option>
-        <option value="panthers">South Medford Panthers 13u</option>
-      </select>
+    <!-- TEAM MANAGEMENT BAR -->
+    <div class="team-mgmt-bar">
+      <select class="team-select" id="teamSelect" onchange="onTeamChange()"></select>
+      <button class="icon-btn" onclick="showTeamModal('add')" title="Add team">＋</button>
+      <button class="icon-btn" onclick="showTeamModal('rename')" title="Rename team">✏️</button>
+      <button class="icon-btn danger" onclick="deleteTeam()" title="Delete team">🗑</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
       <span class="roster-count" id="rosterCount"></span>
+      <button class="add-player-btn" onclick="showPlayerModal('add')">＋ Add player</button>
     </div>
 
     <!-- CSV IMPORT -->
@@ -559,8 +598,8 @@
     <!-- LINEUP BUILDER -->
     <div class="lineup-section">
       <div class="lineup-head">
-        <span class="lineup-head-title">🤖 AI Lineup Builder</span>
-        <span style="font-size:10px;opacity:.6">Claude-powered</span>
+        <span class="lineup-head-title">📋 Lineup Builder</span>
+        <span style="font-size:10px;opacity:.6">Stats-powered</span>
       </div>
       <div class="lineup-body">
         <div class="editor-label">Lineup priority</div>
@@ -570,15 +609,55 @@
           <button class="priority-btn" onclick="setPriority('obp')">On-base focused</button>
           <button class="priority-btn" onclick="setPriority('balanced')">Balanced</button>
         </div>
-        <div class="editor-label">Batting order — lock players you've decided, leave blank for AI to fill</div>
+        <div class="editor-label">Batting order — lock players, leave blank to auto-fill</div>
         <div class="lineup-slots" id="lineupSlots"></div>
+
+        <!-- DEFENSIVE FILL -->
+        <div class="defense-bar">
+          <div class="defense-bar-left">
+            <span class="editor-label" style="margin-bottom:0">Fielders:</span>
+            <div class="fielder-count-btns" id="fielderCountBtns">
+              <button class="fielder-btn active" id="btn9" onclick="setLineupSize(9,this)">9</button>
+              <button class="fielder-btn" id="btnAll" onclick="setLineupSize(-1,this)">Everyone</button>
+            </div>
+          </div>
+          <button class="fill-defense-btn" onclick="fillDefense()">🛡 Fill defense</button>
+        </div>
+
         <button class="generate-btn" id="generateBtn" onclick="generateLineup()">
-          <span>✨</span><span>Suggest lineup</span>
+          <span>📋</span><span>Generate lineup</span>
         </button>
         <div class="ai-result" id="aiResult"></div>
       </div>
     </div>
 
+  </div>
+
+  <!-- TEAM MODAL -->
+  <div class="modal-overlay" id="teamModal" onclick="closeModal('teamModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-title" id="teamModalTitle">Add team</div>
+      <input class="modal-input" id="teamNameInput" placeholder="Team name (e.g. Panthers 14u)" maxlength="50"/>
+      <div class="modal-actions">
+        <button class="modal-btn secondary" onclick="closeModal('teamModal')">Cancel</button>
+        <button class="modal-btn primary" onclick="saveTeam()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAYER MODAL -->
+  <div class="modal-overlay" id="playerModal" onclick="closeModal('playerModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-title" id="playerModalTitle">Add player</div>
+      <input class="modal-input" id="playerFirstInput" placeholder="First name" maxlength="30"/>
+      <input class="modal-input" id="playerLastInput" placeholder="Last name" maxlength="30" style="margin-top:8px;"/>
+      <input class="modal-input" id="playerNumInput" placeholder="Jersey number" maxlength="4" style="margin-top:8px;"/>
+      <div class="modal-actions">
+        <button class="modal-btn danger-outline" id="deletePlayerBtn" onclick="deletePlayer()" style="display:none">Delete</button>
+        <button class="modal-btn secondary" onclick="closeModal('playerModal')">Cancel</button>
+        <button class="modal-btn primary" onclick="savePlayer()">Save</button>
+      </div>
+    </div>
   </div>
 
 </div><!-- end #app -->
@@ -604,7 +683,9 @@
   }
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('pin').addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
-    if (sessionStorage.getItem(SESSION_KEY)) showApp();
+    loadFromStorage();
+    rebuildTeamSelect();
+    if (sessionStorage.getItem(SESSION_KEY)) { showApp(); renderRoster(); }
     pcRender();
   });
 
@@ -723,7 +804,163 @@
     return parts.length ? ' [Stats: ' + parts.join(', ') + ']' : '';
   }
 
-  // ── ROSTER DATA ──
+  // ── STORAGE HELPERS ──
+  var LS_TEAMS = 'smbb_teams';
+  var LS_PDATA = 'smbb_playerdata';
+
+  function saveToStorage() {
+    try {
+      localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
+      localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
+    } catch(e) {}
+  }
+
+  function loadFromStorage() {
+    try {
+      var t = localStorage.getItem(LS_TEAMS);
+      var p = localStorage.getItem(LS_PDATA);
+      if (t) TEAMS = JSON.parse(t);
+      if (p) playerData = JSON.parse(p);
+    } catch(e) {}
+  }
+
+  // ── TEAM MANAGEMENT ──
+  var _teamModalMode = 'add';
+
+  function rebuildTeamSelect() {
+    var sel = document.getElementById('teamSelect');
+    var current = sel ? sel.value : null;
+    sel.innerHTML = '';
+    Object.keys(TEAMS).forEach(function(key) {
+      var opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = TEAMS[key].name;
+      if (key === current) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    // If current team was deleted, select first
+    if (!TEAMS[sel.value]) sel.value = Object.keys(TEAMS)[0];
+  }
+
+  function onTeamChange() { renderRoster(); }
+
+  function showTeamModal(mode) {
+    _teamModalMode = mode;
+    document.getElementById('teamModalTitle').textContent = mode === 'add' ? 'Add team' : 'Rename team';
+    var input = document.getElementById('teamNameInput');
+    input.value = mode === 'rename' ? TEAMS[currentTeam()].name : '';
+    document.getElementById('teamModal').classList.add('open');
+    setTimeout(function(){ input.focus(); input.select(); }, 80);
+  }
+
+  function saveTeam() {
+    var name = document.getElementById('teamNameInput').value.trim();
+    if (!name) return;
+    if (_teamModalMode === 'add') {
+      var key = 'team_' + Date.now();
+      TEAMS[key] = { name: name, players: [] };
+      saveToStorage();
+      rebuildTeamSelect();
+      document.getElementById('teamSelect').value = key;
+    } else {
+      TEAMS[currentTeam()].name = name;
+      saveToStorage();
+      rebuildTeamSelect();
+    }
+    closeModal('teamModal');
+    renderRoster();
+  }
+
+  function deleteTeam() {
+    var keys = Object.keys(TEAMS);
+    if (keys.length <= 1) { alert('You must have at least one team.'); return; }
+    var t = currentTeam();
+    if (!confirm('Delete "' + TEAMS[t].name + '" and all its players? This cannot be undone.')) return;
+    delete TEAMS[t];
+    saveToStorage();
+    rebuildTeamSelect();
+    renderRoster();
+  }
+
+  // ── PLAYER MANAGEMENT ──
+  var _playerModalMode = 'add';
+  var _editingPlayerId = null;
+
+  function showPlayerModal(mode, playerId) {
+    _playerModalMode = mode;
+    _editingPlayerId = playerId || null;
+    document.getElementById('playerModalTitle').textContent = mode === 'add' ? 'Add player' : 'Edit player';
+    var deleteBtn = document.getElementById('deletePlayerBtn');
+    deleteBtn.style.display = mode === 'edit' ? 'block' : 'none';
+    if (mode === 'edit' && playerId) {
+      var player = currentPlayers().find(function(p){ return p.id === playerId; });
+      if (player) {
+        // Split name into first/last
+        var parts = player.name.split(' ');
+        document.getElementById('playerFirstInput').value = parts[0] || '';
+        document.getElementById('playerLastInput').value = parts.slice(1).join(' ') || '';
+        document.getElementById('playerNumInput').value = player.num || '';
+      }
+    } else {
+      document.getElementById('playerFirstInput').value = '';
+      document.getElementById('playerLastInput').value = '';
+      document.getElementById('playerNumInput').value = '';
+    }
+    document.getElementById('playerModal').classList.add('open');
+    setTimeout(function(){ document.getElementById('playerFirstInput').focus(); }, 80);
+  }
+
+  function savePlayer() {
+    var first = document.getElementById('playerFirstInput').value.trim();
+    var last  = document.getElementById('playerLastInput').value.trim();
+    var num   = document.getElementById('playerNumInput').value.trim();
+    if (!first || !last) { alert('Please enter first and last name.'); return; }
+    var fullName = first + ' ' + last;
+    var team = currentTeam();
+    if (_playerModalMode === 'add') {
+      var newId = team + '_' + Date.now();
+      TEAMS[team].players.push({ id: newId, num: num || '?', name: fullName });
+    } else if (_editingPlayerId) {
+      var idx = TEAMS[team].players.findIndex(function(p){ return p.id === _editingPlayerId; });
+      if (idx >= 0) {
+        TEAMS[team].players[idx].name = fullName;
+        TEAMS[team].players[idx].num  = num || '?';
+      }
+    }
+    saveToStorage();
+    closeModal('playerModal');
+    renderRoster();
+  }
+
+  function deletePlayer() {
+    if (!_editingPlayerId) return;
+    var team = currentTeam();
+    var player = TEAMS[team].players.find(function(p){ return p.id === _editingPlayerId; });
+    if (!player) return;
+    if (!confirm('Remove ' + player.name + ' from the roster?')) return;
+    TEAMS[team].players = TEAMS[team].players.filter(function(p){ return p.id !== _editingPlayerId; });
+    delete playerData[_editingPlayerId];
+    saveToStorage();
+    closeModal('playerModal');
+    renderRoster();
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  // Hook Enter key in modals
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      if (document.getElementById('teamModal').classList.contains('open')) saveTeam();
+      if (document.getElementById('playerModal').classList.contains('open')) savePlayer();
+    }
+    if (e.key === 'Escape') {
+      closeModal('teamModal'); closeModal('playerModal');
+    }
+  });
+
+  // ── ROSTER DATA (defaults, overridden by localStorage) ──
   var TEAMS = {
     broncos: {
       name: 'South Medford Broncos D2',
@@ -779,6 +1016,7 @@
   function currentPlayers() { return TEAMS[currentTeam()].players; }
 
   function renderRoster() {
+    updateLineupSizeButtons();
     var players = currentPlayers();
     var active = players.filter(function(p){ return !getPlayerData(p.id, p).injured; });
     document.getElementById('rosterCount').textContent = active.length + ' active / ' + players.length + ' total';
@@ -798,6 +1036,7 @@
       html += '</div>';
       html += '<div class="player-meta">' + speedStr + '</div>';
       html += '</div>';
+      html += '<button class="player-edit-btn" onclick="event.stopPropagation();showPlayerModal(\'edit\',\''+p.id+'\')" title="Edit player">✏️</button>';
       html += '<span class="expand-icon" id="exp-'+p.id+'">›</span>';
       html += '</div>';
       // Editor
@@ -834,17 +1073,20 @@
     var d = getPlayerData(id);
     var idx = d.positions.indexOf(pos);
     if (idx >= 0) d.positions.splice(idx,1); else d.positions.push(pos);
+    saveToStorage();
     renderRoster(); openEditor(id);
   }
 
   function setSpeed(id, val) {
     getPlayerData(id).speed = val;
+    saveToStorage();
     renderRoster(); openEditor(id);
   }
 
   function toggleInjury(id) {
     var d = getPlayerData(id);
     d.injured = !d.injured;
+    saveToStorage();
     renderRoster(); openEditor(id);
   }
 
@@ -857,7 +1099,7 @@
 
   // LINEUP BUILDER
   var lineupPriority = null;
-  var LINEUP_SIZE = 9;
+  var LINEUP_SIZE = 9; // updated dynamically when team or mode changes
 
   function setPriority(p) {
     lineupPriority = p;
@@ -867,22 +1109,29 @@
 
   function renderLineupSlots() {
     var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
+    var ALL_DEF_POS = ['P','C','1B','2B','3B','SS','LF','CF','RF','DH','EH','UT'];
     var html = '';
     for (var i=1; i<=LINEUP_SIZE; i++) {
       html += '<div class="lineup-slot">';
       html += '<span class="slot-num">'+i+'</span>';
       html += '<select class="slot-select" id="slot-'+i+'">';
-      html += '<option value="">— AI will suggest —</option>';
+      html += '<option value="">— will suggest —</option>';
       players.forEach(function(p){
         html += '<option value="'+p.id+'">'+p.name+' #'+p.num+'</option>';
       });
       html += '</select>';
-      html += '<span class="slot-pos" id="slotpos-'+i+'"></span>';
+      // Editable position dropdown
+      html += '<select class="slot-pos-select" id="slotpos-'+i+'">';
+      html += '<option value="">Pos</option>';
+      ALL_DEF_POS.forEach(function(pos){
+        html += '<option value="'+pos+'">'+pos+'</option>';
+      });
+      html += '</select>';
       html += '<button class="slot-lock" id="lock-'+i+'" onclick="toggleLock('+i+')" title="Lock this pick">🔒</button>';
       html += '</div>';
     }
     document.getElementById('lineupSlots').innerHTML = html;
-    // update pos label when slot changes
+    // When player changes, auto-populate position from their card (but keep editable)
     for (var j=1; j<=LINEUP_SIZE; j++) {
       (function(slot){
         var sel = document.getElementById('slot-'+slot);
@@ -899,13 +1148,23 @@
   }
 
   function updateSlotPos(i) {
-    var sel = document.getElementById('slot-'+i);
-    var posEl = document.getElementById('slotpos-'+i);
+    var sel    = document.getElementById('slot-'+i);
+    var posEl  = document.getElementById('slotpos-'+i);
     if (!sel || !posEl) return;
     var id = sel.value;
-    if (!id) { posEl.textContent=''; return; }
+    if (!id) { posEl.value = ''; return; }
     var d = playerData[id];
-    posEl.textContent = d && d.positions.length ? d.positions[0] : '';
+    // Auto-suggest first position from player card, but don't override if already set
+    if (d && d.positions && d.positions.length) {
+      posEl.value = d.positions[0];
+    } else {
+      posEl.value = '';
+    }
+  }
+
+  function getSlotPos(i) {
+    var el = document.getElementById('slotpos-'+i);
+    return el ? el.value : '';
   }
 
   function getLineupContext() {
@@ -918,79 +1177,354 @@
       if (val && lockedSlots[i]) {
         var pl = players.find(function(p){ return p.id===val; });
         var d = playerData[val]||{};
-        locked.push({slot:i, name:pl?pl.name:'?', num:pl?pl.num:'?', positions:d.positions||[], speed:d.speed||0});
+        locked.push({slot:i, name:pl?pl.name:'?', num:pl?pl.num:'?', positions:d.positions||[], speed:d.speed||0, slotPos: getSlotPos(i)});
       }
     }
     players.forEach(function(p){
       var d = getPlayerData(p.id,p);
       var inLocked = locked.find(function(l){ return l.name===p.name; });
-      if (!inLocked) available.push({name:p.name, num:p.num, positions:d.positions||[], speed:d.speed||0, injured:d.injured||false});
+      if (!inLocked) available.push({id:p.id, name:p.name, num:p.num, positions:d.positions||[], speed:d.speed||0, injured:d.injured||false});
     });
     return {locked:locked, available:available, priority: lineupPriority||'balanced', teamName: TEAMS[currentTeam()].name};
   }
 
-  async function generateLineup() {
+  // ── DEFENSIVE ASSIGNMENT ──
+  var fielderCount = 9;
+  var lineupMode = 9; // 9 = bat 9, -1 = bat everyone
+
+  function activePlayerCount() {
+    return currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; }).length;
+  }
+
+  function setLineupSize(mode, btn) {
+    lineupMode = mode;
+    document.querySelectorAll('.fielder-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    // Update the Everyone button label to show actual count
+    var allBtn = document.getElementById('btnAll');
+    if (allBtn) {
+      var count = activePlayerCount();
+      allBtn.textContent = mode === -1 ? 'Everyone ('+count+')' : 'Everyone';
+    }
+    LINEUP_SIZE = (mode === -1) ? activePlayerCount() : 9;
+    renderLineupSlots();
+  }
+
+  function updateLineupSizeButtons() {
+    var count = activePlayerCount();
+    var allBtn = document.getElementById('btnAll');
+    if (allBtn) allBtn.textContent = lineupMode === -1 ? 'Everyone ('+count+')' : 'Everyone';
+    LINEUP_SIZE = (lineupMode === -1) ? count : 9;
+  }
+
+  function fillDefense() {
+    // All 9 standard defensive positions
+    var DEF_9  = ['P','C','1B','2B','3B','SS','LF','CF','RF'];
+    // Position rarity — rarer spots filled first to avoid leaving them unplayable
+    var RARITY = { C:1, SS:2, P:3, '2B':4, '3B':5, '1B':6, CF:7, LF:8, RF:9, DH:10, EH:11, UT:12 };
+
+    // Collect players currently in slots
+    var slottedPlayers = []; // [{slotIdx, playerId, playerObj, currentPos}]
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      var sel = document.getElementById('slot-' + i);
+      if (sel && sel.value) {
+        var pid = sel.value;
+        var player = currentPlayers().find(function(p){ return p.id === pid; });
+        var currentPos = document.getElementById('slotpos-' + i) ? document.getElementById('slotpos-' + i).value : '';
+        slottedPlayers.push({ slot: i, id: pid, player: player, currentPos: currentPos });
+      }
+    }
+
+    if (slottedPlayers.length === 0) {
+      alert('Add players to the batting order first, then use Fill defense to assign positions.');
+      return;
+    }
+
+    // Figure out which positions are already assigned (keep those, only fill blanks)
+    var assignedPositions = {}; // pos -> slot
+    var unassignedSlots = [];
+
+    slottedPlayers.forEach(function(s) {
+      var pos = s.currentPos;
+      // Keep DH and EH assignments — they don't take a field spot
+      if (pos && pos !== '' && pos !== 'DH' && pos !== 'EH') {
+        assignedPositions[pos] = s.slot;
+      } else if (!pos || pos === '') {
+        unassignedSlots.push(s);
+      }
+      // DH/EH slots stay as-is
+    });
+
+    // Which field positions still need to be filled?
+    var neededPositions = DEF_9.filter(function(p){ return !assignedPositions[p]; });
+
+    // If 10-man (EH), we don't need a 10th field position — EH just bats
+    // So needed positions are always the 9 standard spots minus already assigned
+
+    if (neededPositions.length === 0) {
+      alert('All defensive positions are already assigned!');
+      return;
+    }
+
+    if (unassignedSlots.length === 0 && neededPositions.length > 0) {
+      alert('No unassigned players left to fill ' + neededPositions.join(', ') + '.');
+      return;
+    }
+
+    // Build a map of what each unassigned player CAN play
+    var playerCandidates = unassignedSlots.map(function(s) {
+      var d = s.player ? getPlayerData(s.player.id, s.player) : {};
+      var canPlay = (d.positions || []).filter(function(pos){ return neededPositions.indexOf(pos) >= 0; });
+      return { slot: s.slot, id: s.id, canPlay: canPlay, assigned: null };
+    });
+
+    // Sort needed positions by rarity (hardest to fill first)
+    var sortedNeeded = neededPositions.slice().sort(function(a,b){
+      return (RARITY[a]||99) - (RARITY[b]||99);
+    });
+
+    // Greedy assignment: for each needed position, find the best available player
+    var assignments = {}; // slot -> position
+    var takenSlots = {};
+
+    sortedNeeded.forEach(function(pos) {
+      // Find candidates who can play this position and aren't taken yet
+      var eligible = playerCandidates.filter(function(c){
+        return !takenSlots[c.slot] && c.canPlay.indexOf(pos) >= 0;
+      });
+
+      // Prefer players with fewer total positions (more specialized) to preserve versatile players for harder spots
+      eligible.sort(function(a,b){ return a.canPlay.length - b.canPlay.length; });
+
+      if (eligible.length > 0) {
+        var pick = eligible[0];
+        assignments[pick.slot] = pos;
+        takenSlots[pick.slot] = true;
+      }
+    });
+
+    // For any remaining unassigned slots with no match, try UT or leave blank
+    playerCandidates.forEach(function(c) {
+      if (!takenSlots[c.slot]) {
+        // Check if they can play any remaining needed position
+        var remaining = sortedNeeded.filter(function(p){ return !Object.values(assignments).find(function(v){ return v===p; }); });
+        if (remaining.length > 0 && c.canPlay.length === 0) {
+          // Player has no listed positions — assign UT
+          assignments[c.slot] = 'UT';
+        }
+      }
+    });
+
+    // Apply assignments to the dropdowns
+    var filled = 0;
+    Object.keys(assignments).forEach(function(slot) {
+      var posEl = document.getElementById('slotpos-' + slot);
+      if (posEl) {
+        posEl.value = assignments[slot];
+        filled++;
+      }
+    });
+
+    // Report any positions that couldn't be filled
+    var filledPositions = Object.values(assignments);
+    var unfilled = sortedNeeded.filter(function(p){ return filledPositions.indexOf(p) < 0; });
+
+    if (unfilled.length > 0) {
+      alert('Filled ' + filled + ' position' + (filled!==1?'s':'') + '. Could not assign: ' + unfilled.join(', ') + ' — no players with those positions listed on their cards.');
+    }
+  }
+
+  // ── RULE-BASED LINEUP ENGINE ──
+
+  function statVal(playerName, col) {
+    var s = getStatsForPlayer(playerName);
+    if (!s) return null;
+    var v = parseFloat(s[col]);
+    return isNaN(v) ? null : v;
+  }
+
+  function scorePlayer(p, priority) {
+    var obp  = statVal(p.name, 'OBP')  || 0.300;
+    var slg  = statVal(p.name, 'SLG')  || 0.350;
+    var ops  = statVal(p.name, 'OPS')  || (obp + slg);
+    var avg  = statVal(p.name, 'AVG')  || 0.250;
+    var sb   = statVal(p.name, 'SB')   || 0;
+    var sbp  = statVal(p.name, 'SB%')  || 70;
+    var hr   = statVal(p.name, 'HR')   || 0;
+    var bb   = statVal(p.name, 'BB')   || 0;
+    var so   = statVal(p.name, 'SO')   || 10;
+    var risp = statVal(p.name, 'BA/RISP') || avg;
+    var qab  = statVal(p.name, 'QAB%') || 45;
+    var spd  = (p.speed || 3) / 5; // normalize 1-5 to 0-1
+    var sbScore = sb > 0 ? (sb * (sbp / 100)) : 0;
+    var contactScore = so > 0 ? (1 - (so / Math.max(statVal(p.name,'PA')||50, so+1))) : 0.7;
+
+    switch(priority) {
+      case 'speed':
+        return (sbScore * 0.4) + (spd * 0.35) + (obp * 0.15) + (avg * 0.10);
+      case 'traditional':
+        return (ops * 0.45) + (risp * 0.25) + (hr * 0.02) + (avg * 0.20) + (qab/100 * 0.08);
+      case 'obp':
+        return (obp * 0.50) + (bb * 0.01) + (contactScore * 0.25) + (avg * 0.15) + (qab/100 * 0.10);
+      case 'balanced':
+      default:
+        return (obp * 0.30) + (slg * 0.25) + (spd * 0.20) + (risp * 0.15) + (contactScore * 0.10);
+    }
+  }
+
+  function isPitcher(p) {
+    var d = getPlayerData(p.id, p);
+    return d.positions.length === 1 && d.positions[0] === 'P';
+  }
+
+  function suggestPosition(p) {
+    var d = getPlayerData(p.id, p);
+    if (d.positions.length > 0) return d.positions[0];
+    return '?';
+  }
+
+  function reasonForSlot(slot, p, priority, score, allScores) {
+    var s = getStatsForPlayer(p.name);
+    var spd = SPEED_NAMES[p.speed || 0] || 'unknown speed';
+    var obp  = s && s.OBP  && s.OBP  !== '-' ? s.OBP  : null;
+    var avg  = s && s.AVG  && s.AVG  !== '-' ? s.AVG  : null;
+    var ops  = s && s.OPS  && s.OPS  !== '-' ? s.OPS  : null;
+    var sb   = s && s.SB   && s.SB   !== '-' && s.SB !== '0' ? s.SB : null;
+    var hr   = s && s.HR   && s.HR   !== '-' && s.HR !== '0' ? s.HR : null;
+    var risp = s && s['BA/RISP'] && s['BA/RISP'] !== '-' ? s['BA/RISP'] : null;
+
+    if (slot === 1) {
+      if (sb) return 'Leadoff: ' + (obp ? 'OBP ' + obp + ', ' : '') + sb + ' stolen bases makes him a table-setter.';
+      return 'Leadoff: ' + (obp ? 'OBP ' + obp + ' — ' : '') + 'gets on base to set the table.';
+    }
+    if (slot === 2) {
+      if (priority === 'speed' && sb) return '2-hole: speed threat with ' + sb + ' SB — keeps pressure on the defense.';
+      return '2-hole: ' + (avg ? 'AVG ' + avg + ', ' : '') + 'makes contact and moves runners.';
+    }
+    if (slot === 3) {
+      return '3-hole: ' + (ops ? 'OPS ' + ops + ' — ' : '') + 'best all-around hitter, sees most RBI opportunities.';
+    }
+    if (slot === 4) {
+      return 'Cleanup: ' + (hr ? hr + ' HR, ' : '') + (ops ? 'OPS ' + ops + ' — ' : '') + 'brings runners home with extra-base power.';
+    }
+    if (slot === 5) {
+      return '5-hole: ' + (risp ? 'BA/RISP ' + risp + ' — ' : '') + 'protection behind cleanup, solid RBI bat.';
+    }
+    if (slot >= 6 && slot <= 7) {
+      return 'Lower-middle: ' + (avg ? 'AVG ' + avg + ' — ' : '') + 'keeps the lineup moving into the top.';
+    }
+    if (slot === 8) {
+      return '8-hole: ' + (obp ? 'OBP ' + obp + ' — ' : '') + 'on-base ability turns over the top of the lineup.';
+    }
+    if (slot === 9) {
+      return isPitcher(p) ? 'Bats last as primary pitcher.' : '9-hole: bats last, helps cycle back to top of the order.';
+    }
+    return 'Slotted by ' + priority + ' ranking.';
+  }
+
+  function generateLineup() {
     if (!lineupPriority) { alert('Please select a lineup priority first.'); return; }
+
     var ctx = getLineupContext();
-    var btn = document.getElementById('generateBtn');
     var result = document.getElementById('aiResult');
+    var btn = document.getElementById('generateBtn');
     btn.disabled = true;
     result.className = 'ai-result show';
     result.innerHTML = '<div class="ai-thinking"><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><span style="margin-left:4px">Building lineup…</span></div>';
 
-    var priorityDesc = {
-      speed: 'Put fastest runners at the top of the order (leadoff, 2-hole). Speed matters most.',
-      traditional: 'Best hitters bat 2nd through 4th. Pitcher or weakest hitter bats last. Classic approach.',
-      obp: 'Prioritize players most likely to get on base at the top of the order.',
-      balanced: 'Balance speed, power, and on-base ability across the lineup.'
-    }[ctx.priority];
+    setTimeout(function() {
+      try {
+        // Score all available players
+        var scored = ctx.available.map(function(p) {
+          return { p: p, score: scorePlayer(p, ctx.priority) };
+        });
 
-    var lockedDesc = ctx.locked.length
-      ? 'The coach has already locked these spots:\n' + ctx.locked.map(function(l){ return 'Slot '+l.slot+': '+l.name+' (#'+l.num+') — Positions: '+(l.positions.join(',')||'unknown')+', Speed: '+(SPEED_NAMES[l.speed]||'unknown')+formatStatsForAI(l.name); }).join('\n')
-      : 'No spots are locked — suggest the full lineup.';
+        // Separate pitchers-only to bat last if traditional
+        var pitchersOnly = scored.filter(function(x){ return isPitcher(x.p); });
+        var fielders = scored.filter(function(x){ return !isPitcher(x.p); });
 
-    var availDesc = ctx.available.map(function(p){
-      return p.name+' (#'+p.num+') — Positions: '+(p.positions.join(',')||'not set')+', Speed: '+(SPEED_NAMES[p.speed]||'not set')+formatStatsForAI(p.name);
-    }).join('\n');
+        // Sort
+        fielders.sort(function(a,b){ return b.score - a.score; });
+        pitchersOnly.sort(function(a,b){ return b.score - a.score; });
 
-    var hasStats = Object.keys(teamStats[currentTeam()]||{}).length > 0;
-    var statsNote = hasStats
-      ? 'Player stats from GameChanger are included in brackets where available (AVG, OBP, SLG, OPS, HR, RBI, SB, BB, SO, BA/RISP, QAB%). Use these to make smarter decisions.'
-      : 'No stats have been imported yet — base decisions on positions and speed ratings only.';
+        // Build ordered pool based on priority
+        var pool;
+        if (ctx.priority === 'traditional') {
+          pool = fielders.concat(pitchersOnly);
+        } else {
+          pool = scored.sort(function(a,b){ return b.score-a.score; }).map(function(x){ return x; });
+        }
 
-    var prompt = 'You are an experienced youth baseball coach assistant helping build a batting lineup for ' + ctx.teamName + '.\n\n' +
-      'Lineup priority: ' + priorityDesc + '\n\n' +
-      statsNote + '\n\n' +
-      lockedDesc + '\n\n' +
-      'Available players (not yet assigned):\n' + availDesc + '\n\n' +
-      'Please suggest a complete 9-player batting order. For any locked slots, keep exactly those players in those spots. Fill the remaining slots from the available players. ' +
-      'For each slot, briefly explain your reasoning in one sentence. ' +
-      'Format your response as a numbered list (1-9) with the player name, suggested fielding position, and reasoning. ' +
-      'End with a short overall note about the lineup strategy. Keep it practical and concise — this is for a youth baseball coach reading on their phone.';
+        // Fill 9 slots
+        var lineup = new Array(LINEUP_SIZE + 1).fill(null); // 1-indexed
+        var usedIds = {};
 
-    try {
-      var response = await fetch('https://api.anthropic.com/v1/messages', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          model:'claude-sonnet-4-20250514',
-          max_tokens:1000,
-          messages:[{role:'user', content:prompt}]
-        })
-      });
-      var data = await response.json();
-      var text = data.content && data.content[0] ? data.content[0].text : 'Unable to generate lineup. Please try again.';
-      // Format nicely
-      var lines = text.split('\n').filter(function(l){ return l.trim(); });
-      var formatted = lines.map(function(l){
-        if (/^\d+\./.test(l.trim())) return '<div style="padding:4px 0;border-bottom:.5px solid var(--border)">'+l+'</div>';
-        return '<div style="padding:6px 0;color:var(--muted);font-style:italic;font-size:12px">'+l+'</div>';
-      }).join('');
-      result.innerHTML = formatted;
-    } catch(e) {
-      result.innerHTML = '<div style="color:#c0392b">Error generating lineup. Please check your connection and try again.</div>';
-    }
-    btn.disabled = false;
+        // Place locked players first
+        ctx.locked.forEach(function(l) {
+          lineup[l.slot] = l;
+          usedIds[l.name] = true;
+        });
+
+        // Remaining pool (not locked)
+        var remaining = pool.filter(function(x){ return !usedIds[x.p.name]; });
+
+        // Fill empty slots in order
+        var ri = 0;
+        for (var slot = 1; slot <= LINEUP_SIZE; slot++) {
+          if (!lineup[slot]) {
+            if (ri < remaining.length) {
+              lineup[slot] = remaining[ri].p;
+              ri++;
+            }
+          }
+        }
+
+        // Render result
+        var hasStats = Object.keys(teamStats[currentTeam()]||{}).length > 0;
+        var priorityLabels = { speed:'Speed at Top', traditional:'Traditional', obp:'On-Base Focused', balanced:'Balanced' };
+        var allScores = scored.reduce(function(acc,x){ acc[x.p.name]=x.score; return acc; }, {});
+
+        var html = '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px;">'
+          + '📋 ' + ctx.teamName + ' · ' + priorityLabels[ctx.priority]
+          + (hasStats ? ' · Stats-powered' : ' · Speed & position based')
+          + '</div>';
+
+        for (var s = 1; s <= LINEUP_SIZE; s++) {
+          var entry = lineup[s];
+          if (!entry) { html += '<div style="padding:6px 0;border-bottom:.5px solid var(--border);color:var(--muted);font-size:12px;">'+s+'. — not enough players</div>'; continue; }
+          var isLocked = ctx.locked.find(function(l){ return l.slot===s; });
+          var name = entry.name || entry.p && entry.p.name;
+          var num  = entry.num  || entry.p && entry.p.num;
+          // Use manually chosen slot position if set, otherwise suggest from card
+          var pos = (isLocked && isLocked.slotPos) ? isLocked.slotPos : getSlotPos(s);
+          if (!pos) pos = suggestPosition(entry.p || entry);
+          var reason = reasonForSlot(s, entry.p || entry, ctx.priority, allScores[name], allScores);
+          html += '<div style="padding:7px 0;border-bottom:.5px solid var(--border);">'
+            + '<span style="font-weight:700;color:var(--blue);margin-right:6px;">'+s+'.</span>'
+            + '<span style="font-weight:600;">'+name+'</span>'
+            + ' <span style="font-size:11px;color:var(--muted);">#'+num+'</span>'
+            + (pos !== '?' ? ' <span style="background:var(--blue);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;">'+pos+'</span>' : '')
+            + (isLocked ? ' <span style="font-size:10px;">🔒</span>' : '')
+            + '<div style="font-size:11px;color:var(--muted);margin-top:2px;">'+reason+'</div>'
+            + '</div>';
+        }
+
+        // Strategy note
+        var strategyNotes = {
+          speed: 'Speed-first lineup: stolen base threats at the top create pressure and open gaps for the middle of the order.',
+          traditional: 'Traditional lineup: best hitters clustered 2–5 to maximize RBI opportunities with runners on base.',
+          obp: 'On-base lineup: high-OBP players lead off and set the table, keeping the big bats from hitting with the bases empty.',
+          balanced: 'Balanced lineup: blends on-base ability, power, and speed throughout the order for consistent run production.'
+        };
+        html += '<div style="margin-top:8px;padding:8px;background:var(--bg);border-radius:6px;font-size:11px;color:var(--muted);line-height:1.5;font-style:italic;">'
+          + strategyNotes[ctx.priority] + '</div>';
+
+        result.innerHTML = html;
+      } catch(e) {
+        result.innerHTML = '<div style="color:#c0392b">Error building lineup: ' + e.message + '</div>';
+      }
+      btn.disabled = false;
+    }, 600); // brief delay for the "thinking" animation
   }
 
   function pcRender(){document.getElementById('ballNum').textContent=pcState.balls;document.getElementById('strikeNum').textContent=pcState.strikes;document.getElementById('outNum').textContent=pcState.outs;document.getElementById('totalNum').textContent=pcState.total;updateDots('ballDots',pcState.balls);updateDots('strikeDots',pcState.strikes);updateDots('outDots',pcState.outs);var mx=getPitchMax(),pct=Math.min(100,pcState.total/mx*100);document.getElementById('limitFill').style.width=pct+'%';document.getElementById('limitText').textContent=pcState.total+' / '+mx+' pitch max';var fb=document.getElementById('foulBtn');if(pcState.strikes===2){fb.classList.add('active');fb.disabled=false;}else{fb.classList.remove('active');fb.disabled=true;}var entries=document.getElementById('logEntries');entries.innerHTML='';var labels={B:'Ball',S:'Strike',O:'Out',F:'Foul'};pcState.log.forEach(function(p,i){var tag=document.createElement('span');tag.className='log-tag '+p.type+(i===pcState.log.length-1?' last':'');tag.textContent=labels[p.type]||p.type;entries.appendChild(tag);});entries.parentElement.scrollTop=entries.parentElement.scrollHeight;renderIP();renderRest();renderCommand();}
