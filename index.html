@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Panthers Playbook</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -363,7 +366,10 @@
       <div class="app-header-title">Panthers Playbook</div>
       <div class="app-header-sub">South Medford Baseball · Confidential</div>
     </div>
-    <button class="lock-out-btn" onclick="lockApp()">🔒 Lock</button>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span id="syncStatus" style="font-size:10px;opacity:.8;color:rgba(255,255,255,.6);">⏳ Connecting…</span>
+      <button class="lock-out-btn" onclick="lockApp()">🔒 Lock</button>
+    </div>
   </div>
 
   <div class="tabs">
@@ -804,24 +810,87 @@
     return parts.length ? ' [Stats: ' + parts.join(', ') + ']' : '';
   }
 
-  // ── STORAGE HELPERS ──
+  // ── FIREBASE SETUP ──
+  var firebaseConfig = {
+    apiKey: "AIzaSyALrp0-DJdvvwOplN-gc4W96g2rPqEzk6o",
+    authDomain: "panthers-playbook.firebaseapp.com",
+    databaseURL: "https://panthers-playbook-default-rtdb.firebaseio.com",
+    projectId: "panthers-playbook",
+    storageBucket: "panthers-playbook.firebasestorage.app",
+    messagingSenderId: "799764728365",
+    appId: "1:799764728365:web:f8b16ffb6ab6b8d56586a4"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.database();
+  var fbRef = db.ref('playbook');
+  var _fbListening = false;
+
+  // ── STORAGE HELPERS (Firebase primary, localStorage fallback) ──
   var LS_TEAMS = 'smbb_teams';
   var LS_PDATA = 'smbb_playerdata';
+  var _saveTimeout = null;
 
   function saveToStorage() {
+    // Always save locally as fallback
     try {
       localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
       localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
     } catch(e) {}
+    // Debounce Firebase writes (avoid hammering on rapid clicks)
+    if (_saveTimeout) clearTimeout(_saveTimeout);
+    _saveTimeout = setTimeout(function() {
+      try {
+        fbRef.set({ teams: TEAMS, playerData: playerData });
+      } catch(e) { console.warn('Firebase save failed:', e); }
+    }, 600);
   }
 
   function loadFromStorage() {
+    // Load from localStorage immediately so app feels instant
     try {
       var t = localStorage.getItem(LS_TEAMS);
       var p = localStorage.getItem(LS_PDATA);
       if (t) TEAMS = JSON.parse(t);
       if (p) playerData = JSON.parse(p);
     } catch(e) {}
+    // Then sync from Firebase (authoritative source)
+    if (!_fbListening) {
+      _fbListening = true;
+      fbRef.on('value', function(snapshot) {
+        var data = snapshot.val();
+        if (data && data.teams) {
+          TEAMS = data.teams;
+          playerData = data.playerData || {};
+          // Keep localStorage in sync
+          try {
+            localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
+            localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
+          } catch(e) {}
+          // Refresh UI if roster tab is active
+          rebuildTeamSelect();
+          var rosterPanel = document.getElementById('tab-roster');
+          if (rosterPanel && rosterPanel.classList.contains('active')) {
+            renderRoster();
+          }
+          updateSyncStatus('synced');
+        }
+      }, function(err) {
+        console.warn('Firebase read failed:', err);
+        updateSyncStatus('offline');
+      });
+    }
+  }
+
+  function updateSyncStatus(state) {
+    var el = document.getElementById('syncStatus');
+    if (!el) return;
+    if (state === 'synced') {
+      el.textContent = '🟢 Synced';
+      el.style.color = 'var(--green)';
+    } else {
+      el.textContent = '🔴 Offline';
+      el.style.color = '#c0392b';
+    }
   }
 
   // ── TEAM MANAGEMENT ──
