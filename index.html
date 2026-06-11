@@ -689,10 +689,23 @@
   }
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('pin').addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
-    loadFromStorage();
+    // Load local data immediately so app works right away
+    try {
+      var t = localStorage.getItem(LS_TEAMS);
+      var p = localStorage.getItem(LS_PDATA);
+      if (t) TEAMS = JSON.parse(t);
+      if (p) playerData = JSON.parse(p);
+    } catch(e) {}
     rebuildTeamSelect();
-    if (sessionStorage.getItem(SESSION_KEY)) { showApp(); renderRoster(); }
+    if (sessionStorage.getItem(SESSION_KEY)) {
+      showApp();
+      renderRoster();
+    }
     pcRender();
+    // Firebase syncs in background after app is already showing
+    setTimeout(function() {
+      try { loadFromStorage(); } catch(e) { updateSyncStatus('offline'); }
+    }, 100);
   });
 
   // PITCH COUNTER
@@ -846,44 +859,38 @@
   }
 
   function loadFromStorage() {
-    // Load from localStorage immediately so app feels instant
-    try {
-      var t = localStorage.getItem(LS_TEAMS);
-      var p = localStorage.getItem(LS_PDATA);
-      if (t) TEAMS = JSON.parse(t);
-      if (p) playerData = JSON.parse(p);
-    } catch(e) {}
-    // Then sync from Firebase (authoritative source)
+    // Set up Firebase real-time listener
     if (!_fbListening) {
       _fbListening = true;
-      fbRef.on('value', function(snapshot) {
-        var data = snapshot.val();
-        // Only update from Firebase if it actually has data
-        // This prevents an empty database from wiping local changes
-        if (data && data.teams && Object.keys(data.teams).length > 0) {
-          TEAMS = data.teams;
-          playerData = data.playerData || {};
-          // Keep localStorage in sync
-          try {
-            localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
-            localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
-          } catch(e) {}
-          // Refresh UI if roster tab is active
-          rebuildTeamSelect();
-          var rosterPanel = document.getElementById('tab-roster');
-          if (rosterPanel && rosterPanel.classList.contains('active')) {
-            renderRoster();
+      try {
+        fbRef.on('value', function(snapshot) {
+          var data = snapshot.val();
+          if (data && data.teams && Object.keys(data.teams).length > 0) {
+            TEAMS = data.teams;
+            playerData = data.playerData || {};
+            try {
+              localStorage.setItem(LS_TEAMS, JSON.stringify(TEAMS));
+              localStorage.setItem(LS_PDATA, JSON.stringify(playerData));
+            } catch(e) {}
+            rebuildTeamSelect();
+            var rosterPanel = document.getElementById('tab-roster');
+            if (rosterPanel && rosterPanel.classList.contains('active')) {
+              renderRoster();
+            }
+            updateSyncStatus('synced');
+          } else if (!data || !data.teams) {
+            // Firebase empty — push local data up to seed it
+            updateSyncStatus('synced');
+            saveToStorage();
           }
-          updateSyncStatus('synced');
-        } else if (!data || !data.teams) {
-          // Firebase is empty — push our local data up to seed it
-          updateSyncStatus('synced');
-          saveToStorage();
-        }
-      }, function(err) {
-        console.warn('Firebase read failed:', err);
+        }, function(err) {
+          console.warn('Firebase read failed:', err);
+          updateSyncStatus('offline');
+        });
+      } catch(e) {
+        console.warn('Firebase init failed:', e);
         updateSyncStatus('offline');
-      });
+      }
     }
   }
 
