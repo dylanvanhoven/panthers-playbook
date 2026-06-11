@@ -21,7 +21,6 @@
     --border: #dde1e8;
     --text:   #1a1a1a;
     --muted:  #6b7280;
-    /* pitch counter palette */
     --pc-blue:     #1a3a6b;
     --pc-blue-mid: #224a8a;
     --pc-blue-lt:  #2e5fad;
@@ -38,21 +37,10 @@
     --pc-foul:     #a8b4c4;
   }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* ── LOCK SCREEN ── */
-  #lock {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 24px;
-    background: var(--blue);
-  }
+  /* LOCK */
+  #lock { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: var(--blue); }
   .lock-logo { width: 72px; height: 72px; background: rgba(255,255,255,.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 36px; }
   .lock-title { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: .01em; margin-bottom: 4px; text-align: center; }
   .lock-sub { color: rgba(255,255,255,.6); font-size: 13px; margin-bottom: 32px; text-align: center; letter-spacing: .04em; text-transform: uppercase; }
@@ -65,28 +53,24 @@
   .lock-error { color: #c0392b; font-size: 12px; text-align: center; margin-top: 10px; min-height: 16px; font-weight: 500; }
   .lock-hint { color: rgba(255,255,255,.45); font-size: 11px; text-align: center; margin-top: 20px; }
 
-  /* ── APP SHELL ── */
+  /* APP SHELL */
   #app { display: none; }
-
   .app-header { background: var(--blue); color: #fff; padding: 14px 16px 12px; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
   .app-header-title { font-size: 17px; font-weight: 700; }
   .app-header-sub { font-size: 10px; opacity: .65; letter-spacing: .06em; text-transform: uppercase; margin-top: 1px; }
   .lock-out-btn { background: rgba(255,255,255,.15); border: none; border-radius: 6px; color: #fff; font-size: 11px; font-weight: 500; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
   .lock-out-btn:hover { background: rgba(255,255,255,.25); }
-
   .tabs { display: flex; background: var(--black); padding: 0 4px; overflow-x: auto; }
   .tab { flex: 1; min-width: 60px; padding: 10px 4px; background: none; border: none; color: rgba(255,255,255,.5); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; cursor: pointer; border-bottom: 3px solid transparent; transition: color .15s, border-color .15s; white-space: nowrap; }
   .tab.active { color: #fff; border-bottom-color: var(--gold); }
-
   .panel { display: none; padding: 12px; }
   .panel.active { display: block; }
 
-  /* ── PLAYBOOK COMPONENTS ── */
+  /* PLAYBOOK COMPONENTS */
   .pb-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
   .pb-card-head { background: var(--blue); color: #fff; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; display: flex; align-items: center; justify-content: space-between; }
   .pb-card-head.blk { background: var(--black); }
   .pb-card-body { padding: 10px 12px; }
-
   .sign-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: .5px solid var(--border); }
   .sign-row:last-child { border-bottom: none; }
   .badge { background: var(--blue); color: #fff; font-size: 9px; font-weight: 700; padding: 3px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: .04em; margin-top: 1px; }
@@ -97,16 +81,13 @@
   .badge.purple { background: var(--purple); }
   .sign-text { font-size: 13px; line-height: 1.45; color: var(--text); }
   .sign-text em { color: var(--muted); font-style: normal; font-size: 12px; }
-
   .note { background: #f0f4fb; border-left: 3px solid var(--blue); padding: 7px 10px; font-size: 12px; line-height: 1.5; color: var(--muted); border-radius: 0 6px 6px 0; margin: 8px 0 2px; }
   .note.blk    { background: #f2f2f2; border-color: var(--black); }
   .note.purple { background: #f5f0ff; border-color: var(--purple); }
-
   .ft-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; margin-top: 8px; }
   .ft-cell { background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 8px 9px; font-size: 12px; line-height: 1.4; }
   .ft-cell.wide { grid-column: 1/-1; }
   .ft-num { font-size: 14px; font-weight: 700; color: var(--blue); margin-bottom: 2px; }
-
   .bunt-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
   .bunt-cell { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
   .bunt-cell-head { padding: 6px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
@@ -116,30 +97,18 @@
   .bunt-cell-body { padding: 7px 10px; background: var(--card); }
   .bunt-row { font-size: 12px; line-height: 1.5; }
   .bunt-pos { font-weight: 700; color: var(--black); }
-
   .diamonds { display: flex; gap: 3px; }
   .diam { width: 8px; height: 8px; background: var(--silver); transform: rotate(45deg); border-radius: 1px; }
 
-  /* ── PITCH COUNTER TAB ── */
-  #tab-pitch {
-    background: var(--pc-bg);
-    min-height: calc(100vh - 90px);
-    padding: 16px 12px 24px;
-    background-image:
-      radial-gradient(ellipse at 50% 0%, rgba(26,58,107,0.5) 0%, transparent 65%),
-      repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(255,255,255,0.018) 48px, rgba(255,255,255,0.018) 49px),
-      repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(255,255,255,0.018) 48px, rgba(255,255,255,0.018) 49px);
-  }
+  /* PITCH COUNTER TAB */
+  #tab-pitch { background: var(--pc-bg); min-height: calc(100vh - 90px); padding: 16px 12px 24px; background-image: radial-gradient(ellipse at 50% 0%, rgba(26,58,107,0.5) 0%, transparent 65%), repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(255,255,255,0.018) 48px, rgba(255,255,255,0.018) 49px), repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(255,255,255,0.018) 48px, rgba(255,255,255,0.018) 49px); }
   #tab-pitch.active { display: block; }
-
   .pc-wrap { max-width: 490px; margin: 0 auto; }
   .pc-header { text-align: center; margin-bottom: 16px; }
   .pc-mascot { font-size: 2rem; line-height: 1; margin-bottom: 4px; filter: drop-shadow(0 2px 10px rgba(46,95,173,0.7)); }
   .pc-title { font-family: 'Bebas Neue', sans-serif; color: var(--pc-chalk); font-size: clamp(1.6rem, 5vw, 2.4rem); letter-spacing: 0.15em; text-shadow: 0 0 24px rgba(46,95,173,0.55), 2px 2px 0 rgba(0,0,0,0.6); }
   .pc-sub { color: var(--pc-silver-dk); font-size: 0.56rem; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 2px; }
-
   .scoreboard { background: var(--pc-card); border: 2px solid var(--pc-border); border-top: 4px solid var(--pc-blue-lt); border-radius: 10px; padding: 20px 22px; box-shadow: 0 14px 50px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.03); }
-
   .ip-banner { display: flex; align-items: center; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--pc-border); gap: 10px; }
   .ip-left { flex: 1; }
   .ip-label { font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 3px; }
@@ -153,7 +122,6 @@
   .ip-pip.active   { background: var(--pc-blue-lt); border-color: var(--pc-blue-lt); box-shadow: 0 0 6px rgba(46,95,173,0.65); }
   .ip-pip.complete { background: var(--pc-silver-dk); border-color: var(--pc-silver); }
   .ip-outs-label { font-size: 0.46rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--pc-silver-dk); text-align: right; margin-top: 1px; }
-
   .count-section { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
   .count-box { background: rgba(0,0,0,0.28); border: 1px solid var(--pc-border); border-radius: 8px; padding: 12px 8px 10px; text-align: center; }
   .count-label { font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 5px; }
@@ -168,18 +136,15 @@
   .dot.ball.active   { background: var(--pc-ball);   border-color: var(--pc-ball);   box-shadow: 0 0 5px var(--pc-ball); }
   .dot.strike.active { background: var(--pc-strike); border-color: var(--pc-strike); box-shadow: 0 0 5px var(--pc-strike); }
   .dot.out.active    { background: var(--pc-out);    border-color: var(--pc-out);    box-shadow: 0 0 5px var(--pc-out); }
-
   .age-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 9px 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--pc-border); border-radius: 7px; }
   .age-label { font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); }
   .age-select { background: var(--pc-blue); color: var(--pc-chalk); border: 1px solid var(--pc-blue-lt); border-radius: 5px; padding: 5px 24px 5px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 600; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a8b4c4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
-
   .total-section { border-top: 1px solid var(--pc-border); padding-top: 14px; display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 5px; }
   .total-label { font-size: 0.57rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); }
   .pitch-limit-text { font-size: 0.53rem; color: var(--pc-silver-dk); letter-spacing: 0.1em; margin-top: 3px; }
   .total-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; color: var(--pc-chalk); }
   .pitch-limit-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-bottom: 12px; overflow: hidden; }
   .pitch-limit-fill { height: 100%; background: linear-gradient(90deg, var(--pc-blue-lt), var(--pc-silver), var(--pc-silver-lt)); border-radius: 2px; transition: width 0.3s ease; width: 0%; }
-
   .rest-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 7px; margin-bottom: 18px; border: 1px solid var(--pc-border); background: rgba(0,0,0,0.2); transition: border-color 0.3s, background 0.3s; }
   .rest-row.rest-0 { border-color: rgba(91,156,246,0.35);  background: rgba(91,156,246,0.07); }
   .rest-row.rest-1 { border-color: rgba(91,156,246,0.35);  background: rgba(91,156,246,0.07); }
@@ -197,7 +162,6 @@
   .rest-row.rest-2 .rest-badge { color: var(--pc-strike); }
   .rest-row.rest-3 .rest-badge { color: var(--pc-blue-lt); }
   .rest-row.rest-4 .rest-badge { color: var(--pc-out); }
-
   .pc-btn { border: none; border-radius: 7px; padding: 15px 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.1em; cursor: pointer; transition: transform 0.08s; position: relative; overflow: hidden; }
   .pc-btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:background 0.1s; }
   .pc-btn:active { transform: scale(0.94); }
@@ -217,12 +181,10 @@
   .btn-undo        { background: rgba(255,255,255,0.05); color: var(--pc-silver);    border: 1px solid var(--pc-border); box-shadow: 0 3px 0 rgba(0,0,0,0.3); }
   .btn-reset-count { background: rgba(26,58,107,0.2);   color: var(--pc-silver-lt); border: 1px solid var(--pc-blue);   box-shadow: 0 3px 0 rgba(0,0,0,0.3); }
   .btn-new-pitcher { grid-column: 1/-1; margin-top: 6px; background: linear-gradient(135deg, var(--pc-blue) 0%, var(--pc-blue-mid) 100%); color: var(--pc-chalk); border: 1px solid var(--pc-blue-lt); box-shadow: 0 4px 0 rgba(0,0,0,0.45); font-size: 0.62rem; letter-spacing: 0.12em; padding: 13px 8px; }
-
   .stats-section { margin-top: 0; margin-bottom: 18px; border: 1px solid var(--pc-border); border-radius: 8px; overflow: hidden; }
   .stats-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px 6px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--pc-border); }
   .stats-title { font-size: 0.54rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--pc-silver-dk); }
   .stats-body { padding: 10px 12px 12px; }
-
   .split-bar-wrap { margin-bottom: 8px; }
   .split-labels { display: flex; justify-content: space-between; margin-bottom: 4px; }
   .split-label-ball   { font-size: 0.6rem; font-weight: 600; color: var(--pc-ball); letter-spacing: 0.06em; }
@@ -232,7 +194,6 @@
   .split-strike-fill { height: 100%; background: var(--pc-silver);  transition: width 0.4s ease; border-radius: 0 5px 5px 0; }
   .split-pct { display: flex; justify-content: space-between; margin-top: 3px; }
   .split-pct span { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--pc-chalk); }
-
   .trend-wrap { border-top: 1px solid var(--pc-border); padding-top: 10px; margin-top: 10px; }
   .trend-label { font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 6px; }
   .trend-pips { display: flex; gap: 4px; margin-bottom: 6px; align-items: flex-end; }
@@ -242,11 +203,9 @@
   .trend-pip.empty  { background: rgba(255,255,255,0.06); height: 6px !important; }
   .trend-axis { display: flex; justify-content: space-between; }
   .trend-axis span { font-size: 0.44rem; color: var(--pc-silver-dk); letter-spacing: 0.08em; }
-
   .command-alert { display: none; margin-top: 8px; padding: 7px 10px; border-radius: 5px; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.04em; border: 1px solid rgba(91,156,246,0.3); background: rgba(91,156,246,0.1); color: var(--pc-silver-lt); }
   .command-alert.warn { border-color: rgba(208,216,228,0.4); background: rgba(208,216,228,0.08); color: var(--pc-chalk); }
   .command-alert.show { display: block; }
-
   .log-section { margin-top: 16px; border-top: 1px solid var(--pc-border); padding-top: 12px; }
   .log-title { font-size: 0.51rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--pc-silver-dk); margin-bottom: 7px; }
   .log-scroll { max-height: 68px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #1e3352 transparent; }
@@ -259,10 +218,84 @@
   .log-tag.O { background: rgba(122,174,245,0.13);  color: var(--pc-out); }
   .log-tag.F { background: rgba(168,180,196,0.13);  color: var(--pc-foul); }
   .log-tag.last { outline: 1px solid var(--pc-silver-dk); }
-
   .pc-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; z-index: 999; }
   .pc-flash.show { animation: pcFlash 0.4s ease forwards; }
   @keyframes pcFlash { 0%{opacity:0.28;} 100%{opacity:0;} }
+
+  /* CSV IMPORT */
+  .csv-import-bar { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden; }
+  .csv-import-head { display:flex; align-items:center; gap:8px; padding:10px 12px; cursor:pointer; font-size:13px; font-weight:600; color:var(--text); }
+  .csv-import-head:hover { background:var(--bg); }
+  .csv-status { flex:1; font-size:11px; font-weight:400; color:var(--green); }
+  .csv-import-body { display:none; padding:10px 12px 14px; border-top:1px solid var(--border); background:var(--bg); }
+  .csv-import-body.open { display:block; }
+  .csv-textarea { width:100%; padding:8px 10px; border:1.5px solid var(--border); border-radius:7px; font-size:11px; font-family:monospace; background:var(--card); color:var(--text); outline:none; resize:vertical; }
+  .csv-textarea:focus { border-color:var(--blue); }
+  .csv-btn { margin-top:8px; padding:8px 16px; background:var(--blue); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; }
+  .csv-btn:hover { opacity:.88; }
+  .csv-msg { margin-top:6px; font-size:11px; min-height:14px; }
+  .csv-msg.ok { color:var(--green); }
+  .csv-msg.err { color:#c0392b; }
+
+  /* ROSTER TAB */
+  .roster-toolbar { display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .team-select { flex:1; min-width:0; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:13px; font-weight:600; background:var(--card); color:var(--text); outline:none; cursor:pointer; }
+  .team-select:focus { border-color:var(--blue); }
+  .roster-count { font-size:11px; color:var(--muted); white-space:nowrap; }
+  .player-card { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:8px; overflow:hidden; transition:box-shadow .15s; }
+  .player-card.injured { opacity:.6; }
+  .player-card-head { display:flex; align-items:center; gap:10px; padding:10px 12px; cursor:pointer; }
+  .player-num { width:34px; height:34px; border-radius:50%; background:var(--blue); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .player-card.injured .player-num { background:var(--gray); }
+  .player-info { flex:1; min-width:0; }
+  .player-name { font-size:14px; font-weight:600; color:var(--text); }
+  .player-meta { font-size:11px; color:var(--muted); margin-top:1px; }
+  .player-badges { display:flex; gap:4px; flex-wrap:wrap; margin-top:3px; }
+  .pos-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; background:var(--blue); color:#fff; }
+  .inj-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:3px; background:#c0392b; color:#fff; }
+  .speed-stars { font-size:13px; color:var(--gold); letter-spacing:1px; }
+  .expand-icon { font-size:12px; color:var(--muted); transition:transform .2s; flex-shrink:0; }
+  .expand-icon.open { transform:rotate(90deg); }
+  .player-editor { display:none; padding:10px 12px 14px; border-top:1px solid var(--border); background:var(--bg); }
+  .player-editor.open { display:block; }
+  .editor-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:6px; }
+  .pos-grid { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .pos-btn { padding:5px 10px; border-radius:5px; border:1.5px solid var(--border); background:var(--card); font-size:12px; font-weight:600; color:var(--gray); cursor:pointer; transition:all .12s; }
+  .pos-btn.selected { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .speed-row { display:flex; gap:8px; margin-bottom:12px; }
+  .speed-btn { flex:1; padding:7px 4px; border-radius:6px; border:1.5px solid var(--border); background:var(--card); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; text-align:center; transition:all .12s; }
+  .speed-btn.selected { background:var(--gold); border-color:var(--gold); color:#fff; }
+  .inj-toggle { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .inj-toggle input[type=checkbox] { width:16px; height:16px; accent-color:#c0392b; cursor:pointer; }
+  .inj-toggle label { font-size:12px; color:var(--text); cursor:pointer; }
+
+  /* LINEUP BUILDER */
+  .lineup-section { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-top:4px; overflow:hidden; }
+  .lineup-head { background:var(--black); color:#fff; padding:10px 12px; display:flex; align-items:center; justify-content:space-between; }
+  .lineup-head-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; }
+  .lineup-body { padding:12px; }
+  .priority-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .priority-btn { flex:1; min-width:calc(50% - 3px); padding:8px 6px; border-radius:6px; border:1.5px solid var(--border); background:var(--bg); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; text-align:center; transition:all .12s; }
+  .priority-btn.selected { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .lineup-slots { margin-bottom:12px; }
+  .lineup-slot { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:.5px solid var(--border); }
+  .lineup-slot:last-child { border-bottom:none; }
+  .slot-num { width:20px; font-size:12px; font-weight:700; color:var(--muted); text-align:center; flex-shrink:0; }
+  .slot-select { flex:1; padding:6px 8px; border:1px solid var(--border); border-radius:6px; font-size:12px; background:var(--card); color:var(--text); outline:none; cursor:pointer; }
+  .slot-select:focus { border-color:var(--blue); }
+  .slot-pos { width:36px; font-size:10px; color:var(--muted); text-align:center; flex-shrink:0; }
+  .slot-lock { width:24px; height:24px; border:none; border-radius:4px; background:transparent; font-size:14px; cursor:pointer; flex-shrink:0; opacity:.5; transition:opacity .12s; }
+  .slot-lock.locked { opacity:1; }
+  .generate-btn { width:100%; padding:13px; background:var(--blue); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .generate-btn:hover { opacity:.88; }
+  .generate-btn:disabled { opacity:.45; cursor:not-allowed; }
+  .ai-result { margin-top:12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:12px; font-size:13px; line-height:1.6; color:var(--text); display:none; }
+  .ai-result.show { display:block; }
+  .ai-thinking { display:flex; align-items:center; gap:8px; color:var(--muted); font-size:12px; }
+  .ai-thinking-dot { width:6px; height:6px; border-radius:50%; background:var(--blue); animation:aipulse 1s infinite; }
+  .ai-thinking-dot:nth-child(2) { animation-delay:.2s; }
+  .ai-thinking-dot:nth-child(3) { animation-delay:.4s; }
+  @keyframes aipulse { 0%,100%{opacity:.3;transform:scale(.8);} 50%{opacity:1;transform:scale(1.2);} }
 
   @media (min-width: 540px) {
     .panel:not(#tab-pitch) { padding: 16px; max-width: 600px; margin: 0 auto; }
@@ -290,7 +323,6 @@
 
 <!-- APP -->
 <div id="app">
-
   <div class="app-header">
     <div>
       <div class="app-header-title">Panthers Playbook</div>
@@ -304,6 +336,7 @@
     <button class="tab" onclick="showTab('defense',this)">🛡 Defense</button>
     <button class="tab" onclick="showTab('bunt',this)">📋 Bunt D</button>
     <button class="tab" onclick="showTab('pitch',this)">⚾ Pitches</button>
+    <button class="tab" onclick="showTab('roster',this)">👥 Roster</button>
   </div>
 
   <!-- OFFENSE -->
@@ -315,9 +348,9 @@
         <div class="sign-row"><span class="badge blk">Steal</span><span class="sign-text">Touch any <strong>bare skin</strong> — no indicator needed. <em>Skin = steal.</em></span></div>
         <div class="sign-row"><span class="badge">Delayed Steal</span><span class="sign-text">Indicator → <strong>fold arms across chest</strong> (football ref delay-of-game signal).</span></div>
         <div class="sign-row"><span class="badge">Bunt</span><span class="sign-text">Indicator → touch the <strong>belt</strong>.</span></div>
-        <div class="sign-row"><span class="badge">Fake Bunt</span><span class="sign-text">Indicator → touch <strong>button</strong> on top of hat.</span></div>
-        <div class="sign-row"><span class="badge">Fake Bunt &amp; Steal</span><span class="sign-text">Indicator → touch <strong>button</strong> on top of hat, then <strong>nose</strong>.</span></div>
-        <div class="sign-row"><span class="badge">Drag Bunt</span><span class="sign-text">Indicator → <strong>One hand</strong> wipe down thigh.</span></div>
+        <div class="sign-row"><span class="badge">Fake Bunt</span><span class="sign-text">Indicator → touch <strong>button on top of hat</strong>.</span></div>
+        <div class="sign-row"><span class="badge">Fake Bunt &amp; Steal</span><span class="sign-text">Indicator → touch <strong>button on top of hat</strong>, then <strong>nose</strong>.</span></div>
+        <div class="sign-row"><span class="badge">Drag Bunt</span><span class="sign-text">Indicator → <strong>one hand wipe down thigh</strong>.</span></div>
         <div class="sign-row"><span class="badge">Slap Bunt</span><span class="sign-text">Indicator → touch <strong>cheek</strong> as if being slapped.</span></div>
         <div class="sign-row"><span class="badge">Safety Squeeze</span><span class="sign-text">Indicator → <strong>cup hands together</strong> several times.</span></div>
         <div class="sign-row"><span class="badge">Hit &amp; Run</span><span class="sign-text">Indicator → both hands sweep <strong>from chest outward</strong> to shoulders.</span></div>
@@ -330,6 +363,14 @@
       <div class="pb-card-body">
         <div class="sign-row"><span class="badge purple">Steal 2nd</span><span class="sign-text">While talking to the runner at 1st, coach <strong>says the runner's jersey number out loud</strong>. Runner steals 2nd on next pitch.</span></div>
         <div class="note purple">Verbal sign only — sounds like normal coach chatter to everyone else.</div>
+      </div>
+    </div>
+    <div class="pb-card">
+      <div class="pb-card-head">Pitch Calls to Catcher <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
+      <div class="pb-card-body">
+        <div class="sign-row"><span class="badge">Fastball</span><span class="sign-text">Coach places <strong>hand on knee</strong>.</span></div>
+        <div class="sign-row"><span class="badge">Off Speed</span><span class="sign-text">Coach places <strong>fist on upper thigh by waist</strong>.</span></div>
+        <div class="sign-row"><span class="badge">Pitch Placement</span><span class="sign-text">Coach uses <strong>index fingers</strong> to indicate pitch placement.</span></div>
       </div>
     </div>
   </div>
@@ -355,14 +396,6 @@
         <div class="sign-row"><span class="badge">SS Crashes</span><span class="sign-text">Coach <strong>pats head</strong> → SS breaks hard to 2nd base.</span></div>
         <div class="sign-row"><span class="badge">2B Crashes</span><span class="sign-text">Coach <strong>pats chest</strong> → 2B breaks hard to 2nd base.</span></div>
         <div class="note">Once infielder crashes → <strong>catcher drops glove</strong> → pitcher picks off to 2nd.</div>
-      </div>
-    </div>
-    <div class="pb-card">
-      <div class="pb-card-head blk">Pitch Calls to Catcher <div class="diamonds"><div class="diam"></div><div class="diam"></div><div class="diam"></div></div></div>
-      <div class="pb-card-body">
-        <div class="sign-row"><span class="badge">Fastball</span><span class="sign-text">Coach places <strong>hand on knee</strong>.</span></div>
-        <div class="sign-row"><span class="badge">Off Speed</span><span class="sign-text">Coach places <strong>fist on upper thigh by waist</strong>.</span></div>
-        <div class="sign-row"><span class="badge">Pitch Placement</span><span class="sign-text">Coach uses <strong>index fingers</strong> to indicate pitch placement.</span></div>
       </div>
     </div>
   </div>
@@ -421,7 +454,6 @@
         <div class="pc-title">Pitch Counter</div>
         <div class="pc-sub">South Medford Panthers</div>
       </div>
-
       <div class="scoreboard">
         <div class="ip-banner">
           <div class="ip-left">
@@ -437,81 +469,35 @@
             <div class="ip-outs-label" id="ipOutsLabel">0 outs</div>
           </div>
         </div>
-
         <div class="count-section">
-          <div class="count-box">
-            <div class="count-label">Balls</div>
-            <div class="count-num ball" id="ballNum">0</div>
-            <div class="dots" id="ballDots">
-              <div class="dot ball"></div><div class="dot ball"></div>
-              <div class="dot ball"></div><div class="dot ball"></div>
-            </div>
-          </div>
-          <div class="count-box">
-            <div class="count-label">Strikes</div>
-            <div class="count-num strike" id="strikeNum">0</div>
-            <div class="dots" id="strikeDots">
-              <div class="dot strike"></div><div class="dot strike"></div><div class="dot strike"></div>
-            </div>
-          </div>
-          <div class="count-box">
-            <div class="count-label">Outs</div>
-            <div class="count-num out" id="outNum">0</div>
-            <div class="dots" id="outDots">
-              <div class="dot out"></div><div class="dot out"></div><div class="dot out"></div>
-            </div>
-          </div>
+          <div class="count-box"><div class="count-label">Balls</div><div class="count-num ball" id="ballNum">0</div><div class="dots" id="ballDots"><div class="dot ball"></div><div class="dot ball"></div><div class="dot ball"></div><div class="dot ball"></div></div></div>
+          <div class="count-box"><div class="count-label">Strikes</div><div class="count-num strike" id="strikeNum">0</div><div class="dots" id="strikeDots"><div class="dot strike"></div><div class="dot strike"></div><div class="dot strike"></div></div></div>
+          <div class="count-box"><div class="count-label">Outs</div><div class="count-num out" id="outNum">0</div><div class="dots" id="outDots"><div class="dot out"></div><div class="dot out"></div><div class="dot out"></div></div></div>
         </div>
-
         <div class="age-row">
           <label class="age-label" for="ageSelect">Pitcher Age Group</label>
           <select class="age-select" id="ageSelect" onchange="pcRender()">
-            <option value="7">7-8</option>
-            <option value="9">9-10</option>
-            <option value="11">11-12</option>
-            <option value="13" selected>13-14</option>
-            <option value="15">15-16</option>
-            <option value="17">17-18</option>
+            <option value="7">7-8</option><option value="9">9-10</option><option value="11">11-12</option>
+            <option value="13" selected>13-14</option><option value="15">15-16</option><option value="17">17-18</option>
           </select>
         </div>
-
         <div class="total-section">
-          <div>
-            <div class="total-label">Total Pitches</div>
-            <div class="pitch-limit-text" id="limitText">0 / 95 pitch max</div>
-          </div>
+          <div><div class="total-label">Total Pitches</div><div class="pitch-limit-text" id="limitText">0 / 95 pitch max</div></div>
           <div class="total-num" id="totalNum">0</div>
         </div>
         <div class="pitch-limit-bar"><div class="pitch-limit-fill" id="limitFill"></div></div>
-
         <div class="rest-row" id="restRow">
           <div class="rest-icon">🛌</div>
-          <div class="rest-info">
-            <div class="rest-label">Days Rest Required</div>
-            <div class="rest-value" id="restValue">No pitches thrown yet</div>
-          </div>
+          <div class="rest-info"><div class="rest-label">Days Rest Required</div><div class="rest-value" id="restValue">No pitches thrown yet</div></div>
           <div class="rest-badge" id="restBadge">0</div>
         </div>
-
         <div class="stats-section">
-          <div class="stats-header">
-            <span class="stats-title">Command Breakdown</span>
-            <span class="stats-title" id="statsTotal" style="color:var(--pc-chalk)">0 pitches</span>
-          </div>
+          <div class="stats-header"><span class="stats-title">Command Breakdown</span><span class="stats-title" id="statsTotal" style="color:var(--pc-chalk)">0 pitches</span></div>
           <div class="stats-body">
             <div class="split-bar-wrap">
-              <div class="split-labels">
-                <span class="split-label-ball" id="ballPctLabel">Balls — 0%</span>
-                <span class="split-label-strike" id="strikePctLabel">0% — Strikes+Fouls</span>
-              </div>
-              <div class="split-bar">
-                <div class="split-ball-fill"   id="splitBallFill"   style="width:50%"></div>
-                <div class="split-strike-fill" id="splitStrikeFill" style="width:50%"></div>
-              </div>
-              <div class="split-pct">
-                <span id="ballPctNum">—</span>
-                <span id="strikePctNum">—</span>
-              </div>
+              <div class="split-labels"><span class="split-label-ball" id="ballPctLabel">Balls — 0%</span><span class="split-label-strike" id="strikePctLabel">0% — Strikes+Fouls</span></div>
+              <div class="split-bar"><div class="split-ball-fill" id="splitBallFill" style="width:50%"></div><div class="split-strike-fill" id="splitStrikeFill" style="width:50%"></div></div>
+              <div class="split-pct"><span id="ballPctNum">—</span><span id="strikePctNum">—</span></div>
             </div>
             <div class="trend-wrap">
               <div class="trend-label">Trend — last 10 pitches <span style="opacity:0.5">(blue=ball, silver=strike)</span></div>
@@ -521,23 +507,19 @@
             </div>
           </div>
         </div>
-
         <div class="pc-btn-row">
           <button class="pc-btn btn-ball"   onclick="addPitch('B')">Ball</button>
           <button class="pc-btn btn-strike" onclick="addPitch('S')">Strike</button>
           <button class="pc-btn btn-out"    onclick="addPitch('O')">Out</button>
         </div>
         <div class="btn-foul-row">
-          <button class="pc-btn btn-foul" id="foulBtn" onclick="addFoul()" disabled>
-            ⚾ Foul Ball <span style="font-size:0.72em;opacity:0.65">(2 strikes only)</span>
-          </button>
+          <button class="pc-btn btn-foul" id="foulBtn" onclick="addFoul()" disabled>⚾ Foul Ball <span style="font-size:0.72em;opacity:0.65">(2 strikes only)</span></button>
         </div>
         <div class="pc-btn-row-2">
-          <button class="btn-util btn-undo"        onclick="undo()">← Undo</button>
+          <button class="btn-util btn-undo" onclick="undo()">← Undo</button>
           <button class="btn-util btn-reset-count" onclick="resetCount()">Reset Count</button>
           <button class="btn-util btn-new-pitcher" onclick="newPitcher()">⚾ New Pitcher — Reset All</button>
         </div>
-
         <div class="log-section">
           <div class="log-title">Pitch Log</div>
           <div class="log-scroll"><div class="log-entries" id="logEntries"></div></div>
@@ -546,232 +528,472 @@
     </div>
   </div>
 
-</div><!-- end #app -->
+  <!-- ROSTER & LINEUP -->
+  <div class="panel" id="tab-roster">
 
+    <div class="roster-toolbar">
+      <select class="team-select" id="teamSelect" onchange="renderRoster()">
+        <option value="broncos">South Medford Broncos D2</option>
+        <option value="panthers">South Medford Panthers 13u</option>
+      </select>
+      <span class="roster-count" id="rosterCount"></span>
+    </div>
+
+    <!-- CSV IMPORT -->
+    <div class="csv-import-bar" id="csvImportBar">
+      <div class="csv-import-head" onclick="toggleCsvImport()">
+        <span>📊 Import GameChanger stats</span>
+        <span id="csvStatus" class="csv-status"></span>
+        <span class="expand-icon" id="csvExpIcon">›</span>
+      </div>
+      <div class="csv-import-body" id="csvImportBody">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">In GameChanger: Stats tab → Export → copy CSV text and paste below. Stats are used by AI for lineup suggestions only.</div>
+        <textarea id="csvPaste" class="csv-textarea" placeholder="Paste GameChanger CSV here…" rows="4"></textarea>
+        <button class="csv-btn" onclick="parseCSV()">Import stats</button>
+        <div id="csvMsg" class="csv-msg"></div>
+      </div>
+    </div>
+
+    <div id="rosterList"></div>
+
+    <!-- LINEUP BUILDER -->
+    <div class="lineup-section">
+      <div class="lineup-head">
+        <span class="lineup-head-title">🤖 AI Lineup Builder</span>
+        <span style="font-size:10px;opacity:.6">Claude-powered</span>
+      </div>
+      <div class="lineup-body">
+        <div class="editor-label">Lineup priority</div>
+        <div class="priority-row" id="priorityRow">
+          <button class="priority-btn" onclick="setPriority('speed')">Speed at top</button>
+          <button class="priority-btn" onclick="setPriority('traditional')">Traditional</button>
+          <button class="priority-btn" onclick="setPriority('obp')">On-base focused</button>
+          <button class="priority-btn" onclick="setPriority('balanced')">Balanced</button>
+        </div>
+        <div class="editor-label">Batting order — lock players you've decided, leave blank for AI to fill</div>
+        <div class="lineup-slots" id="lineupSlots"></div>
+        <button class="generate-btn" id="generateBtn" onclick="generateLineup()">
+          <span>✨</span><span>Suggest lineup</span>
+        </button>
+        <div class="ai-result" id="aiResult"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- end #app -->
 <div class="pc-flash" id="pcFlash"></div>
 
 <script>
-  // ── Change this to your real passcode ──
   var PASSCODE = 'Panthers1';
   var SESSION_KEY = 'smbb_unlocked';
 
   function tryUnlock() {
     var val = document.getElementById('pin').value.trim();
-    if (val === PASSCODE) {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      showApp();
-    } else {
-      document.getElementById('lock-error').textContent = 'Incorrect passcode. Try again.';
-      document.getElementById('pin').value = '';
-      document.getElementById('pin').focus();
-    }
+    if (val === PASSCODE) { sessionStorage.setItem(SESSION_KEY,'1'); showApp(); }
+    else { document.getElementById('lock-error').textContent = 'Incorrect passcode. Try again.'; document.getElementById('pin').value = ''; document.getElementById('pin').focus(); }
   }
-
-  function showApp() {
-    document.getElementById('lock').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-  }
-
-  function lockApp() {
-    sessionStorage.removeItem(SESSION_KEY);
-    document.getElementById('lock').style.display = 'flex';
-    document.getElementById('app').style.display = 'none';
-    document.getElementById('pin').value = '';
-    document.getElementById('lock-error').textContent = '';
-  }
-
-  function showTab(name, btn) {
-    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
-    document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
-    document.getElementById('tab-' + name).classList.add('active');
+  function showApp() { document.getElementById('lock').style.display='none'; document.getElementById('app').style.display='block'; }
+  function lockApp() { sessionStorage.removeItem(SESSION_KEY); document.getElementById('lock').style.display='flex'; document.getElementById('app').style.display='none'; document.getElementById('pin').value=''; document.getElementById('lock-error').textContent=''; }
+  function showTab(name,btn) {
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+    document.getElementById('tab-'+name).classList.add('active');
     btn.classList.add('active');
+    if (name==='roster') renderRoster();
   }
-
   document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('pin').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') tryUnlock();
-    });
+    document.getElementById('pin').addEventListener('keydown', function(e){ if(e.key==='Enter') tryUnlock(); });
     if (sessionStorage.getItem(SESSION_KEY)) showApp();
     pcRender();
   });
 
-  // ── PITCH COUNTER LOGIC ──
+  // PITCH COUNTER
   var AGE_RULES = {
-    7:  { max: 50,  thresholds: [{min:1,max:20,days:0},{min:21,max:50,days:1}]},
-    9:  { max: 75,  thresholds: [{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
-    11: { max: 85,  thresholds: [{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
-    13: { max: 95,  thresholds: [{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
-    15: { max: 95,  thresholds: [{min:1,max:30,days:0},{min:31,max:45,days:1},{min:46,max:60,days:2},{min:61,max:75,days:3},{min:76,max:999,days:4}]},
-    17: { max: 105, thresholds: [{min:1,max:30,days:0},{min:31,max:45,days:1},{min:46,max:60,days:2},{min:61,max:75,days:3},{min:76,max:999,days:4}]}
+    7:{max:50,thresholds:[{min:1,max:20,days:0},{min:21,max:50,days:1}]},
+    9:{max:75,thresholds:[{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
+    11:{max:85,thresholds:[{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
+    13:{max:95,thresholds:[{min:1,max:20,days:0},{min:21,max:35,days:1},{min:36,max:50,days:2},{min:51,max:65,days:3},{min:66,max:999,days:4}]},
+    15:{max:95,thresholds:[{min:1,max:30,days:0},{min:31,max:45,days:1},{min:46,max:60,days:2},{min:61,max:75,days:3},{min:76,max:999,days:4}]},
+    17:{max:105,thresholds:[{min:1,max:30,days:0},{min:31,max:45,days:1},{min:46,max:60,days:2},{min:61,max:75,days:3},{min:76,max:999,days:4}]}
   };
-  var REST_LABELS = [
-    'Eligible to pitch - no rest needed',
-    '1 calendar day of rest required',
-    '2 calendar days of rest required',
-    '3 calendar days of rest required',
-    '4 calendar days of rest required'
-  ];
+  var REST_LABELS=['Eligible to pitch - no rest needed','1 calendar day of rest required','2 calendar days of rest required','3 calendar days of rest required','4 calendar days of rest required'];
+  function getAgeKey(){return parseInt(document.getElementById('ageSelect').value);}
+  function getPitchMax(){return AGE_RULES[getAgeKey()].max;}
+  function getRestDays(p){if(p===0)return 0;var r=AGE_RULES[getAgeKey()];for(var i=0;i<r.thresholds.length;i++){var t=r.thresholds[i];if(p>=t.min&&p<=t.max)return t.days;}return 4;}
+  var pcState={balls:0,strikes:0,outs:0,total:0,pitcherOuts:0,log:[]};
+  function pcSnap(){return{balls:pcState.balls,strikes:pcState.strikes,outs:pcState.outs,total:pcState.total,pitcherOuts:pcState.pitcherOuts};}
+  function addPitch(type){var s=pcSnap();s.type=type;pcState.log.push(s);if(type==='B'){pcState.total++;pcState.balls++;if(pcState.balls>=4){pcState.balls=0;pcState.strikes=0;}}else if(type==='S'){pcState.total++;pcState.strikes++;if(pcState.strikes>=3){pcState.balls=0;pcState.strikes=0;}}else if(type==='O'){pcState.pitcherOuts++;pcState.outs++;pcState.balls=0;pcState.strikes=0;if(pcState.outs>=3)pcState.outs=0;}pcBump(type);pcRender();}
+  function addFoul(){if(pcState.strikes<2)return;var s=pcSnap();s.type='F';pcState.log.push(s);pcState.total++;pcBump('F');pcRender();}
+  function undo(){if(!pcState.log.length)return;var l=pcState.log.pop();pcState.balls=l.balls;pcState.strikes=l.strikes;pcState.outs=l.outs;pcState.total=l.total;pcState.pitcherOuts=l.pitcherOuts;pcRender();}
+  function resetCount(){pcState.balls=0;pcState.strikes=0;pcRender();}
+  function newPitcher(){pcState={balls:0,strikes:0,outs:pcState.outs,total:0,pitcherOuts:0,log:[]};pcRender();}
+  function pcBump(type){var m={B:'ballNum',S:'strikeNum',O:'outNum',F:'strikeNum'};var el=document.getElementById(m[type]);if(el){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');}var f=document.getElementById('pcFlash');var c={B:'rgba(91,156,246,0.18)',S:'rgba(208,216,228,0.15)',O:'rgba(122,174,245,0.18)',F:'rgba(168,180,196,0.18)'};f.style.background=c[type]||'transparent';f.classList.remove('show');void f.offsetWidth;f.classList.add('show');}
+  function updateDots(id,n){document.querySelectorAll('#'+id+' .dot').forEach(function(d,i){d.classList.toggle('active',i<n);});}
+  function renderIP(){var wo=Math.floor(pcState.pitcherOuts/3),rem=pcState.pitcherOuts%3,fm=['','\u2153','\u2154'];document.getElementById('ipWhole').textContent=wo;document.getElementById('ipFrac').textContent=fm[rem];document.getElementById('ipOutsLabel').textContent=pcState.pitcherOuts+' out'+(pcState.pitcherOuts!==1?'s':'');var pe=document.getElementById('ipPips');pe.innerHTML='';var show=Math.min(wo,2);for(var r=0;r<show;r++){var row=document.createElement('div');row.className='ip-pip-row';for(var p=0;p<3;p++){var pip=document.createElement('div');pip.className='ip-pip complete';row.appendChild(pip);}pe.appendChild(row);}var cur=document.createElement('div');cur.className='ip-pip-row';for(var p2=0;p2<3;p2++){var pip2=document.createElement('div');pip2.className='ip-pip'+(p2<rem?' active':'');cur.appendChild(pip2);}pe.appendChild(cur);}
+  function renderRest(){var p=pcState.total,mx=getPitchMax(),d=getRestDays(p),ov=p>mx;var rr=document.getElementById('restRow');rr.className='rest-row rest-'+d+(ov?' over-limit':'');document.getElementById('restBadge').textContent=d;document.getElementById('restValue').textContent=p===0?'No pitches thrown yet':ov?'Over '+mx+'-pitch limit! '+REST_LABELS[d]:REST_LABELS[d];}
+  function renderCommand(){var pitches=pcState.log.filter(function(p){return p.type==='B'||p.type==='S'||p.type==='F';});var total=pitches.length,balls=pitches.filter(function(p){return p.type==='B';}).length,strikes=total-balls;document.getElementById('statsTotal').textContent=total+' pitch'+(total!==1?'es':'');if(total===0){document.getElementById('ballPctNum').textContent='—';document.getElementById('strikePctNum').textContent='—';document.getElementById('ballPctLabel').textContent='Balls — 0%';document.getElementById('strikePctLabel').textContent='0% — Strikes+Fouls';document.getElementById('splitBallFill').style.width='50%';document.getElementById('splitStrikeFill').style.width='50%';}else{var bp=Math.round(balls/total*100),sp=Math.round(strikes/total*100);document.getElementById('ballPctNum').textContent=bp+'%';document.getElementById('strikePctNum').textContent=sp+'%';document.getElementById('ballPctLabel').textContent='Balls — '+bp+'%';document.getElementById('strikePctLabel').textContent=sp+'% — Strikes+Fouls';document.getElementById('splitBallFill').style.width=bp+'%';document.getElementById('splitStrikeFill').style.width=sp+'%';}var last10=pitches.slice(-10),pe=document.getElementById('trendPips');pe.innerHTML='';for(var i=0;i<10;i++){var pip=document.createElement('div');if(i<last10.length){var lp=last10[i];pip.className='trend-pip '+(lp.type==='B'?'ball':'strike');pip.style.height=lp.type==='B'?'22px':'14px';}else{pip.className='trend-pip empty';}pe.appendChild(pip);}var ae=document.getElementById('commandAlert');ae.className='command-alert';if(last10.length>=6){var half=Math.floor(last10.length/2),early=last10.slice(0,half),recent=last10.slice(-half),eBP=early.filter(function(p){return p.type==='B';}).length/early.length,rBP=recent.filter(function(p){return p.type==='B';}).length/recent.length,drift=rBP-eBP;if(drift>=0.34){ae.className='command-alert warn show';ae.textContent='⚠️ Control dropping — ball rate up '+Math.round(drift*100)+'% over last '+last10.length+' pitches. Consider a visit.';}else if(drift<=-0.34){ae.className='command-alert show';ae.textContent='✓ Command improving — strike rate up '+Math.round(Math.abs(drift)*100)+'% over last '+last10.length+' pitches.';}}}
+  // ── CSV STATS STORAGE ──
+  var teamStats = { broncos: {}, panthers: {} }; // keyed by last name -> stats obj
 
-  function getAgeKey() { return parseInt(document.getElementById('ageSelect').value); }
-  function getPitchMax() { return AGE_RULES[getAgeKey()].max; }
-  function getRestDays(pitches) {
-    if (pitches === 0) return 0;
-    var rules = AGE_RULES[getAgeKey()];
-    for (var i = 0; i < rules.thresholds.length; i++) {
-      var t = rules.thresholds[i];
-      if (pitches >= t.min && pitches <= t.max) return t.days;
-    }
-    return 4;
+  function toggleCsvImport() {
+    var body = document.getElementById('csvImportBody');
+    var icon = document.getElementById('csvExpIcon');
+    var open = body.classList.toggle('open');
+    icon.classList.toggle('open', open);
   }
 
-  var pcState = { balls: 0, strikes: 0, outs: 0, total: 0, pitcherOuts: 0, log: [] };
+  function parseCSV() {
+    var raw = document.getElementById('csvPaste').value.trim();
+    var msg = document.getElementById('csvMsg');
+    var statusEl = document.getElementById('csvStatus');
+    if (!raw) { msg.className='csv-msg err'; msg.textContent='Please paste CSV text first.'; return; }
 
-  function pcSnap() {
-    return { balls: pcState.balls, strikes: pcState.strikes, outs: pcState.outs, total: pcState.total, pitcherOuts: pcState.pitcherOuts };
-  }
+    try {
+      var lines = raw.split('\n').filter(function(l){ return l.trim(); });
+      // Find header line — it starts with "Number,Last,First"
+      var headerIdx = -1;
+      for (var i=0; i<lines.length; i++) {
+        if (lines[i].startsWith('Number,Last,First')) { headerIdx = i; break; }
+      }
+      if (headerIdx < 0) { msg.className='csv-msg err'; msg.textContent='Could not find header row. Make sure you copied the full CSV.'; return; }
 
-  function addPitch(type) {
-    var snap = pcSnap(); snap.type = type; pcState.log.push(snap);
-    if (type === 'B') {
-      pcState.total++; pcState.balls++;
-      if (pcState.balls >= 4) { pcState.balls = 0; pcState.strikes = 0; }
-    } else if (type === 'S') {
-      pcState.total++; pcState.strikes++;
-      if (pcState.strikes >= 3) { pcState.balls = 0; pcState.strikes = 0; }
-    } else if (type === 'O') {
-      pcState.pitcherOuts++; pcState.outs++;
-      pcState.balls = 0; pcState.strikes = 0;
-      if (pcState.outs >= 3) pcState.outs = 0;
-    }
-    pcBump(type); pcRender();
-  }
+      var headers = lines[headerIdx].split(',');
+      var idx = {};
+      ['Number','Last','First','AVG','OBP','OPS','SLG','H','2B','3B','HR','RBI','R','BB','SO','SB','SB%','QAB%','BA/RISP','GP','PA','AB','HBP','XBH','TB'].forEach(function(col){
+        var i = headers.indexOf(col);
+        if (i >= 0) idx[col] = i;
+      });
 
-  function addFoul() {
-    if (pcState.strikes < 2) return;
-    var snap = pcSnap(); snap.type = 'F'; pcState.log.push(snap);
-    pcState.total++; pcBump('F'); pcRender();
-  }
+      var team = currentTeam();
+      teamStats[team] = {};
+      var count = 0;
 
-  function undo() {
-    if (!pcState.log.length) return;
-    var last = pcState.log.pop();
-    pcState.balls = last.balls; pcState.strikes = last.strikes;
-    pcState.outs = last.outs; pcState.total = last.total;
-    pcState.pitcherOuts = last.pitcherOuts; pcRender();
-  }
+      for (var r=headerIdx+1; r<lines.length; r++) {
+        var cols = lines[r].split(',');
+        var last = cols[idx['Last']] ? cols[idx['Last']].trim() : '';
+        var first = cols[idx['First']] ? cols[idx['First']].trim() : '';
+        if (!last || last==='Totals' || last==='Glossary') continue;
+        var key = last.toLowerCase();
+        var stats = {};
+        Object.keys(idx).forEach(function(col){
+          stats[col] = cols[idx[col]] ? cols[idx[col]].trim() : '-';
+        });
+        stats._displayName = first + ' ' + last;
+        teamStats[team][key] = stats;
+        count++;
+      }
 
-  function resetCount() { pcState.balls = 0; pcState.strikes = 0; pcRender(); }
-
-  function newPitcher() {
-    pcState = { balls: 0, strikes: 0, outs: pcState.outs, total: 0, pitcherOuts: 0, log: [] };
-    pcRender();
-  }
-
-  function pcBump(type) {
-    var idMap = { B:'ballNum', S:'strikeNum', O:'outNum', F:'strikeNum' };
-    var el = document.getElementById(idMap[type]);
-    if (el) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
-    var flash = document.getElementById('pcFlash');
-    var colors = { B:'rgba(91,156,246,0.18)', S:'rgba(208,216,228,0.15)', O:'rgba(122,174,245,0.18)', F:'rgba(168,180,196,0.18)' };
-    flash.style.background = colors[type] || 'transparent';
-    flash.classList.remove('show'); void flash.offsetWidth; flash.classList.add('show');
-  }
-
-  function updateDots(id, n) {
-    document.querySelectorAll('#' + id + ' .dot').forEach(function(d, i){ d.classList.toggle('active', i < n); });
-  }
-
-  function renderIP() {
-    var wo = Math.floor(pcState.pitcherOuts / 3);
-    var rem = pcState.pitcherOuts % 3;
-    var fracMap = ['', '\u2153', '\u2154'];
-    document.getElementById('ipWhole').textContent = wo;
-    document.getElementById('ipFrac').textContent  = fracMap[rem];
-    document.getElementById('ipOutsLabel').textContent = pcState.pitcherOuts + ' out' + (pcState.pitcherOuts !== 1 ? 's' : '');
-    var pipsEl = document.getElementById('ipPips');
-    pipsEl.innerHTML = '';
-    var show = Math.min(wo, 2);
-    for (var r = 0; r < show; r++) {
-      var row = document.createElement('div'); row.className = 'ip-pip-row';
-      for (var p = 0; p < 3; p++) { var pip = document.createElement('div'); pip.className = 'ip-pip complete'; row.appendChild(pip); }
-      pipsEl.appendChild(row);
-    }
-    var cur = document.createElement('div'); cur.className = 'ip-pip-row';
-    for (var p2 = 0; p2 < 3; p2++) { var pip2 = document.createElement('div'); pip2.className = 'ip-pip' + (p2 < rem ? ' active' : ''); cur.appendChild(pip2); }
-    pipsEl.appendChild(cur);
-  }
-
-  function renderRest() {
-    var pitches = pcState.total, maxP = getPitchMax(), days = getRestDays(pitches), over = pitches > maxP;
-    var rr = document.getElementById('restRow');
-    rr.className = 'rest-row rest-' + days + (over ? ' over-limit' : '');
-    document.getElementById('restBadge').textContent = days;
-    document.getElementById('restValue').textContent =
-      pitches === 0 ? 'No pitches thrown yet' :
-      over ? 'Over ' + maxP + '-pitch limit! ' + REST_LABELS[days] : REST_LABELS[days];
-  }
-
-  function renderCommand() {
-    var pitches = pcState.log.filter(function(p){ return p.type==='B'||p.type==='S'||p.type==='F'; });
-    var total = pitches.length, balls = pitches.filter(function(p){ return p.type==='B'; }).length, strikes = total - balls;
-    document.getElementById('statsTotal').textContent = total + ' pitch' + (total !== 1 ? 'es' : '');
-    if (total === 0) {
-      document.getElementById('ballPctNum').textContent = '—'; document.getElementById('strikePctNum').textContent = '—';
-      document.getElementById('ballPctLabel').textContent = 'Balls — 0%'; document.getElementById('strikePctLabel').textContent = '0% — Strikes+Fouls';
-      document.getElementById('splitBallFill').style.width = '50%'; document.getElementById('splitStrikeFill').style.width = '50%';
-    } else {
-      var bp = Math.round(balls/total*100), sp = Math.round(strikes/total*100);
-      document.getElementById('ballPctNum').textContent = bp+'%'; document.getElementById('strikePctNum').textContent = sp+'%';
-      document.getElementById('ballPctLabel').textContent = 'Balls — '+bp+'%'; document.getElementById('strikePctLabel').textContent = sp+'% — Strikes+Fouls';
-      document.getElementById('splitBallFill').style.width = bp+'%'; document.getElementById('splitStrikeFill').style.width = sp+'%';
-    }
-    var last10 = pitches.slice(-10), pipsEl = document.getElementById('trendPips');
-    pipsEl.innerHTML = '';
-    for (var i = 0; i < 10; i++) {
-      var pip = document.createElement('div');
-      if (i < last10.length) { var lp = last10[i]; pip.className = 'trend-pip '+(lp.type==='B'?'ball':'strike'); pip.style.height = lp.type==='B'?'22px':'14px'; }
-      else { pip.className = 'trend-pip empty'; }
-      pipsEl.appendChild(pip);
-    }
-    var alertEl = document.getElementById('commandAlert');
-    alertEl.className = 'command-alert';
-    if (last10.length >= 6) {
-      var half = Math.floor(last10.length/2);
-      var early = last10.slice(0, half), recent = last10.slice(-half);
-      var eBP = early.filter(function(p){ return p.type==='B'; }).length / early.length;
-      var rBP = recent.filter(function(p){ return p.type==='B'; }).length / recent.length;
-      var drift = rBP - eBP;
-      if (drift >= 0.34) { alertEl.className = 'command-alert warn show'; alertEl.textContent = '⚠️ Control dropping — ball rate up '+Math.round(drift*100)+'% over last '+last10.length+' pitches. Consider a visit.'; }
-      else if (drift <= -0.34) { alertEl.className = 'command-alert show'; alertEl.textContent = '✓ Command improving — strike rate up '+Math.round(Math.abs(drift)*100)+'% over last '+last10.length+' pitches.'; }
+      msg.className='csv-msg ok';
+      msg.textContent = '✓ Imported stats for ' + count + ' players.';
+      statusEl.textContent = '✓ Stats loaded (' + count + ' players)';
+      document.getElementById('csvPaste').value = '';
+    } catch(e) {
+      msg.className='csv-msg err';
+      msg.textContent = 'Error parsing CSV: ' + e.message;
     }
   }
 
-  function pcRender() {
-    document.getElementById('ballNum').textContent   = pcState.balls;
-    document.getElementById('strikeNum').textContent = pcState.strikes;
-    document.getElementById('outNum').textContent    = pcState.outs;
-    document.getElementById('totalNum').textContent  = pcState.total;
-    updateDots('ballDots', pcState.balls);
-    updateDots('strikeDots', pcState.strikes);
-    updateDots('outDots', pcState.outs);
-    var maxP = getPitchMax(), pct = Math.min(100, pcState.total/maxP*100);
-    document.getElementById('limitFill').style.width = pct+'%';
-    document.getElementById('limitText').textContent = pcState.total+' / '+maxP+' pitch max';
-    var fb = document.getElementById('foulBtn');
-    if (pcState.strikes === 2) { fb.classList.add('active'); fb.disabled = false; }
-    else { fb.classList.remove('active'); fb.disabled = true; }
-    var entries = document.getElementById('logEntries');
-    entries.innerHTML = '';
-    var labels = { B:'Ball', S:'Strike', O:'Out', F:'Foul' };
-    pcState.log.forEach(function(p, i) {
-      var tag = document.createElement('span');
-      tag.className = 'log-tag ' + p.type + (i === pcState.log.length-1 ? ' last' : '');
-      tag.textContent = labels[p.type] || p.type;
-      entries.appendChild(tag);
+  function getStatsForPlayer(playerName) {
+    var team = currentTeam();
+    var tStats = teamStats[team];
+    if (!tStats || Object.keys(tStats).length === 0) return null;
+    // Match by last name
+    var lastName = playerName.split(' ').pop().toLowerCase();
+    return tStats[lastName] || null;
+  }
+
+  function formatStatsForAI(playerName) {
+    var s = getStatsForPlayer(playerName);
+    if (!s) return '';
+    var parts = [];
+    if (s.AVG && s.AVG !== '-') parts.push('AVG:'+s.AVG);
+    if (s.OBP && s.OBP !== '-') parts.push('OBP:'+s.OBP);
+    if (s.SLG && s.SLG !== '-') parts.push('SLG:'+s.SLG);
+    if (s.OPS && s.OPS !== '-') parts.push('OPS:'+s.OPS);
+    if (s.HR  && s.HR  !== '-' && s.HR !== '0') parts.push('HR:'+s.HR);
+    if (s.RBI && s.RBI !== '-') parts.push('RBI:'+s.RBI);
+    if (s.SB  && s.SB  !== '-' && s.SB !== '0') parts.push('SB:'+s.SB);
+    if (s['SB%'] && s['SB%'] !== '-') parts.push('SB%:'+s['SB%']);
+    if (s.BB  && s.BB  !== '-') parts.push('BB:'+s.BB);
+    if (s.SO  && s.SO  !== '-') parts.push('SO:'+s.SO);
+    if (s['BA/RISP'] && s['BA/RISP'] !== '-') parts.push('BA/RISP:'+s['BA/RISP']);
+    if (s['QAB%'] && s['QAB%'] !== '-') parts.push('QAB%:'+s['QAB%']+'%');
+    if (s.GP  && s.GP  !== '-') parts.push('GP:'+s.GP);
+    return parts.length ? ' [Stats: ' + parts.join(', ') + ']' : '';
+  }
+
+  // ── ROSTER DATA ──
+  var TEAMS = {
+    broncos: {
+      name: 'South Medford Broncos D2',
+      players: [
+        {id:'b1', num:'1',  name:'Austin Tate'},
+        {id:'b2', num:'2',  name:'Parker Guches'},
+        {id:'b3', num:'3',  name:'Calvin Baglietto'},
+        {id:'b4', num:'4',  name:'Colten Whitehead'},
+        {id:'b5', num:'5',  name:'Connor Furnish'},
+        {id:'b6', num:'6',  name:'Josh Allman'},
+        {id:'b8', num:'8',  name:'Roman Christie'},
+        {id:'b9', num:'9',  name:'Zane Cabrera'},
+        {id:'b10',num:'10', name:'Max King'},
+        {id:'b11',num:'11', name:'Kyler Clevenger'},
+        {id:'b12',num:'12', name:'Sloan Robeson'},
+        {id:'b14',num:'14', name:'Evan Vanhoven'},
+        {id:'b15',num:'15', name:'Memphis Preisinger'},
+        {id:'b17',num:'17', name:'Owen Rhoden'}
+      ]
+    },
+    panthers: {
+      name: 'South Medford Panthers 13u',
+      players: [
+        {id:'p1', num:'1',  name:'Peyton Thorpe'},
+        {id:'p2', num:'2',  name:'Evan VanHoven'},
+        {id:'p4', num:'4',  name:'Colten Whitehead'},
+        {id:'p7', num:'7',  name:'Connor Furnish'},
+        {id:'p9', num:'9',  name:'Mack Folsom'},
+        {id:'p13',num:'13', name:'Brian Anderson'},
+        {id:'p16',num:'16', name:'Josh Allman'},
+        {id:'p17',num:'17', name:'Maxx Peltier', injured:true},
+        {id:'p28',num:'28', name:'Michael Davis'},
+        {id:'p29',num:'29', name:'Dillon Bakker'},
+        {id:'p38',num:'38', name:'Sloan Robeson'},
+        {id:'p88',num:'88', name:'Kyler Clevenger'}
+      ]
+    }
+  };
+
+  var ALL_POSITIONS = ['P','C','1B','2B','3B','SS','LF','CF','RF','DH','UT'];
+  var SPEED_LABELS = ['','⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐','⭐⭐⭐⭐⭐'];
+  var SPEED_NAMES  = ['—','Slow','Below Avg','Average','Fast','Burner'];
+
+  // Persistent state stored in memory
+  var playerData = {}; // keyed by player id: {positions:[], speed:0, injured:bool}
+
+  function getPlayerData(id, defaults) {
+    if (!playerData[id]) playerData[id] = Object.assign({positions:[], speed:0, injured: defaults && defaults.injured ? true : false}, defaults||{});
+    return playerData[id];
+  }
+
+  function currentTeam() { return document.getElementById('teamSelect').value; }
+  function currentPlayers() { return TEAMS[currentTeam()].players; }
+
+  function renderRoster() {
+    var players = currentPlayers();
+    var active = players.filter(function(p){ return !getPlayerData(p.id, p).injured; });
+    document.getElementById('rosterCount').textContent = active.length + ' active / ' + players.length + ' total';
+    var html = '';
+    players.forEach(function(p) {
+      var d = getPlayerData(p.id, p);
+      var posStr = d.positions.length ? d.positions.join(', ') : 'No positions set';
+      var speedStr = d.speed > 0 ? SPEED_LABELS[d.speed] + ' ' + SPEED_NAMES[d.speed] : 'Speed not set';
+      html += '<div class="player-card' + (d.injured?' injured':'') + '" id="card-'+p.id+'">';
+      html += '<div class="player-card-head" onclick="toggleEditor(\''+p.id+'\')">';
+      html += '<div class="player-num">#'+p.num+'</div>';
+      html += '<div class="player-info">';
+      html += '<div class="player-name">'+p.name+'</div>';
+      html += '<div class="player-badges">';
+      if (d.injured) html += '<span class="inj-badge">⚠ Injured</span>';
+      d.positions.forEach(function(pos){ html += '<span class="pos-badge">'+pos+'</span>'; });
+      html += '</div>';
+      html += '<div class="player-meta">' + speedStr + '</div>';
+      html += '</div>';
+      html += '<span class="expand-icon" id="exp-'+p.id+'">›</span>';
+      html += '</div>';
+      // Editor
+      html += '<div class="player-editor" id="editor-'+p.id+'">';
+      html += '<div class="editor-label">Positions</div>';
+      html += '<div class="pos-grid">';
+      ALL_POSITIONS.forEach(function(pos){
+        var sel = d.positions.indexOf(pos) >= 0 ? ' selected' : '';
+        html += '<button class="pos-btn'+sel+'" onclick="togglePos(\''+p.id+'\',\''+pos+'\')">'+pos+'</button>';
+      });
+      html += '</div>';
+      html += '<div class="editor-label">Baserunning speed</div>';
+      html += '<div class="speed-row">';
+      for (var s=1; s<=5; s++) {
+        var sel = d.speed===s?' selected':'';
+        html += '<button class="speed-btn'+sel+'" onclick="setSpeed(\''+p.id+'\','+s+')">'+SPEED_LABELS[s]+'<br><span style="font-size:9px">'+SPEED_NAMES[s]+'</span></button>';
+      }
+      html += '</div>';
+      html += '<div class="inj-toggle"><input type="checkbox" id="inj-'+p.id+'" '+(d.injured?'checked':'')+' onchange="toggleInjury(\''+p.id+'\')"><label for="inj-'+p.id+'">Mark as injured / inactive</label></div>';
+      html += '</div></div>';
     });
-    entries.parentElement.scrollTop = entries.parentElement.scrollHeight;
-    renderIP(); renderRest(); renderCommand();
+    document.getElementById('rosterList').innerHTML = html;
+    renderLineupSlots();
   }
+
+  function toggleEditor(id) {
+    var ed = document.getElementById('editor-'+id);
+    var exp = document.getElementById('exp-'+id);
+    var open = ed.classList.toggle('open');
+    if (open) exp.classList.add('open'); else exp.classList.remove('open');
+  }
+
+  function togglePos(id, pos) {
+    var d = getPlayerData(id);
+    var idx = d.positions.indexOf(pos);
+    if (idx >= 0) d.positions.splice(idx,1); else d.positions.push(pos);
+    renderRoster(); openEditor(id);
+  }
+
+  function setSpeed(id, val) {
+    getPlayerData(id).speed = val;
+    renderRoster(); openEditor(id);
+  }
+
+  function toggleInjury(id) {
+    var d = getPlayerData(id);
+    d.injured = !d.injured;
+    renderRoster(); openEditor(id);
+  }
+
+  function openEditor(id) {
+    var ed = document.getElementById('editor-'+id);
+    var exp = document.getElementById('exp-'+id);
+    if (ed) { ed.classList.add('open'); }
+    if (exp) { exp.classList.add('open'); }
+  }
+
+  // LINEUP BUILDER
+  var lineupPriority = null;
+  var LINEUP_SIZE = 9;
+
+  function setPriority(p) {
+    lineupPriority = p;
+    document.querySelectorAll('.priority-btn').forEach(function(b){ b.classList.remove('selected'); });
+    event.target.classList.add('selected');
+  }
+
+  function renderLineupSlots() {
+    var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
+    var html = '';
+    for (var i=1; i<=LINEUP_SIZE; i++) {
+      html += '<div class="lineup-slot">';
+      html += '<span class="slot-num">'+i+'</span>';
+      html += '<select class="slot-select" id="slot-'+i+'">';
+      html += '<option value="">— AI will suggest —</option>';
+      players.forEach(function(p){
+        html += '<option value="'+p.id+'">'+p.name+' #'+p.num+'</option>';
+      });
+      html += '</select>';
+      html += '<span class="slot-pos" id="slotpos-'+i+'"></span>';
+      html += '<button class="slot-lock" id="lock-'+i+'" onclick="toggleLock('+i+')" title="Lock this pick">🔒</button>';
+      html += '</div>';
+    }
+    document.getElementById('lineupSlots').innerHTML = html;
+    // update pos label when slot changes
+    for (var j=1; j<=LINEUP_SIZE; j++) {
+      (function(slot){
+        var sel = document.getElementById('slot-'+slot);
+        if (sel) sel.addEventListener('change', function(){ updateSlotPos(slot); });
+      })(j);
+    }
+  }
+
+  var lockedSlots = {};
+  function toggleLock(i) {
+    lockedSlots[i] = !lockedSlots[i];
+    var btn = document.getElementById('lock-'+i);
+    if (lockedSlots[i]) btn.classList.add('locked'); else btn.classList.remove('locked');
+  }
+
+  function updateSlotPos(i) {
+    var sel = document.getElementById('slot-'+i);
+    var posEl = document.getElementById('slotpos-'+i);
+    if (!sel || !posEl) return;
+    var id = sel.value;
+    if (!id) { posEl.textContent=''; return; }
+    var d = playerData[id];
+    posEl.textContent = d && d.positions.length ? d.positions[0] : '';
+  }
+
+  function getLineupContext() {
+    var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
+    var locked = [];
+    var available = [];
+    for (var i=1; i<=LINEUP_SIZE; i++) {
+      var sel = document.getElementById('slot-'+i);
+      var val = sel ? sel.value : '';
+      if (val && lockedSlots[i]) {
+        var pl = players.find(function(p){ return p.id===val; });
+        var d = playerData[val]||{};
+        locked.push({slot:i, name:pl?pl.name:'?', num:pl?pl.num:'?', positions:d.positions||[], speed:d.speed||0});
+      }
+    }
+    players.forEach(function(p){
+      var d = getPlayerData(p.id,p);
+      var inLocked = locked.find(function(l){ return l.name===p.name; });
+      if (!inLocked) available.push({name:p.name, num:p.num, positions:d.positions||[], speed:d.speed||0, injured:d.injured||false});
+    });
+    return {locked:locked, available:available, priority: lineupPriority||'balanced', teamName: TEAMS[currentTeam()].name};
+  }
+
+  async function generateLineup() {
+    if (!lineupPriority) { alert('Please select a lineup priority first.'); return; }
+    var ctx = getLineupContext();
+    var btn = document.getElementById('generateBtn');
+    var result = document.getElementById('aiResult');
+    btn.disabled = true;
+    result.className = 'ai-result show';
+    result.innerHTML = '<div class="ai-thinking"><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><span style="margin-left:4px">Building lineup…</span></div>';
+
+    var priorityDesc = {
+      speed: 'Put fastest runners at the top of the order (leadoff, 2-hole). Speed matters most.',
+      traditional: 'Best hitters bat 2nd through 4th. Pitcher or weakest hitter bats last. Classic approach.',
+      obp: 'Prioritize players most likely to get on base at the top of the order.',
+      balanced: 'Balance speed, power, and on-base ability across the lineup.'
+    }[ctx.priority];
+
+    var lockedDesc = ctx.locked.length
+      ? 'The coach has already locked these spots:\n' + ctx.locked.map(function(l){ return 'Slot '+l.slot+': '+l.name+' (#'+l.num+') — Positions: '+(l.positions.join(',')||'unknown')+', Speed: '+(SPEED_NAMES[l.speed]||'unknown')+formatStatsForAI(l.name); }).join('\n')
+      : 'No spots are locked — suggest the full lineup.';
+
+    var availDesc = ctx.available.map(function(p){
+      return p.name+' (#'+p.num+') — Positions: '+(p.positions.join(',')||'not set')+', Speed: '+(SPEED_NAMES[p.speed]||'not set')+formatStatsForAI(p.name);
+    }).join('\n');
+
+    var hasStats = Object.keys(teamStats[currentTeam()]||{}).length > 0;
+    var statsNote = hasStats
+      ? 'Player stats from GameChanger are included in brackets where available (AVG, OBP, SLG, OPS, HR, RBI, SB, BB, SO, BA/RISP, QAB%). Use these to make smarter decisions.'
+      : 'No stats have been imported yet — base decisions on positions and speed ratings only.';
+
+    var prompt = 'You are an experienced youth baseball coach assistant helping build a batting lineup for ' + ctx.teamName + '.\n\n' +
+      'Lineup priority: ' + priorityDesc + '\n\n' +
+      statsNote + '\n\n' +
+      lockedDesc + '\n\n' +
+      'Available players (not yet assigned):\n' + availDesc + '\n\n' +
+      'Please suggest a complete 9-player batting order. For any locked slots, keep exactly those players in those spots. Fill the remaining slots from the available players. ' +
+      'For each slot, briefly explain your reasoning in one sentence. ' +
+      'Format your response as a numbered list (1-9) with the player name, suggested fielding position, and reasoning. ' +
+      'End with a short overall note about the lineup strategy. Keep it practical and concise — this is for a youth baseball coach reading on their phone.';
+
+    try {
+      var response = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          model:'claude-sonnet-4-20250514',
+          max_tokens:1000,
+          messages:[{role:'user', content:prompt}]
+        })
+      });
+      var data = await response.json();
+      var text = data.content && data.content[0] ? data.content[0].text : 'Unable to generate lineup. Please try again.';
+      // Format nicely
+      var lines = text.split('\n').filter(function(l){ return l.trim(); });
+      var formatted = lines.map(function(l){
+        if (/^\d+\./.test(l.trim())) return '<div style="padding:4px 0;border-bottom:.5px solid var(--border)">'+l+'</div>';
+        return '<div style="padding:6px 0;color:var(--muted);font-style:italic;font-size:12px">'+l+'</div>';
+      }).join('');
+      result.innerHTML = formatted;
+    } catch(e) {
+      result.innerHTML = '<div style="color:#c0392b">Error generating lineup. Please check your connection and try again.</div>';
+    }
+    btn.disabled = false;
+  }
+
+  function pcRender(){document.getElementById('ballNum').textContent=pcState.balls;document.getElementById('strikeNum').textContent=pcState.strikes;document.getElementById('outNum').textContent=pcState.outs;document.getElementById('totalNum').textContent=pcState.total;updateDots('ballDots',pcState.balls);updateDots('strikeDots',pcState.strikes);updateDots('outDots',pcState.outs);var mx=getPitchMax(),pct=Math.min(100,pcState.total/mx*100);document.getElementById('limitFill').style.width=pct+'%';document.getElementById('limitText').textContent=pcState.total+' / '+mx+' pitch max';var fb=document.getElementById('foulBtn');if(pcState.strikes===2){fb.classList.add('active');fb.disabled=false;}else{fb.classList.remove('active');fb.disabled=true;}var entries=document.getElementById('logEntries');entries.innerHTML='';var labels={B:'Ball',S:'Strike',O:'Out',F:'Foul'};pcState.log.forEach(function(p,i){var tag=document.createElement('span');tag.className='log-tag '+p.type+(i===pcState.log.length-1?' last':'');tag.textContent=labels[p.type]||p.type;entries.appendChild(tag);});entries.parentElement.scrollTop=entries.parentElement.scrollHeight;renderIP();renderRest();renderCommand();}
 </script>
 </body>
 </html>
