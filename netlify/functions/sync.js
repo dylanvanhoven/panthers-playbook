@@ -1,4 +1,4 @@
-// Panthers Playbook Sync v9
+// Panthers Playbook Sync v10
 const https = require('https');
 const CLIENT_EMAIL = process.env.FIREBASE_CLIENT_EMAIL;
 const PRIVATE_KEY = (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n');
@@ -12,9 +12,9 @@ const CORS = {
   'CDN-Cache-Control': 'no-store',
   'Netlify-CDN-Cache-Control': 'no-store'
 };
- 
+
 function b64u(s){return Buffer.from(s).toString('base64').replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');}
- 
+
 async function getToken(){
   const now=Math.floor(Date.now()/1000);
   const h=b64u(JSON.stringify({alg:'RS256',typ:'JWT'}));
@@ -32,7 +32,7 @@ async function getToken(){
     req.on('error',reject);req.write(body);req.end();
   });
 }
- 
+
 function fb(method,token,path,body){
   return new Promise((resolve,reject)=>{
     const buf=body?Buffer.from(body):null;
@@ -40,52 +40,76 @@ function fb(method,token,path,body){
     if(buf)opts.headers['Content-Length']=buf.length;
     const req=https.request(opts,(res)=>{
       let d='';res.on('data',c=>d+=c);
-      res.on('end',()=>{resolve({status:res.statusCode,body:d});});
+      res.on('end',()=>{
+        console.log(`FB ${method} ${path} -> ${res.statusCode} (${d.length}b)`);
+        if(res.statusCode>=400) console.log('FB error response:', d.substring(0,200));
+        resolve({status:res.statusCode,body:d});
+      });
     });
     req.on('error',reject);
     if(buf)req.write(buf);
     req.end();
   });
 }
- 
+
+// Sanitize stats data - replace invalid values for Firebase
+function sanitize(obj) {
+  if (obj === null || obj === undefined) return null;
+  if (typeof obj === 'string') {
+    // Replace '-' and empty with null, keep valid strings
+    if (obj === '-' || obj === '') return null;
+    return obj;
+  }
+  if (typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(sanitize);
+  const result = {};
+  Object.keys(obj).forEach(function(k) {
+    // Firebase keys cannot contain . $ # [ ] /
+    const safeKey = k.replace(/[.$#\[\]\/]/g, '_');
+    result[safeKey] = sanitize(obj[k]);
+  });
+  return result;
+}
+
 exports.handler=async function(event){
-  // Log every invocation to confirm function is running
-  console.log('sync v9 called:', event.httpMethod, new Date().toISOString());
- 
+  console.log('sync v10:', event.httpMethod, new Date().toISOString());
   if(event.httpMethod==='OPTIONS')return{statusCode:200,headers:CORS,body:''};
   try{
     const token=await getToken();
-    console.log('Token obtained OK');
- 
+
     if(event.httpMethod==='GET'){
       const r=await fb('GET',token,'/playbook.json',null);
       const data=JSON.parse(r.body||'null')||{};
+      // Support both old flat structure and new nested structure
+      const roster = data.roster || data;
+      const stats  = data.stats  || {};
       console.log('GET playbook keys:', Object.keys(data));
       return{statusCode:200,headers:CORS,body:JSON.stringify({
-        teams:data.teams||null,
-        playerData:data.playerData||null,
-        teamStats:data.teamStats||null,
-        statsMetadata:data.statsMetadata||null
+        teams:       roster.teams      || data.teams      || null,
+        playerData:  roster.playerData || data.playerData || null,
+        teamStats:   stats.teamStats   || data.teamStats  || null,
+        statsMetadata: stats.statsMetadata || data.statsMetadata || null
       })};
     }
- 
+
     if(event.httpMethod==='POST'){
       const payload=JSON.parse(event.body);
       const isStats=payload._type==='stats';
-      console.log('POST isStats:', isStats, 'bodySize:', event.body.length);
- 
+      console.log('POST isStats:', isStats, 'size:', event.body.length);
+
       if(isStats){
-        const statsData={teamStats:payload.teamStats,statsMetadata:payload.statsMetadata};
-        const teams=Object.keys(payload.teamStats||{});
-        console.log('Writing stats for teams:', teams);
-        teams.forEach(t=>console.log('Team',t,'players:',Object.keys((payload.teamStats||{})[t]||{}).length));
-        const r=await fb('PATCH',token,'/playbook.json',JSON.stringify(statsData));
-        console.log('Stats PATCH status:', r.status, 'response:', r.body.substring(0,50));
+        // Sanitize stats to remove Firebase-incompatible values
+        const clean = sanitize({teamStats:payload.teamStats, statsMetadata:payload.statsMetadata});
+        const statsStr = JSON.stringify(clean);
+        console.log('Sanitized stats size:', statsStr.length);
+        // Use PUT on dedicated stats path
+        const r=await fb('PUT',token,'/playbook/stats.json',statsStr);
+        console.log('Stats PUT status:', r.status);
         return{statusCode:200,headers:CORS,body:JSON.stringify({ok:true,isStats:true,status:r.status})};
       } else {
-        const patch={teams:payload.teams,playerData:payload.playerData};
-        const r=await fb('PATCH',token,'/playbook.json',JSON.stringify(patch));
-        console.log('Roster PATCH status:', r.status);
+        const clean = sanitize({teams:payload.teams,playerData:payload.playerData});
+        const r=await fb('PUT',token,'/playbook/roster.json',JSON.stringify(clean));
+        console.log('Roster PUT status:', r.status);
         return{statusCode:200,headers:CORS,body:JSON.stringify({ok:true,isStats:false,status:r.status})};
       }
     }
