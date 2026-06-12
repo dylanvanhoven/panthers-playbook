@@ -692,7 +692,8 @@
           <button class="generate-btn" id="generateBtn" onclick="generateLineup()" style="flex:1;">
             <span>📋</span><span>Generate lineup</span>
           </button>
-          <button onclick="clearLineup()" style="padding:13px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;color:var(--muted);" title="Clear all slots">✕ Clear</button>
+          <button onclick="clearDefense()" style="padding:13px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;cursor:pointer;color:var(--muted);white-space:nowrap;" title="Clear defensive positions only">🛡 Clear D</button>
+          <button onclick="clearLineup()" style="padding:13px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:12px;cursor:pointer;color:var(--muted);white-space:nowrap;" title="Clear entire lineup">✕ Clear all</button>
         </div>
         <div class="ai-result" id="aiResult"></div>
       </div>
@@ -1648,6 +1649,14 @@
         if (sel) sel.addEventListener('change', function(){ updateSlotPos(slot); });
       })(j);
     }
+  }
+
+  function clearDefense() {
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      var posEl = document.getElementById('slotpos-' + i);
+      if (posEl) posEl.value = '';
+    }
+    saveLineupState();
   }
 
   function clearLineup() {
