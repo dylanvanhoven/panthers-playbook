@@ -679,9 +679,12 @@
           <button class="fill-defense-btn" onclick="fillDefense()">🛡 Fill defense</button>
         </div>
 
-        <button class="generate-btn" id="generateBtn" onclick="generateLineup()">
-          <span>📋</span><span>Generate lineup</span>
-        </button>
+        <div style="display:flex;gap:8px;">
+          <button class="generate-btn" id="generateBtn" onclick="generateLineup()" style="flex:1;">
+            <span>📋</span><span>Generate lineup</span>
+          </button>
+          <button onclick="clearLineup()" style="padding:13px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;color:var(--muted);" title="Clear all slots">✕ Clear</button>
+        </div>
         <div class="ai-result" id="aiResult"></div>
       </div>
     </div>
@@ -1511,7 +1514,14 @@
         html += '</div></div>';
       });
       rosterList.innerHTML = html;
-      try { renderLineupSlots(); } catch(e) {}
+      try { 
+        // Only rebuild lineup slots if they exist — and save state first
+        var lineupSlots = document.getElementById('lineupSlots');
+        if (lineupSlots) {
+          saveLineupState();
+          renderLineupSlots();
+        }
+      } catch(e) {}
     } catch(e) {
       console.error('renderRoster error:', e);
     }
@@ -1564,7 +1574,41 @@
     event.target.classList.add('selected');
   }
 
+  // ── LINEUP STATE PERSISTENCE ──
+  // Save lineup selections before any re-render so they survive roster updates and Firebase syncs
+  var _savedLineupState = null;
+
+  function saveLineupState() {
+    var state = { slots: {}, locks: {} };
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      var sel = document.getElementById('slot-' + i);
+      var pos = document.getElementById('slotpos-' + i);
+      if (sel) state.slots[i] = { player: sel.value, pos: pos ? pos.value : '' };
+      state.locks[i] = !!lockedSlots[i];
+    }
+    _savedLineupState = state;
+  }
+
+  function restoreLineupState() {
+    if (!_savedLineupState) return;
+    var state = _savedLineupState;
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      var sel = document.getElementById('slot-' + i);
+      var pos = document.getElementById('slotpos-' + i);
+      var btn = document.getElementById('lock-' + i);
+      if (sel && state.slots[i]) {
+        sel.value = state.slots[i].player || '';
+        if (pos) pos.value = state.slots[i].pos || '';
+      }
+      if (state.locks[i]) {
+        lockedSlots[i] = true;
+        if (btn) btn.classList.add('locked');
+      }
+    }
+  }
+
   function renderLineupSlots() {
+    saveLineupState(); // save before wiping
     var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
     var ALL_DEF_POS = ['P','C','1B','2B','3B','SS','LF','CF','RF','DH','EH','UT'];
     var html = '';
@@ -1577,7 +1621,6 @@
         html += '<option value="'+p.id+'">'+p.name+' #'+p.num+'</option>';
       });
       html += '</select>';
-      // Editable position dropdown
       html += '<select class="slot-pos-select" id="slotpos-'+i+'">';
       html += '<option value="">Pos</option>';
       ALL_DEF_POS.forEach(function(pos){
@@ -1588,13 +1631,21 @@
       html += '</div>';
     }
     document.getElementById('lineupSlots').innerHTML = html;
-    // When player changes, auto-populate position from their card (but keep editable)
+    restoreLineupState(); // restore after rebuild
+    // Attach change listeners
     for (var j=1; j<=LINEUP_SIZE; j++) {
       (function(slot){
         var sel = document.getElementById('slot-'+slot);
         if (sel) sel.addEventListener('change', function(){ updateSlotPos(slot); });
       })(j);
     }
+  }
+
+  function clearLineup() {
+    _savedLineupState = null;
+    lockedSlots = {};
+    renderLineupSlots();
+    document.getElementById('aiResult').className = 'ai-result';
   }
 
   var lockedSlots = {};
