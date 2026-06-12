@@ -321,7 +321,10 @@
   .inj-toggle input[type=checkbox] { width:16px; height:16px; accent-color:#c0392b; cursor:pointer; }
   .inj-toggle label { font-size:12px; color:var(--text); cursor:pointer; }
 
-  .defense-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:10px 0 8px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
+  .defense-priority-row { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:6px; margin-bottom:8px; }
+  .def-pri-btn { padding:6px 10px; border-radius:6px; border:1.5px solid var(--border); background:var(--bg); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; transition:all .12s; white-space:nowrap; }
+  .def-pri-btn.active { background:var(--black); border-color:var(--black); color:#fff; }
+  .defense-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:10px 0 0; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:8px; }
   .defense-bar-left { display:flex; align-items:center; gap:8px; }
   .fielder-count-btns { display:flex; gap:4px; }
   .fielder-btn { padding:4px 10px; border-radius:5px; border:1.5px solid var(--border); background:var(--card); font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; transition:all .12s; }
@@ -677,6 +680,12 @@
             </div>
           </div>
           <button class="fill-defense-btn" onclick="fillDefense()">🛡 Fill defense</button>
+        </div>
+        <div class="defense-priority-row" id="defensePriorityRow">
+          <span class="editor-label" style="margin-bottom:0;white-space:nowrap;">Defense priority:</span>
+          <button class="def-pri-btn active" id="dpri-best" onclick="setDefPriority('best',this)">🏆 Best defense</button>
+          <button class="def-pri-btn" id="dpri-pitcher" onclick="setDefPriority('pitcher',this)">⚾ Protect pitcher</button>
+          <button class="def-pri-btn" id="dpri-speed" onclick="setDefPriority('speed',this)">⚡ Speed up middle</button>
         </div>
 
         <div style="display:flex;gap:8px;">
@@ -1656,18 +1665,13 @@
   }
 
   function updateSlotPos(i) {
-    var sel    = document.getElementById('slot-'+i);
-    var posEl  = document.getElementById('slotpos-'+i);
+    // Don't auto-assign — let the coach use Fill defense button
+    // Just clear position when player is cleared
+    var sel   = document.getElementById('slot-' + i);
+    var posEl = document.getElementById('slotpos-' + i);
     if (!sel || !posEl) return;
-    var id = sel.value;
-    if (!id) { posEl.value = ''; return; }
-    var d = playerData[id];
-    // Auto-suggest first position from player card, but don't override if already set
-    if (d && d.positions && d.positions.length) {
-      posEl.value = d.positions[0];
-    } else {
-      posEl.value = '';
-    }
+    if (!sel.value) posEl.value = '';
+    // Don't set anything when a player IS selected — wait for Fill defense
   }
 
   function getSlotPos(i) {
@@ -1675,7 +1679,249 @@
     return el ? el.value : '';
   }
 
-  function getLineupContext() {
+  // ── DEFENSIVE ASSIGNMENT ──
+  var defPriority = 'best';
+
+  function setDefPriority(p, btn) {
+    defPriority = p;
+    document.querySelectorAll('.def-pri-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+  }
+
+  var fielderCount = 9;
+  var lineupMode = 9;
+
+  function activePlayerCount() {
+    return currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; }).length;
+  }
+
+  function setLineupSize(mode, btn) {
+    lineupMode = mode;
+    document.querySelectorAll('.fielder-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    var allBtn = document.getElementById('btnAll');
+    if (allBtn) {
+      var count = activePlayerCount();
+      allBtn.textContent = mode === -1 ? 'Everyone ('+count+')' : 'Everyone';
+    }
+    LINEUP_SIZE = (mode === -1) ? activePlayerCount() : 9;
+    renderLineupSlots();
+  }
+
+  function updateLineupSizeButtons() {
+    var count = activePlayerCount();
+    var allBtn = document.getElementById('btnAll');
+    if (allBtn) allBtn.textContent = lineupMode === -1 ? 'Everyone ('+count+')' : 'Everyone';
+    LINEUP_SIZE = (lineupMode === -1) ? count : 9;
+  }
+
+  // Middle positions (C, SS, 2B, CF) where speed/range matters most
+  var MIDDLE_POSITIONS = ['C','SS','2B','CF'];
+  // Corner/power positions
+  var CORNER_POSITIONS = ['1B','3B','LF','RF'];
+
+  // Score a player for a specific defensive position using stats + card + priority
+  function defScore(player, pos) {
+    var d = getPlayerData(player.id, player);
+    var s = getStatsForPlayer(player.name);
+    var score = 0;
+
+    // --- Base: innings played at this position (strongest signal) ---
+    var innMap = {P:'Pinn',C:'Cinn','1B':'1Binn','2B':'2Binn','3B':'3Binn',SS:'SSinn',LF:'LFinn',CF:'CFinn',RF:'RFinn'};
+    var inn = 0;
+    if (s && innMap[pos] && s[innMap[pos]] && s[innMap[pos]] !== '-') {
+      inn = parseFloat(s[innMap[pos]]) || 0;
+      score += inn * 3;
+    }
+
+    // --- Base: position on player card ---
+    if (d.positions && d.positions.indexOf(pos) >= 0) {
+      score += 10;
+      if (d.positions[0] === pos) score += 5;
+    }
+
+    // --- Fielding quality bonus ---
+    var fpct = 0;
+    if (s && s.FPCT && s.FPCT !== '-') {
+      fpct = parseFloat(s.FPCT) || 0;
+      score += fpct * 4;
+    }
+    var errors = s && s.E && s.E !== '-' ? parseFloat(s.E) || 0 : 0;
+    score -= errors * 0.5;
+
+    // --- Speed rating ---
+    var spd = (d.speed || 0);
+
+    // --- Pitching stats for P slot ---
+    if (pos === 'P') {
+      if (s && s.IP && parseFloat(s.IP) > 0) {
+        score += parseFloat(s.IP) * 4;
+        if (s.ERA && s.ERA !== '-') score += Math.max(0, 10 - (parseFloat(s.ERA)||10));
+        if (s.WHIP && s.WHIP !== '-') score += Math.max(0, 5 - (parseFloat(s.WHIP)||5));
+      }
+    } else {
+      // Penalize real pitchers at field positions
+      if (s && s.IP && parseFloat(s.IP) > 10) score -= 6;
+    }
+
+    // --- Priority modifiers ---
+    if (defPriority === 'best') {
+      // Pure fielding — boost FPCT and innings played, already covered above
+      score += fpct * 3; // extra fielding weight
+
+    } else if (defPriority === 'pitcher') {
+      // Boost best defenders at the positions that most help a pitcher
+      // C (blocks wild pitches, controls running game), SS + 2B (up-the-middle), CF (covers most ground)
+      if (pos === 'C')  score += fpct * 5 + inn * 2;
+      if (pos === 'SS') score += fpct * 4 + spd * 3;
+      if (pos === '2B') score += fpct * 4 + spd * 2;
+      if (pos === 'CF') score += spd * 4 + inn * 1;
+      // Corners less critical — slight de-prioritization
+      if (CORNER_POSITIONS.indexOf(pos) >= 0) score -= 3;
+
+    } else if (defPriority === 'speed') {
+      // Speed up the middle — put fastest players at C, SS, 2B, CF
+      if (MIDDLE_POSITIONS.indexOf(pos) >= 0) {
+        score += spd * 6; // speed is king in the middle
+      } else {
+        // Corners get the slower/power players — de-weight speed
+        score -= spd * 1;
+      }
+    }
+
+    // Ineligible — never played here and not on card
+    if (score <= 0 && inn === 0 && (!d.positions || d.positions.indexOf(pos) < 0)) {
+      return -999;
+    }
+
+    return score;
+  }
+    var d = getPlayerData(player.id, player);
+    var s = getStatsForPlayer(player.name);
+    var score = 0;
+
+    // Base score from innings played at this position (stats)
+    var innMap = {P:'Pinn',C:'Cinn','1B':'1Binn','2B':'2Binn','3B':'3Binn',SS:'SSinn',LF:'LFinn',CF:'CFinn',RF:'RFinn'};
+    if (s && innMap[pos] && s[innMap[pos]] && s[innMap[pos]] !== '-') {
+      var inn = parseFloat(s[innMap[pos]]) || 0;
+      score += inn * 3; // innings played is strongest signal
+    }
+
+    // Bonus if position is on their card
+    if (d.positions && d.positions.indexOf(pos) >= 0) {
+      score += 10;
+      // Extra bonus if it's their primary (first listed) position
+      if (d.positions[0] === pos) score += 5;
+    }
+
+    // Fielding percentage bonus for premium positions
+    if (s && s.FPCT && s.FPCT !== '-') {
+      var fpct = parseFloat(s.FPCT) || 0;
+      score += fpct * 5;
+    }
+
+    // Penalize putting pitchers (by ERA) at position player spots
+    if (pos !== 'P' && s && s.IP && parseFloat(s.IP) > 5) {
+      score -= 8; // pitchers should pitch, not play field
+    }
+
+    // For P slot: bonus for actual pitching stats
+    if (pos === 'P' && s && s.IP && parseFloat(s.IP) > 0) {
+      score += parseFloat(s.IP) * 4;
+      if (s.ERA && s.ERA !== '-') score += Math.max(0, 10 - parseFloat(s.ERA));
+    }
+
+    // Zero score if player has never played this position and it's not on their card
+    if (score === 0 && (!d.positions || d.positions.indexOf(pos) < 0)) {
+      score = -999; // never played here and not on card
+    }
+
+    return score;
+  }
+
+  function fillDefense() {
+    var DEF_9  = ['P','C','1B','2B','3B','SS','LF','CF','RF'];
+    var RARITY = { C:1, SS:2, P:3, '2B':4, '3B':5, '1B':6, CF:7, LF:8, RF:9 };
+
+    // Collect slotted players
+    var slottedPlayers = [];
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      var sel = document.getElementById('slot-' + i);
+      if (sel && sel.value) {
+        var pid = sel.value;
+        var player = currentPlayers().find(function(p){ return p.id === pid; });
+        var currentPos = getSlotPos(i);
+        slottedPlayers.push({ slot: i, id: pid, player: player, currentPos: currentPos });
+      }
+    }
+
+    if (slottedPlayers.length === 0) {
+      alert('Add players to the batting order first.');
+      return;
+    }
+
+    // Keep already-assigned non-blank positions (except clear obviously wrong ones)
+    var assignedPositions = {};
+    var unassignedSlots = [];
+
+    slottedPlayers.forEach(function(s) {
+      var pos = s.currentPos;
+      if (pos && pos !== '' && pos !== 'DH' && pos !== 'EH') {
+        assignedPositions[pos] = s.slot;
+      } else {
+        unassignedSlots.push(s);
+      }
+    });
+
+    var neededPositions = DEF_9.filter(function(p){ return !assignedPositions[p]; });
+    if (neededPositions.length === 0) { alert('All defensive positions already assigned!'); return; }
+    if (unassignedSlots.length === 0) { alert('No unassigned players left.'); return; }
+
+    // Sort needed positions by rarity (hardest to fill first)
+    var sortedNeeded = neededPositions.slice().sort(function(a,b){
+      return (RARITY[a]||99) - (RARITY[b]||99);
+    });
+
+    // Build scores matrix
+    var assignments = {};
+    var takenSlots = {};
+
+    sortedNeeded.forEach(function(pos) {
+      // Score all available unassigned players for this position
+      var candidates = unassignedSlots
+        .filter(function(s){ return !takenSlots[s.slot] && s.player; })
+        .map(function(s){ return { slot: s.slot, player: s.player, score: defScore(s.player, pos) }; })
+        .filter(function(c){ return c.score > -999; }) // must be eligible
+        .sort(function(a,b){ return b.score - a.score; });
+
+      if (candidates.length > 0) {
+        assignments[candidates[0].slot] = pos;
+        takenSlots[candidates[0].slot] = true;
+      }
+    });
+
+    // Apply assignments
+    var filled = 0;
+    Object.keys(assignments).forEach(function(slot) {
+      var posEl = document.getElementById('slotpos-' + slot);
+      if (posEl) { posEl.value = assignments[slot]; filled++; }
+    });
+
+    // Mark any remaining unassigned as DH/EH if batting everyone
+    unassignedSlots.forEach(function(s) {
+      if (!takenSlots[s.slot]) {
+        var posEl = document.getElementById('slotpos-' + s.slot);
+        if (posEl && !posEl.value) posEl.value = LINEUP_SIZE > 9 ? 'EH' : 'UT';
+      }
+    });
+
+    var unfilled = sortedNeeded.filter(function(p){ return !Object.values(assignments).find(function(v){ return v===p; }); });
+    if (unfilled.length > 0) {
+      alert('Filled ' + filled + ' position' + (filled!==1?'s':'') + '. Could not assign: ' + unfilled.join(', ') + ' — no eligible players. Check player cards.');
+    }
+
+    saveLineupState();
+  }
     var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
     var locked = [];
     var available = [];
@@ -1694,152 +1940,6 @@
       if (!inLocked) available.push({id:p.id, name:p.name, num:p.num, positions:d.positions||[], speed:d.speed||0, injured:d.injured||false});
     });
     return {locked:locked, available:available, priority: lineupPriority||'balanced', teamName: TEAMS[currentTeam()].name};
-  }
-
-  // ── DEFENSIVE ASSIGNMENT ──
-  var fielderCount = 9;
-  var lineupMode = 9; // 9 = bat 9, -1 = bat everyone
-
-  function activePlayerCount() {
-    return currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; }).length;
-  }
-
-  function setLineupSize(mode, btn) {
-    lineupMode = mode;
-    document.querySelectorAll('.fielder-btn').forEach(function(b){ b.classList.remove('active'); });
-    btn.classList.add('active');
-    // Update the Everyone button label to show actual count
-    var allBtn = document.getElementById('btnAll');
-    if (allBtn) {
-      var count = activePlayerCount();
-      allBtn.textContent = mode === -1 ? 'Everyone ('+count+')' : 'Everyone';
-    }
-    LINEUP_SIZE = (mode === -1) ? activePlayerCount() : 9;
-    renderLineupSlots();
-  }
-
-  function updateLineupSizeButtons() {
-    var count = activePlayerCount();
-    var allBtn = document.getElementById('btnAll');
-    if (allBtn) allBtn.textContent = lineupMode === -1 ? 'Everyone ('+count+')' : 'Everyone';
-    LINEUP_SIZE = (lineupMode === -1) ? count : 9;
-  }
-
-  function fillDefense() {
-    // All 9 standard defensive positions
-    var DEF_9  = ['P','C','1B','2B','3B','SS','LF','CF','RF'];
-    // Position rarity — rarer spots filled first to avoid leaving them unplayable
-    var RARITY = { C:1, SS:2, P:3, '2B':4, '3B':5, '1B':6, CF:7, LF:8, RF:9, DH:10, EH:11, UT:12 };
-
-    // Collect players currently in slots
-    var slottedPlayers = []; // [{slotIdx, playerId, playerObj, currentPos}]
-    for (var i = 1; i <= LINEUP_SIZE; i++) {
-      var sel = document.getElementById('slot-' + i);
-      if (sel && sel.value) {
-        var pid = sel.value;
-        var player = currentPlayers().find(function(p){ return p.id === pid; });
-        var currentPos = document.getElementById('slotpos-' + i) ? document.getElementById('slotpos-' + i).value : '';
-        slottedPlayers.push({ slot: i, id: pid, player: player, currentPos: currentPos });
-      }
-    }
-
-    if (slottedPlayers.length === 0) {
-      alert('Add players to the batting order first, then use Fill defense to assign positions.');
-      return;
-    }
-
-    // Figure out which positions are already assigned (keep those, only fill blanks)
-    var assignedPositions = {}; // pos -> slot
-    var unassignedSlots = [];
-
-    slottedPlayers.forEach(function(s) {
-      var pos = s.currentPos;
-      // Keep DH and EH assignments — they don't take a field spot
-      if (pos && pos !== '' && pos !== 'DH' && pos !== 'EH') {
-        assignedPositions[pos] = s.slot;
-      } else if (!pos || pos === '') {
-        unassignedSlots.push(s);
-      }
-      // DH/EH slots stay as-is
-    });
-
-    // Which field positions still need to be filled?
-    var neededPositions = DEF_9.filter(function(p){ return !assignedPositions[p]; });
-
-    // If 10-man (EH), we don't need a 10th field position — EH just bats
-    // So needed positions are always the 9 standard spots minus already assigned
-
-    if (neededPositions.length === 0) {
-      alert('All defensive positions are already assigned!');
-      return;
-    }
-
-    if (unassignedSlots.length === 0 && neededPositions.length > 0) {
-      alert('No unassigned players left to fill ' + neededPositions.join(', ') + '.');
-      return;
-    }
-
-    // Build a map of what each unassigned player CAN play
-    var playerCandidates = unassignedSlots.map(function(s) {
-      var d = s.player ? getPlayerData(s.player.id, s.player) : {};
-      var canPlay = (d.positions || []).filter(function(pos){ return neededPositions.indexOf(pos) >= 0; });
-      return { slot: s.slot, id: s.id, canPlay: canPlay, assigned: null };
-    });
-
-    // Sort needed positions by rarity (hardest to fill first)
-    var sortedNeeded = neededPositions.slice().sort(function(a,b){
-      return (RARITY[a]||99) - (RARITY[b]||99);
-    });
-
-    // Greedy assignment: for each needed position, find the best available player
-    var assignments = {}; // slot -> position
-    var takenSlots = {};
-
-    sortedNeeded.forEach(function(pos) {
-      // Find candidates who can play this position and aren't taken yet
-      var eligible = playerCandidates.filter(function(c){
-        return !takenSlots[c.slot] && c.canPlay.indexOf(pos) >= 0;
-      });
-
-      // Prefer players with fewer total positions (more specialized) to preserve versatile players for harder spots
-      eligible.sort(function(a,b){ return a.canPlay.length - b.canPlay.length; });
-
-      if (eligible.length > 0) {
-        var pick = eligible[0];
-        assignments[pick.slot] = pos;
-        takenSlots[pick.slot] = true;
-      }
-    });
-
-    // For any remaining unassigned slots with no match, try UT or leave blank
-    playerCandidates.forEach(function(c) {
-      if (!takenSlots[c.slot]) {
-        // Check if they can play any remaining needed position
-        var remaining = sortedNeeded.filter(function(p){ return !Object.values(assignments).find(function(v){ return v===p; }); });
-        if (remaining.length > 0 && c.canPlay.length === 0) {
-          // Player has no listed positions — assign UT
-          assignments[c.slot] = 'UT';
-        }
-      }
-    });
-
-    // Apply assignments to the dropdowns
-    var filled = 0;
-    Object.keys(assignments).forEach(function(slot) {
-      var posEl = document.getElementById('slotpos-' + slot);
-      if (posEl) {
-        posEl.value = assignments[slot];
-        filled++;
-      }
-    });
-
-    // Report any positions that couldn't be filled
-    var filledPositions = Object.values(assignments);
-    var unfilled = sortedNeeded.filter(function(p){ return filledPositions.indexOf(p) < 0; });
-
-    if (unfilled.length > 0) {
-      alert('Filled ' + filled + ' position' + (filled!==1?'s':'') + '. Could not assign: ' + unfilled.join(', ') + ' — no players with those positions listed on their cards.');
-    }
   }
 
   // ── RULE-BASED LINEUP ENGINE ──
