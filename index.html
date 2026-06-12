@@ -1796,48 +1796,6 @@
 
     return score;
   }
-    var d = getPlayerData(player.id, player);
-    var s = getStatsForPlayer(player.name);
-    var score = 0;
-
-    // Base score from innings played at this position (stats)
-    var innMap = {P:'Pinn',C:'Cinn','1B':'1Binn','2B':'2Binn','3B':'3Binn',SS:'SSinn',LF:'LFinn',CF:'CFinn',RF:'RFinn'};
-    if (s && innMap[pos] && s[innMap[pos]] && s[innMap[pos]] !== '-') {
-      var inn = parseFloat(s[innMap[pos]]) || 0;
-      score += inn * 3; // innings played is strongest signal
-    }
-
-    // Bonus if position is on their card
-    if (d.positions && d.positions.indexOf(pos) >= 0) {
-      score += 10;
-      // Extra bonus if it's their primary (first listed) position
-      if (d.positions[0] === pos) score += 5;
-    }
-
-    // Fielding percentage bonus for premium positions
-    if (s && s.FPCT && s.FPCT !== '-') {
-      var fpct = parseFloat(s.FPCT) || 0;
-      score += fpct * 5;
-    }
-
-    // Penalize putting pitchers (by ERA) at position player spots
-    if (pos !== 'P' && s && s.IP && parseFloat(s.IP) > 5) {
-      score -= 8; // pitchers should pitch, not play field
-    }
-
-    // For P slot: bonus for actual pitching stats
-    if (pos === 'P' && s && s.IP && parseFloat(s.IP) > 0) {
-      score += parseFloat(s.IP) * 4;
-      if (s.ERA && s.ERA !== '-') score += Math.max(0, 10 - parseFloat(s.ERA));
-    }
-
-    // Zero score if player has never played this position and it's not on their card
-    if (score === 0 && (!d.positions || d.positions.indexOf(pos) < 0)) {
-      score = -999; // never played here and not on card
-    }
-
-    return score;
-  }
 
   function fillDefense() {
     var DEF_9  = ['P','C','1B','2B','3B','SS','LF','CF','RF'];
@@ -1921,25 +1879,6 @@
     }
 
     saveLineupState();
-  }
-    var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
-    var locked = [];
-    var available = [];
-    for (var i=1; i<=LINEUP_SIZE; i++) {
-      var sel = document.getElementById('slot-'+i);
-      var val = sel ? sel.value : '';
-      if (val && lockedSlots[i]) {
-        var pl = players.find(function(p){ return p.id===val; });
-        var d = playerData[val]||{};
-        locked.push({slot:i, name:pl?pl.name:'?', num:pl?pl.num:'?', positions:d.positions||[], speed:d.speed||0, slotPos: getSlotPos(i)});
-      }
-    }
-    players.forEach(function(p){
-      var d = getPlayerData(p.id,p);
-      var inLocked = locked.find(function(l){ return l.name===p.name; });
-      if (!inLocked) available.push({id:p.id, name:p.name, num:p.num, positions:d.positions||[], speed:d.speed||0, injured:d.injured||false});
-    });
-    return {locked:locked, available:available, priority: lineupPriority||'balanced', teamName: TEAMS[currentTeam()].name};
   }
 
   // ── RULE-BASED LINEUP ENGINE ──
