@@ -1653,6 +1653,7 @@
 
   function clearDefense() {
     for (var i = 1; i <= LINEUP_SIZE; i++) {
+      if (lockedSlots[i]) continue; // preserve locked rows
       var posEl = document.getElementById('slotpos-' + i);
       if (posEl) posEl.value = '';
     }
@@ -1660,9 +1661,21 @@
   }
 
   function clearLineup() {
-    _savedLineupState = null;
-    lockedSlots = {};
-    renderLineupSlots();
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      if (lockedSlots[i]) continue; // preserve locked rows
+      var sel   = document.getElementById('slot-' + i);
+      var posEl = document.getElementById('slotpos-' + i);
+      if (sel)   sel.value   = '';
+      if (posEl) posEl.value = '';
+    }
+    // Reset saved state for unlocked slots only
+    if (_savedLineupState) {
+      for (var j = 1; j <= LINEUP_SIZE; j++) {
+        if (!lockedSlots[j] && _savedLineupState.slots[j]) {
+          _savedLineupState.slots[j] = { player: '', pos: '' };
+        }
+      }
+    }
     document.getElementById('aiResult').className = 'ai-result';
   }
 
@@ -1705,7 +1718,7 @@
       }
     }
     if (hasAssignments) {
-      clearDefense();
+      clearDefense(); // already respects locks
       fillDefense();
     }
   }
