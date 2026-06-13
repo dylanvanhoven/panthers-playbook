@@ -1695,6 +1695,19 @@
     defPriority = p;
     document.querySelectorAll('.def-pri-btn').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
+    // Auto re-fill if any defensive positions are already assigned
+    var hasAssignments = false;
+    for (var i = 1; i <= LINEUP_SIZE; i++) {
+      var posEl = document.getElementById('slotpos-' + i);
+      if (posEl && posEl.value && posEl.value !== 'DH' && posEl.value !== 'EH') {
+        hasAssignments = true;
+        break;
+      }
+    }
+    if (hasAssignments) {
+      clearDefense();
+      fillDefense();
+    }
   }
 
   var fielderCount = 9;
