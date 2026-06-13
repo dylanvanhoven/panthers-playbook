@@ -1892,6 +1892,27 @@
 
   // ── RULE-BASED LINEUP ENGINE ──
 
+  function getLineupContext() {
+    var players = currentPlayers().filter(function(p){ return !getPlayerData(p.id,p).injured; });
+    var locked = [];
+    var available = [];
+    for (var i=1; i<=LINEUP_SIZE; i++) {
+      var sel = document.getElementById('slot-'+i);
+      var val = sel ? sel.value : '';
+      if (val && lockedSlots[i]) {
+        var pl = players.find(function(p){ return p.id===val; });
+        var d = playerData[val]||{};
+        locked.push({slot:i, name:pl?pl.name:'?', num:pl?pl.num:'?', positions:d.positions||[], speed:d.speed||0, slotPos: getSlotPos(i)});
+      }
+    }
+    players.forEach(function(p){
+      var d = getPlayerData(p.id,p);
+      var inLocked = locked.find(function(l){ return l.name===p.name; });
+      if (!inLocked) available.push({id:p.id, name:p.name, num:p.num, positions:d.positions||[], speed:d.speed||0, injured:d.injured||false});
+    });
+    return {locked:locked, available:available, priority: lineupPriority||'balanced', teamName: TEAMS[currentTeam()].name};
+  }
+
   function statVal(playerName, col) {
     var s = getStatsForPlayer(playerName);
     if (!s) return null;
